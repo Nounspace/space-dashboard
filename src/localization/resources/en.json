@@ -1,0 +1,166 @@
+{
+  "app-navbar": {
+    "contract-faq-link": "Contract FAQ",
+    "community-website-link": "Nounspace Website"
+  },
+  "claim-form": {
+    "address-placeholder": "Enter address",
+    "cancel-btn": "Cancel",
+    "submit-btn": "Claim",
+    "tx-sent-message": "The transaction was sent, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>",
+    "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
+  },
+  "claim-modal": {
+    "title": "Claim rewards",
+    "subtitle": "You are about to Claim Rewards. Your current reward - {reward}",
+    "reward": "{amount} SPACE."
+  },
+  "connect-wallet-button": {
+    "connect": "Connect"
+  },
+  "deposit-form": {
+    "balance-label": "Available to deposit",
+    "amount-placeholder": "Enter {currency} amount",
+    "cancel-btn": "Cancel",
+    "submit-btn": {
+      "deposit": "Deposit",
+      "approve": "Approve"
+    },
+    "tx-sent-message": "The transaction was sent, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>",
+    "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
+  },
+  "deposit-modal": {
+    "title": "Deposit",
+    "subtitle": "Your funds will be redirected to the platform. Enter the desired amount, in case of the first transaction, you will need to approve the transfer of funds."
+  },
+  "home-page": {
+    "capital-tab": "Capital",
+    "community-tab": "Community",
+    "coders-tab": "Coders",
+    "compute-tab": "Compute",
+    "private-pool-view": {
+      "info-bar": {
+        "title--1": "Community",
+        "subtitle--1": "Group 2",
+        "description--1": "The people who create interfaces and tools for the Morpheus ecosystem are also part of its community."
+      },
+      "daily-reward-title": "Daily reward",
+      "started-at-title": "Started at",
+      "claim-at-title": "Claim is locked until",
+      "claim-at-note": "Note: Claim is locked until the specified time",
+      "available-to-claim-title": "Available to claim",
+      "claim-btn": "Claim SPACE"
+    },
+    "public-pool-view": {
+      "info-bar": {
+        "title--0": "Capital",
+        "subtitle--0": "Group 1"
+      },
+      "total-deposits-title": "Total deposits",
+      "daily-reward-title": "Daily reward",
+      "started-at-title": "Started at",
+      "withdraw-at-title": "Withdraw is locked until",
+      "claim-at-title": "Claim is locked until",
+      "withdraw-at-note": "Note: Withdraw is locked until the specified time",
+      "claim-at-note": "Note: Claim is locked until the specified time",
+      "deposit-btn": "Deposit stETH",
+      "external-link": "How to receive stETH?",
+      "withdraw-btn": "Withdraw stETH",
+      "user-deposit-title": "Your deposit",
+      "available-to-claim-title": "Available to claim",
+      "claim-btn": "Claim SPACE",
+      "dashboard-description--0": "Upon withdrawal, your deposited stETH will be sent to your address. In case of claim, tokens will be minted on the Base network. This may take some time.",
+      "dashboard-note--0": "Note: You can withdraw your stETH {daysCount} days after deposit."
+    }
+  },
+  "info-dashboard": {
+    "header-title": "Amount of deposited stETH",
+    "header-note": "Note: Amount of deposited stETH",
+    "header-subtitle": "Number of stETH circulating in the project in relation to time",
+    "connection-msg": "Your personal deposits, withdrawals and rewards will be displayed here after connecting your wallet"
+  },
+  "network-switch": {
+    "mainnet": "Ethereum Mainnet",
+    "testnet": "Ethereum Sepolia"
+  },
+  "validations": {
+    "field-error_address": "Field must be a valid address with prefix \"0x\"",
+    "field-error_required": "Field must be filled in",
+    "field-error_ether": "Please enter an amount of stETH",
+    "field-error_maxEther": "Insufficient amount of stETH",
+    "field-error_minEther": "Field must be greater than or equal to {min}"
+  },
+  "wallet-dashboard": {
+    "address-copied": "Address copied",
+    "add-token": "Add SPACE token to Wallet",
+    "disconnect": "Disconnect"
+  },
+  "withdraw-form": {
+    "amount-placeholder": "Enter stETH amount to withdraw",
+    "cancel-btn": "Cancel",
+    "submit-btn": "Withdraw",
+    "tx-sent-message": "The transaction was sent, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>",
+    "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
+  },
+  "withdraw-modal": {
+    "title": "Withdraw Funds",
+    "subtitle": "Specify the amount to be withdrawn. The funds will be sent to your wallet.",
+    "available-to-withdraw-title": "Available to withdraw"
+  },
+  "zero-pool-description": {
+    "list": {
+      "1": "Deposit stETH on Ethereum to earn SPACE",
+      "2": "stETH can be withdrawn after day 7",
+      "3": "Claim your SPACE tokens starting Sept 12th",
+      "4": "SPACE tokens are rewarded on Base"
+    },
+    "details": "Details on"
+  },
+  "errors": {
+    "default": "Something went wrong",
+    "provider-user-rejected-request": "User rejected request",
+    "provider-unauthorized": "The requested method and/or account has not been authorized by the user",
+    "provider-unsupported-method": "The Provider does not support the requested method",
+    "provider-disconnected": "The Provider is disconnected from all chains",
+    "provider-chain-disconnected": "The Provider is not connected to the requested chain",
+    "provider-parse-error": "Invalid JSON",
+    "provider-invalid-request": "JSON is not a valid request object",
+    "provider-method-not-found": "Method does not exist",
+    "provider-invalid-params": "Invalid method parameters",
+    "provider-internal-error": "Internal JSON-RPC error",
+    "provider-invalid-input": "Missing or invalid parameters",
+    "provider-resource-not-found": "Requested resource not found",
+    "provider-resource-unavailable": "MetaMask is busy",
+    "provider-transaction-rejected": "Transaction creation failed",
+    "provider-method-not-supported": "Method is not implemented",
+    "provider-limit-exceeded": "Request exceeds defined limit",
+    "provider-json-rpc-version-not-supported": "Version of JSON-RPC protocol is not supported",
+    "provider-wrapper-method-not-found": "Provider does not exist or method not supported"
+  },
+  "notification": {
+    "default-title-success": "Success",
+    "default-title-error": "Error",
+    "default-title-warning": "Warning",
+    "default-title-info": "Info",
+    "default-title-default": "Just a message",
+    "default-message-success": "Action successful",
+    "default-message-error": "Something went wrong",
+    "default-message-warning": "Something you are doing is not recommended",
+    "default-message-info": "Something is happening. Just want you to know that",
+    "default-message-default": "Just a message"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  }
+}

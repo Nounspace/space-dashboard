@@ -1,0 +1,76 @@
+.init-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+
+.init-loader::before {
+  position: absolute;
+  z-index: -1;
+  bottom: -52rem;
+  left: -52rem;
+  content: '';
+  display: block;
+  height: 88rem;
+  width: 88rem;
+  background: radial-gradient(#ff6600, transparent 60%);
+}
+
+.init-loader::after {
+  position: absolute;
+  z-index: -1;
+  top: -52rem;
+  right: -52rem;
+  content: '';
+  display: block;
+  height: 88rem;
+  width: 88rem;
+  background: #ffffff;
+  background: radial-gradient(#ff6600, transparent 60%);
+}
+
+.app--initialized ~ .init-loader {
+  display: none;
+}
+
+.init-loader__logo {
+  color: #000000;
+  animation: 0.5s ease-in-out infinite alternate twinkle;
+  width: 18.75rem;
+}
+
+@media (max-width: 1023px) {
+  .init-loader::before {
+    margin: 0 auto;
+    bottom: -106rem;
+    left: unset;
+    height: 136rem;
+    width: 136rem;
+  }
+
+  .init-loader::after {
+    margin: 0 auto;
+    top: -106rem;
+    right: unset;
+    height: 136rem;
+    width: 136rem;
+  }
+
+  .init-loader__logo {
+    width: 12.5rem;
+  }
+}
+
+@keyframes twinkle {
+  to {
+    color: #ff6600;
+  }
+}
