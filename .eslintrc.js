@@ -57,12 +57,6 @@ module.exports = {
         extensions: ['.js', '.ts', '.vue'],
       },
     ],
-    'vue-i18n/no-raw-text': [
-      'error',
-      {
-        ignoreText: ['—', '|', '×'],
-      },
-    ],
     'arrow-parens': 0,
     'no-debugger': 1,
     'no-warning-comments': [

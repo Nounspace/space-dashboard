@@ -1,10 +1,10 @@
 <template>
   <div class="app-banner">
-    <component class="app-banner__btn">
+    <div class="app-banner__btn">
       <p class="app-banner__text">
         $SPACE Fair Launch is LIVE!
       </p>
-    </component>
+    </div>
   </div>
 </template>
 
