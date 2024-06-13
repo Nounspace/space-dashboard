@@ -10,7 +10,7 @@ import { computed, reactive, ref } from 'vue'
 
 enum BALANCE_CURRENCIES {
   stEth = 'stEth',
-  mor = 'mor',
+  space = 'space',
 }
 
 const STORE_NAME = 'web3-providers-store'
@@ -23,7 +23,7 @@ export const useWeb3ProvidersStore = defineStore(STORE_NAME, () => {
 
   const balances = reactive<Record<BALANCE_CURRENCIES, BigNumber | null>>({
     [BALANCE_CURRENCIES.stEth]: null,
-    [BALANCE_CURRENCIES.mor]: null,
+    [BALANCE_CURRENCIES.space]: null,
   })
 
   const isAddingToken = ref(false)
@@ -78,10 +78,10 @@ export const useWeb3ProvidersStore = defineStore(STORE_NAME, () => {
     ),
   )
 
-  const morContract = computed(() =>
+  const spaceContract = computed(() =>
     useContract(
       'ERC20__factory',
-      config.networks[networkId.value].contractAddressesMap[CONTRACT_IDS.mor],
+      config.networks[networkId.value].contractAddressesMap[CONTRACT_IDS.space],
       config.networks[networkId.value].extendedChainProvider,
     ),
   )
@@ -118,7 +118,7 @@ export const useWeb3ProvidersStore = defineStore(STORE_NAME, () => {
     address,
     erc1967ProxyContract,
     stEthContract,
-    morContract,
+    spaceContract,
     endpointContract,
 
     // Actions

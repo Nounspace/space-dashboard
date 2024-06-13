@@ -60,7 +60,7 @@ type Balance = {
   tokenIconName: ICON_NAMES
 }
 
-let _morUpdateIntervalId: Parameters<typeof clearInterval>[0]
+let _spaceUpdateIntervalId: Parameters<typeof clearInterval>[0]
 
 const isInitializing = ref(true)
 const selectedIdx = ref(0)
@@ -75,17 +75,10 @@ const balances = computed<Balance[]>(() => [
       : '',
     tokenIconName: ICON_NAMES.ethereum,
   },
-  // {
-  //   logoIconName: ICON_NAMES.morpheus,
-  //   value: web3ProvidersStore.balances.mor
-  //     ? `${formatEther(web3ProvidersStore.balances.mor)} MOR`
-  //     : '',
-  //   tokenIconName: ICON_NAMES.arbitrum,
-  // },
   {
     logoIconName: ICON_NAMES.space,
-    value: web3ProvidersStore.balances.mor
-      ? `${formatEther(web3ProvidersStore.balances.mor)} SPACE`
+    value: web3ProvidersStore.balances.space
+      ? `${formatEther(web3ProvidersStore.balances.space)} SPACE`
       : '',
     tokenIconName: ICON_NAMES.base,
   },
@@ -101,13 +94,13 @@ const updateBalances = async (): Promise<void> => {
 
   const address = web3ProvidersStore.provider.selectedAddress
 
-  const [stEthValue, morValue] = await Promise.all([
+  const [stEthValue, spaceValue] = await Promise.all([
     web3ProvidersStore.stEthContract.providerBased.value.balanceOf(address),
-    web3ProvidersStore.morContract.providerBased.value.balanceOf(address),
+    web3ProvidersStore.spaceContract.providerBased.value.balanceOf(address),
   ])
 
   web3ProvidersStore.balances.stEth = stEthValue
-  web3ProvidersStore.balances.mor = morValue
+  web3ProvidersStore.balances.space = spaceValue
 }
 
 const init = async (): Promise<void> => {
@@ -142,7 +135,7 @@ onMounted(() => {
   bus.on(BUS_EVENTS.changedUserBalance, onChangeBalances)
   bus.on(BUS_EVENTS.changedPoolData, onChangeBalances)
   bus.on(BUS_EVENTS.changedCurrentUserReward, onChangeBalances)
-  _morUpdateIntervalId = setInterval(async () => {
+  _spaceUpdateIntervalId = setInterval(async () => {
     if (
       !web3ProvidersStore.isConnected ||
       !web3ProvidersStore.provider.selectedAddress
@@ -151,8 +144,8 @@ onMounted(() => {
     const address = web3ProvidersStore.provider.selectedAddress
 
     try {
-      web3ProvidersStore.balances.mor =
-        await web3ProvidersStore.morContract.providerBased.value.balanceOf(
+      web3ProvidersStore.balances.space =
+        await web3ProvidersStore.spaceContract.providerBased.value.balanceOf(
           address,
         )
     } catch (error) {
@@ -165,7 +158,7 @@ onBeforeUnmount(() => {
   bus.off(BUS_EVENTS.changedUserBalance, onChangeBalances)
   bus.off(BUS_EVENTS.changedPoolData, onChangeBalances)
   bus.off(BUS_EVENTS.changedCurrentUserReward, onChangeBalances)
-  clearInterval(_morUpdateIntervalId)
+  clearInterval(_spaceUpdateIntervalId)
 })
 
 watch(() => web3ProvidersStore.provider.selectedAddress, onChangeBalances)

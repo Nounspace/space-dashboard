@@ -18,11 +18,11 @@
 
 <script lang="ts" setup>
 import { useWeb3ProvidersStore } from '@/store'
-import AppButton from './AppButton.vue'
+// import AppButton from './AppButton.vue'
 import AppLogo from './AppLogo.vue'
 import ConnectWalletButton from './ConnectWalletButton.vue'
-import NetworkSwitch from './NetworkSwitch.vue'
-import WalletBalances from './WalletBalances.vue'
+// import NetworkSwitch from './NetworkSwitch.vue'
+// import WalletBalances from './WalletBalances.vue'
 import WalletDashboard from './WalletDashboard.vue'
 
 const web3ProvidersStore = useWeb3ProvidersStore()
@@ -43,7 +43,7 @@ $z-index: 1000;
   gap: toRem(24);
   padding: 0 var(--app-padding-right) 0 var(--app-padding-left);
   background: #ffffff;
-  border-bottom: toRem(1) solid #444449;
+  border-bottom: none;
 }
 
 .app-navbar__nav {

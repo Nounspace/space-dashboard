@@ -89,7 +89,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
 
 const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
   {
-    iconName: ICON_NAMES.arbitrum,
+    iconName: ICON_NAMES.base,
     title: t('home-page.private-pool-view.available-to-claim-title'),
     value: currentUserReward.value
       ? `${formatEther(currentUserReward.value)} SPACE`

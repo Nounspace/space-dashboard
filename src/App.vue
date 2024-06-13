@@ -1,6 +1,7 @@
 <template>
   <transition name="fade">
     <div v-if="isAppInitialized" class="app__container">
+      <sidebar />
       <app-navbar class="app__navbar" :class="['app__navbar--desktop']" />
       <app-navbar-mobile class="app__navbar" :class="['app__navbar--mobile']" />
       <div class="app__page-wrp">
@@ -15,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppNavbar, AppNavbarMobile } from '@/common'
+import { AppNavbar, AppNavbarMobile, Sidebar } from '@/common'
 import { useNotifications } from '@/composables'
 import { bus, BUS_EVENTS, ErrorHandler } from '@/helpers'
 import { useWeb3ProvidersStore } from '@/store'
@@ -88,5 +89,11 @@ init()
   display: flex;
   flex-direction: column;
   padding-top: var(--app-navbar-height);
+  padding-left: var(--app-sidebar-width);
+  background: #ffffff;
+
+  @include respond-to(medium) {
+    padding-left: 0px;
+  }
 }
 </style>

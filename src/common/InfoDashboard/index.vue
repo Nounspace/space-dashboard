@@ -103,22 +103,6 @@ const { t } = useI18n()
 const web3ProvidersStore = useWeb3ProvidersStore()
 
 const monthOptions: FieldOption<number>[] = [
-  // {
-  //   title: t('months.february'),
-  //   value: 2,
-  // },
-  // {
-  //   title: t('months.march'),
-  //   value: 3,
-  // },
-  // {
-  //   title: t('months.april'),
-  //   value: 4,
-  // },
-  // {
-  //   title: t('months.may'),
-  //   value: 5,
-  // },
   {
     title: t('months.june'),
     value: 6,
@@ -179,6 +163,7 @@ watch([selectedMonth, () => props.poolData], async ([newSelectedMonth]) => {
     rgba(255, 255, 255, 0.08)
   );
   background: #c0c0c0;
+  border-radius: 6px;
 
   @include respond-to(medium) {
     padding: toRem(20) toRem(16) toRem(22);

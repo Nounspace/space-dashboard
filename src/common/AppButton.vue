@@ -608,7 +608,7 @@ $button-transition: var(--transition-duration-fast)
 }
 
 .app-button__text {
-  color: inherit;
+  color: var(--text-primary-dark);
   font: inherit;
   pointer-events: none;
   word-break: break-all;

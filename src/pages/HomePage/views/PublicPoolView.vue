@@ -19,7 +19,7 @@
                 class="public-pool-view__bar-button"
                 :text="$t('home-page.public-pool-view.deposit-btn')"
                 :is-loading="isInitializing"
-                :disabled="true"
+                :disabled="isDepositDisabled"
                 @click="isDepositModalShown = true"
               />
               <app-button
@@ -63,7 +63,7 @@
           class="public-pool-view__dashboard-button"
           :text="$t('home-page.public-pool-view.claim-btn')"
           :is-loading="isInitializing || isUserDataUpdating"
-          :disabled="true"
+          :disabled="isClaimDisabled"
           @click="isClaimModalShown = true"
         />
       </div>
@@ -103,11 +103,10 @@ import {
   WithdrawModal,
 } from '@/common'
 import { useI18n, usePool } from '@/composables'
-import { DEFAULT_TIME_FORMAT } from '@/const'
 import { ICON_NAMES } from '@/enums'
 import { useWeb3ProvidersStore } from '@/store'
 import type { InfoBarType, InfoDashboardType } from '@/types'
-import { formatEther, Time } from '@/utils'
+import { formatEther } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
 
@@ -123,7 +122,6 @@ const { t } = useI18n()
 
 const {
   currentUserReward,
-  dailyReward,
   poolData,
   userPoolData,
 
@@ -171,7 +169,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
       : '',
   },
   {
-    iconName: ICON_NAMES.arbitrum,
+    iconName: ICON_NAMES.base,
     title: t('home-page.public-pool-view.available-to-claim-title'),
     value: currentUserReward.value
       ? `${formatEther(currentUserReward.value)} SPACE`

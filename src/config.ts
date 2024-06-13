@@ -20,6 +20,7 @@ export enum CONTRACT_IDS {
   erc1967Proxy = 'erc1967Proxy',
   stEth = 'stEth',
   mor = 'mor',
+  space = 'space',
   endpoint = 'endpoint',
 }
 
@@ -78,6 +79,8 @@ export const config = {
     .VITE_APP_STETH_TESTNET_CONTRACT_ADDRESS,
   MOR_TESTNET_CONTRACT_ADDRESS: import.meta.env
     .VITE_APP_MOR_TESTNET_CONTRACT_ADDRESS,
+  SPACE_TESTNET_CONTRACT_ADDRESS: import.meta.env
+    .VITE_APP_SPACE_TESTNET_CONTRACT_ADDRESS,
   ENDPOINT_TESTNET_CONTRACT_ADDRESS: import.meta.env
     .VITE_APP_ENDPOINT_TESTNET_CONTRACT_ADDRESS,
 
@@ -88,6 +91,8 @@ export const config = {
     .VITE_APP_STETH_MAINNET_CONTRACT_ADDRESS,
   MOR_MAINNET_CONTRACT_ADDRESS: import.meta.env
     .VITE_APP_MOR_MAINNET_CONTRACT_ADDRESS,
+  SPACE_MAINNET_CONTRACT_ADDRESS: import.meta.env
+    .VITE_APP_SPACE_MAINNET_CONTRACT_ADDRESS,
   ENDPOINT_MAINNET_CONTRACT_ADDRESS: import.meta.env
     .VITE_APP_ENDPOINT_MAINNET_CONTRACT_ADDRESS,
 
@@ -129,16 +134,17 @@ config.networks = {
       1,
     ),
     explorerUrl: ETHEREUM_EXPLORER_URLS.ethereum,
-    extendedChainId: ETHEREUM_CHAINS.arbitrum,
-    extendedChainTitle: 'Arbitrum',
+    extendedChainId: ETHEREUM_CHAINS.base,
+    extendedChainTitle: 'Base',
     extendedChainProvider: new providers.StaticJsonRpcProvider(
-      ETHEREUM_RPC_URLS.arbitrum,
+      ETHEREUM_RPC_URLS.base,
     ),
-    extendedChainLayerZeroEndpoint: LAYER_ZERO_ENDPOINTS.arbitrum,
+    extendedChainLayerZeroEndpoint: LAYER_ZERO_ENDPOINTS.base,
     contractAddressesMap: {
       [CONTRACT_IDS.erc1967Proxy]:
         config.ERC1967_PROXY_MAINNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.stEth]: config.STETH_MAINNET_CONTRACT_ADDRESS,
+      [CONTRACT_IDS.space]: config.SPACE_MAINNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.mor]: config.MOR_MAINNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.endpoint]: config.ENDPOINT_MAINNET_CONTRACT_ADDRESS,
     },
@@ -159,6 +165,7 @@ config.networks = {
         config.ERC1967_PROXY_TESTNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.stEth]: config.STETH_TESTNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.mor]: config.MOR_TESTNET_CONTRACT_ADDRESS,
+      [CONTRACT_IDS.space]: config.SPACE_TESTNET_CONTRACT_ADDRESS,
       [CONTRACT_IDS.endpoint]: config.ENDPOINT_TESTNET_CONTRACT_ADDRESS,
     },
   },
@@ -167,14 +174,25 @@ config.networks = {
 config.chainsMap = {
   [ETHEREUM_CHAINS.arbitrum]: {
     chainId: utils.hexValue(Number(ETHEREUM_CHAINS.arbitrum)),
-    chainName: 'Arbitrum One',
+    chainName: 'Arbitrum',
     nativeCurrency: {
       name: 'ETH',
       symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: [ETHEREUM_RPC_URLS.arbitrum],
-    blockExplorerUrls: [ETHEREUM_EXPLORER_URLS.arbitrum],
+    rpcUrls: [ETHEREUM_RPC_URLS.base],
+    blockExplorerUrls: [ETHEREUM_EXPLORER_URLS.base],
+  },
+  [ETHEREUM_CHAINS.base]: {
+    chainId: utils.hexValue(Number(ETHEREUM_CHAINS.base)),
+    chainName: 'Base',
+    nativeCurrency: {
+      name: 'ETH',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: [ETHEREUM_RPC_URLS.base],
+    blockExplorerUrls: [ETHEREUM_EXPLORER_URLS.base],
   },
   [ETHEREUM_CHAINS.arbitrumSepolia]: {
     chainId: utils.hexValue(Number(ETHEREUM_CHAINS.arbitrumSepolia)),

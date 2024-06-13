@@ -3,6 +3,7 @@
     ref="rootElement"
     class="wallet-dashboard"
     :class="{ 'wallet-dashboard--open': isDropMenuOpen }"
+    :is-loading="isInitializing"
   >
     <div
       v-tooltip="web3ProvidersStore.address"
@@ -10,7 +11,7 @@
     >
       <div ref="jazziconWrpElement" class="wallet-dashboard__jazzicon-wrp" />
       <p class="wallet-dashboard__head-address">
-        {{ abbrCenter(web3ProvidersStore.address) }}
+        {{ abbrAddress(web3ProvidersStore.address) }}
       </p>
       <app-icon
         class="wallet-dashboard__head-indicator"
@@ -44,23 +45,81 @@
 </template>
 
 <script lang="ts" setup>
+// import { ICON_NAMES } from '@/enums'
 import { useI18n } from '@/composables'
-import { abbrCenter, ErrorHandler } from '@/helpers'
+import { abbrCenter, abbrAddress, ErrorHandler } from '@/helpers'
 import { useWeb3ProvidersStore } from '@/store'
 import { config } from '@config'
 import { onClickOutside } from '@vueuse/core'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import generateJazzicon from 'jazzicon'
 import AppIcon from './AppIcon.vue'
 import CopyButton from './CopyButton.vue'
 import DropMenu from './DropMenu.vue'
+import { formatEther } from '@/utils'
+
+// type Balance = {
+//   logoIconName: ICON_NAMES
+//   value: string
+//   tokenIconName: ICON_NAMES
+// }
 
 const jazziconWrpElement = ref<HTMLDivElement | null>(null)
 const isDropMenuOpen = ref(false)
 const rootElement = ref<HTMLDivElement | null>(null)
 
+const isInitializing = ref(true)
+
 const { t } = useI18n()
 const web3ProvidersStore = useWeb3ProvidersStore()
+
+// const balances = computed<Balance[]>(() => [
+//   {
+//     logoIconName: ICON_NAMES.steth,
+//     value: web3ProvidersStore.balances.stEth
+//       ? `${formatEther(web3ProvidersStore.balances.stEth)} stETH`
+//       : '',
+//     tokenIconName: ICON_NAMES.ethereum,
+//   },
+// ])
+
+const stEthBalance = computed(() =>
+  web3ProvidersStore.balances.stEth
+    ? `${formatEther(web3ProvidersStore.balances.stEth)} stETH`
+    : '',
+)
+
+const updateBalances = async (): Promise<void> => {
+  if (!web3ProvidersStore.provider.selectedAddress)
+    throw new Error('user address unavailable')
+
+  const address = web3ProvidersStore.provider.selectedAddress
+
+  const [stEthValue, spaceValue] = await Promise.all([
+    web3ProvidersStore.stEthContract.providerBased.value.balanceOf(address),
+    web3ProvidersStore.spaceContract.providerBased.value.balanceOf(address),
+  ])
+
+  web3ProvidersStore.balances.stEth = stEthValue
+  web3ProvidersStore.balances.space = spaceValue
+}
+
+const init = async (): Promise<void> => {
+  if (!web3ProvidersStore.provider.selectedAddress) {
+    isInitializing.value = false
+    return
+  }
+
+  isInitializing.value = true
+
+  try {
+    await updateBalances()
+  } catch (error) {
+    ErrorHandler.process(error)
+  }
+
+  isInitializing.value = false
+}
 
 const setJazzicon = () => {
   if (!jazziconWrpElement.value) return
@@ -85,10 +144,12 @@ const addToken = async () => {
         options: {
           address:
             config.networks[web3ProvidersStore.networkId].contractAddressesMap
-              .mor,
-          symbol: 'MOR',
+              .space,
+          symbol: 'SPACE',
           decimals: 18,
-          image: window.location.origin.concat('/branding/mor-token-image.png'),
+          image: window.location.origin.concat(
+            '/branding/space-token-image.png',
+          ),
         },
       },
     })
@@ -125,6 +186,7 @@ const options = [
 watch(() => web3ProvidersStore.address, setJazzicon)
 
 onMounted(() => {
+  init()
   setJazzicon()
   if (rootElement.value)
     onClickOutside(rootElement, () => {
@@ -138,7 +200,7 @@ onMounted(() => {
   position: relative;
   background: var(--background-secondary-main);
   height: toRem(48);
-  width: toRem(92);
+  // width: toRem(92);
   border-radius: 6px;
 
   @include respond-to(medium) {
@@ -152,11 +214,12 @@ onMounted(() => {
   align-items: center;
   padding: 0 toRem(6) 0 toRem(16);
   height: 100%;
-  color: var(--text-secondary-light);
+  color: var(--text-primary-dark);
 }
 
 .wallet-dashboard__head-address {
-  display: none;
+  // display: none;
+  padding-right: toRem(30);
 
   @include respond-to(medium) {
     display: block;

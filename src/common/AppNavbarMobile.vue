@@ -17,8 +17,6 @@
       <div v-if="isExtShown" class="app-navbar-mobile__ext-wrp">
         <transition name="slide" appear>
           <div class="app-navbar-mobile__ext">
-            <nav class="app-navbar-mobile__nav">
-            </nav>
             <transition name="fade" mode="out-in">
               <connect-wallet-button
                 v-if="!web3ProvidersStore.isConnected"
@@ -46,12 +44,11 @@
 <script setup lang="ts">
 import { useWeb3ProvidersStore } from '@/store'
 import { ref } from 'vue'
-import AppButton from './AppButton.vue'
 import AppIcon from './AppIcon.vue'
 import AppLogo from './AppLogo.vue'
 import ConnectWalletButton from './ConnectWalletButton.vue'
-import NetworkSwitch from './NetworkSwitch.vue'
-import WalletBalances from './WalletBalances.vue'
+// import NetworkSwitch from './NetworkSwitch.vue'
+// import WalletBalances from './WalletBalances.vue'
 import WalletDashboard from './WalletDashboard.vue'
 
 const web3ProvidersStore = useWeb3ProvidersStore()

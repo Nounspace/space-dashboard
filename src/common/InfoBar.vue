@@ -58,6 +58,13 @@ withDefaults(
 </script>
 
 <style lang="scss" scoped>
+.info-bar {
+  border-radius: 6px;
+  border: 1px solid #eeeeee;
+  padding: 20px;
+  height: max-content;
+}
+
 .info-bar__subtitle-wrp {
   display: flex;
   align-items: center;

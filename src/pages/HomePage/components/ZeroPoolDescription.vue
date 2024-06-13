@@ -13,7 +13,6 @@
 </template>
 
 <script lang="ts" setup>
-import { AppButton } from '@/common'
 import { useI18n } from '@/composables'
 import { computed } from 'vue'
 

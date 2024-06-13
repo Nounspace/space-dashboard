@@ -6,7 +6,7 @@
       @click="onClick"
     >
       <svg class="app-logo__img">
-        <use href="/branding/logo-full.svg#logo" />
+        <use href="/branding/logo.svg#logo" />
       </svg>
     </router-link>
   </div>
@@ -26,8 +26,8 @@ const onClick = () => {
 <style lang="scss" scoped>
 .app-logo__img {
   display: block;
-  height: toRem(40);
-  // width: toRem(90);
+  height: toRem(20);
+  width: toRem(90);
   color: #000000;
   transition: color var(--transition-duration-fast)
     var(--transition-timing-default);
