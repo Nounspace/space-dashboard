@@ -24,7 +24,7 @@
               :is-loading="isInitializing"
               @click="onSubmit"
             />
-            <div>
+            <div class="share-modal__buttons-wrp">
               <p>Connect with us:</p>
               <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
               <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
@@ -58,7 +58,17 @@ withDefaults(
 </script>
 
 <style lang="scss" scoped>
+.share-modal__buttons-wrp {
+  margin-top: toRem(40);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: toRem(16);
 
+  @include respond-to(medium) {
+    margin-top: toRem(36);
+  }
+}
 
 .share-modal__form {
   margin-top: toRem(24);
