@@ -113,6 +113,7 @@ import {
   AppButton,
   ClaimModal,
   DepositModal,
+  ShareModal,
   InfoBar,
   InfoDashboard,
   WithdrawModal,
