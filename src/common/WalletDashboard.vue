@@ -282,7 +282,6 @@ onMounted(() => {
   align-items: center;
   height: toRem(48);
   padding: 0 toRem(16);
-  color: var(--text-secondary-light);
   transition: var(--transition-duration-fast) var(--transition-timing-default);
   border-bottom: toRem(1) solid transparent;
 

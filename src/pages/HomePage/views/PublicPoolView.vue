@@ -103,10 +103,11 @@ import {
   WithdrawModal,
 } from '@/common'
 import { useI18n, usePool } from '@/composables'
+import { DEFAULT_TIME_FORMAT } from '@/const'
 import { ICON_NAMES } from '@/enums'
 import { useWeb3ProvidersStore } from '@/store'
 import type { InfoBarType, InfoDashboardType } from '@/types'
-import { formatEther } from '@/utils'
+import { formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
 
@@ -122,6 +123,7 @@ const { t } = useI18n()
 
 const {
   currentUserReward,
+  dailyReward,
   poolData,
   userPoolData,
 
@@ -138,24 +140,46 @@ const web3ProvidersStore = useWeb3ProvidersStore()
 const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   {
     title: t('home-page.public-pool-view.total-deposits-title'),
-    value: '0 stETH',
+    value: poolData.value
+      ? `${formatEther(poolData.value.totalDeposited)} stETH`
+      : '',
   },
   {
     title: t('home-page.public-pool-view.daily-reward-title'),
-    value: '66,666.60 SPACE',
+    value: dailyReward.value ? `${formatEther(dailyReward.value)} SPACE` : '',
   },
   {
     title: t('home-page.public-pool-view.started-at-title'),
-    value: '14 Jun 2024 at 1:11 UTC',
+    value: poolData.value
+      ? new Time(poolData.value.payoutStart.toNumber()).format(
+          DEFAULT_TIME_FORMAT,
+        )
+      : '',
   },
   {
     title: t('home-page.public-pool-view.withdraw-at-title'),
-    value: '21 Jun 2024 at 1:11 UTC',
+    value: poolData.value
+      ? new Time(
+          userPoolData.value && !userPoolData.value.lastStake.isZero()
+            ? userPoolData.value.lastStake
+                .add(poolData.value.withdrawLockPeriodAfterStake)
+                .toNumber()
+            : poolData.value.payoutStart
+                .add(poolData.value.withdrawLockPeriod)
+                .toNumber(),
+        ).format(DEFAULT_TIME_FORMAT)
+      : '',
     note: t('home-page.public-pool-view.withdraw-at-note'),
   },
   {
     title: t('home-page.public-pool-view.claim-at-title'),
-    value: '12 Sept 2024 at 1:11 UTC',
+    value: poolData.value
+      ? new Time(
+          poolData.value.payoutStart
+            .add(poolData.value.claimLockPeriod)
+            .toNumber(),
+        ).format(DEFAULT_TIME_FORMAT)
+      : '',
     note: t('home-page.public-pool-view.claim-at-note'),
   },
 ])
