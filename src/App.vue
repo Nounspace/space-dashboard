@@ -46,7 +46,7 @@ const initNotifications = () => {
 
 const init = async () => {
   try {
-    document.title = config.NAME
+    document.title = '$SPACE Fair Launch | Nounspace'
 
     initNotifications()
     await web3ProvidersStore.init()

@@ -12,7 +12,7 @@ export async function getChartData(
   poolStartedAt: BigNumber,
   month: number,
 ): Promise<ChartData> {
-  type QueryData = Record<`r${number}`, { totalStaked: string }[]>
+  type QueryData = Record<`d${number}`, { totalStaked: string }[]>
   const { data } = await config.apolloClient.query<QueryData>({
     query: _generateTotalStakedPerDayGraphqlQuery(poolId, poolStartedAt, month),
   })
@@ -28,11 +28,11 @@ function _generateTotalStakedPerDayGraphqlQuery(
   poolStartedAt: BigNumber,
   month: number,
 ) {
-  const REQUEST_PATTERN = `d{{date}}:
-    poolInteractions(
-        first: 1
-        orderDirection: desc
-        where: {timestamp_lte: "{{timestamp}}", pool: "${hexlify(poolId)}"}
+  const REQUEST_PATTERN = (date: number, timestamp: number) => `
+    d${date}: poolInteractions(
+        first: 1,
+        orderDirection: desc,
+        where: { timestamp_lte: ${timestamp}, pool: "${hexlify(poolId)}" },
         orderBy: timestamp
       ) {
         totalStaked
@@ -42,25 +42,29 @@ function _generateTotalStakedPerDayGraphqlQuery(
   const currentTime = new Time()
   const poolStartedAtTime = new Time(poolStartedAt.toNumber())
 
-  const startDate = monthTime.isSame(poolStartedAtTime, 'month')
-    ? poolStartedAtTime.get('date')
-    : 1
+  let startDate: number
+  let endDate: number
 
-  const endDate = currentTime.isSame(monthTime, 'month')
-    ? currentTime.get('date')
-    : monthTime.dayjs.daysInMonth()
+  if (currentTime.isBefore(poolStartedAtTime)) {
+    // If the current time is before the pool start date
+    startDate = monthTime.isSame(poolStartedAtTime, 'month') ? poolStartedAtTime.get('date') : 1
+    endDate = monthTime.isSame(poolStartedAtTime, 'month') ? poolStartedAtTime.get('date') : monthTime.dayjs.daysInMonth()
+  } else {
+    // If the pool has already started
+    startDate = monthTime.isSame(poolStartedAtTime, 'month') ? poolStartedAtTime.get('date') : 1
+    endDate = monthTime.isSame(currentTime, 'month') ? currentTime.get('date') : monthTime.dayjs.daysInMonth()
+  }
+
+  console.log('startDate:', startDate)
+  console.log('endDate:', endDate)
 
   const requests = []
   for (let date = startDate; date <= endDate; date++) {
-    const timestamp = monthTime.timestamp + date * ONE_DAY_TIMESTAMP
+    const timestamp = monthTime.timestamp + (date - 1) * ONE_DAY_TIMESTAMP
 
-    // eslint-disable-next-line prettier/prettier
-    const request = REQUEST_PATTERN
-      .replace('{{date}}', date.toString())
-      // eslint-disable-next-line prettier/prettier
-      .replace('{{timestamp}}', timestamp.toString())
-
+    const request = REQUEST_PATTERN(date, timestamp)
     requests.push(request)
+    console.log('Request added:', request)
   }
 
   return gql`
