@@ -43,7 +43,7 @@
                 @share="isShareModalShown = true"
               />
               <share-modal
-                v-if="!isWithdrawDisabled && userPoolData"
+                v-if="userPoolData"
                 v-model:is-shown="isShareModalShown"
                 :pool-id="poolId"
                 :available-amount="userPoolData.deposited"
