@@ -90,6 +90,13 @@
         :pool-id="poolId"
       />
     </info-dashboard>
+    <iframe
+      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
+      width="640"
+      height="360"
+      allow="autoplay; fullscreen"
+      style="width: 100%; max-width: 640px; height: auto; min-height: 360px;"
+    ></iframe>
   </div>
 </template>
 
