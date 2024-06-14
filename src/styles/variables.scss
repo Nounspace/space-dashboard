@@ -1,4 +1,4 @@
-@import 'app-colors';
+@import "app-colors";
 
 :root,
 :before,
@@ -88,18 +88,15 @@
 
   /* App variables */
   --app-txt: #{$text-primary-main};
-  --app-font-family: 'Inter', 'Arial', sans-serif;
+  --app-font-family: "Inter", "Arial", sans-serif;
   --app-navbar-height: #{toRem(112)};
   --app-sidebar-width: #{toRem(270)};
   --app-padding-top: #{toRem(1)};
   --app-padding-right: #{toRem(80)};
   --app-padding-bottom: #{toRem(80)};
   --app-padding-left: #{toRem(32)};
-  --app-padding:
-    var(--app-padding-top)
-    var(--app-padding-right)
-    var(--app-padding-bottom)
-    var(--app-padding-left);
+  --app-padding: var(--app-padding-top) var(--app-padding-right)
+    var(--app-padding-bottom) var(--app-padding-left);
 
   @include respond-to(xmedium) {
     --app-padding-right: #{toRem(64)};
@@ -107,7 +104,7 @@
   }
 
   @include respond-to(medium) {
-    --app-navbar-height: #{toRem(36)};
+    --app-navbar-height: #{toRem(84)};
     --app-padding-top: #{toRem(24)};
     --app-padding-right: #{toRem(16)};
     --app-padding-bottom: #{toRem(14)};
@@ -178,14 +175,11 @@
   --field-padding-right: #{toRem(20)};
   --field-padding-bottom: #{toRem(18)};
   --field-padding-left: #{toRem(20)};
-  --field-padding:
-    var(--field-padding-top)
-    var(--field-padding-right)
-    var(--field-padding-bottom)
-    var(--field-padding-left);
+  --field-padding: var(--field-padding-top) var(--field-padding-right)
+    var(--field-padding-bottom) var(--field-padding-left);
 
   /* transition */
   --transition-duration-fast: 0.2s;
   --transition-duration-medium: 0.5s;
-  --transition-timing-default: cubic-bezier(0.08,0.52,0.52,1);
+  --transition-timing-default: cubic-bezier(0.08, 0.52, 0.52, 1);
 }

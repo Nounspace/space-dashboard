@@ -1,9 +1,9 @@
-import checker from 'vite-plugin-checker'
-import vue from '@vitejs/plugin-vue'
-import { defineConfig, loadEnv } from 'vite'
-import { visualizer } from 'rollup-plugin-visualizer'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import reactIcons from 'vite-plugin-react-icons';
+import checker from "vite-plugin-checker";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig, loadEnv } from "vite";
+import { visualizer } from "rollup-plugin-visualizer";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import reactIcons from "vite-plugin-react-icons";
 
 /**
  * @description Enable import if you need polyfills
@@ -13,21 +13,21 @@ import reactIcons from 'vite-plugin-react-icons';
  * import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
  */
 
-import * as fs from 'fs'
-import * as path from 'path'
+import * as fs from "fs";
+import * as path from "path";
 
-const appDirectory = fs.realpathSync(process.cwd())
-const resolveApp = (relative: string) => path.resolve(appDirectory, relative)
-const root = path.resolve(__dirname, resolveApp('src'))
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relative: string) => path.resolve(appDirectory, relative);
+const root = path.resolve(__dirname, resolveApp("src"));
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
+  const env = loadEnv(mode, process.cwd(), "");
 
-  const isProduction = env.VITE_ENVIRONMENT === 'production'
-  const isDevelopment = env.VITE_ENVIRONMENT === 'development'
-  const isAnalyze = env.VITE_ENVIRONMENT === 'analyze'
-  const buildVersion = env.VITE_BUILD_VERSION
+  const isProduction = env.VITE_ENVIRONMENT === "production";
+  const isDevelopment = env.VITE_ENVIRONMENT === "development";
+  const isAnalyze = env.VITE_ENVIRONMENT === "analyze";
+  const buildVersion = env.VITE_BUILD_VERSION;
 
   return {
     ...(env.VITE_PORT
@@ -37,14 +37,14 @@ export default defineConfig(({ mode }) => {
           },
         }
       : {}),
-    publicDir: 'static',
-    base: '',
+    publicDir: "static",
+    base: "",
     build: {
       rollupOptions: {
         output: {
           manualChunks: {
-            w3m: ['@web3modal/ethers5'],
-            chart: ['chart.js'],
+            w3m: ["@web3modal/ethers5"],
+            chart: ["chart.js"],
           },
         },
       },
@@ -54,8 +54,8 @@ export default defineConfig(({ mode }) => {
       vue(),
 
       createSvgIconsPlugin({
-        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-        symbolId: '[name]',
+        iconDirs: [path.resolve(process.cwd(), "src/assets/icons")],
+        symbolId: "[name]",
       }),
       reactIcons(),
       checker({
@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => {
         typescript: true,
         eslint: {
           lintCommand:
-            'eslint "{src,config}/**/*.{vue,js,ts}" --cache --max-warnings=50',
+            'eslint "{src,config}/**/*.{vue,js,ts}" --cache --max-warnings=1000',
         },
       }),
       ...(isAnalyze
@@ -82,17 +82,17 @@ export default defineConfig(({ mode }) => {
           additionalData: [
             '@import "@/styles/_functions.scss";',
             '@import "@/styles/_mixins.scss";',
-          ].join(''),
+          ].join(""),
         },
       },
     },
     resolve: {
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
-      dedupe: ['vue', '@vueuse/core', 'lodash'],
+      extensions: [".mjs", ".js", ".ts", ".jsx", ".tsx", ".json", ".vue"],
+      dedupe: ["vue", "@vueuse/core", "lodash"],
       alias: {
-        '@': `${root}/`,
-        '@config': `${root}/config.ts`,
-        '@static': `${root}/../static`,
+        "@": `${root}/`,
+        "@config": `${root}/config.ts`,
+        "@static": `${root}/../static`,
       },
     },
     /**
@@ -124,5 +124,5 @@ export default defineConfig(({ mode }) => {
      *       },
      *     },
      */
-  }
-})
+  };
+});

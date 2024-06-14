@@ -1,6 +1,7 @@
 <template>
   <div class="app-navbar-mobile">
     <app-logo />
+    <music-player />
     <button
       class="app-navbar-mobile__burger-btn"
       @click="isExtShown = !isExtShown"
@@ -42,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import MusicPlayer from './MusicPlayer.vue'
 import { useWeb3ProvidersStore } from '@/store'
 import { ref } from 'vue'
 import AppIcon from './AppIcon.vue'
@@ -74,9 +76,9 @@ $z-index: 1000;
   align-items: center;
   justify-content: space-between;
   gap: toRem(24);
-  padding: 0 var(--app-padding-right) 0 var(--app-padding-left);
+  padding: 0 2rem 0 2rem;
   background: $background;
-  border-bottom: toRem(1) solid #444449;
+  border-bottom: toRem(1) solid #CBD5E0;
 }
 
 .app-navbar-mobile__burger-icon {
