@@ -46,11 +46,11 @@
         </template>
       </info-bar>
       <iframe
-          src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
-          width="640"
-          height="360"
-          allow="autoplay; fullscreen"
-          class="video-iframe"
+      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
+      width="640"
+      height="360"
+      allow="autoplay; fullscreen"
+      class="video-iframe"
       ></iframe>
     </div>
     <info-dashboard
@@ -213,7 +213,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
 <style lang="scss" scoped>
 .video-iframe {
-  margin-top:1.875rem;
+  margin-top: 1.875rem;
   width: 100%;
   max-width: 640px;
   height: auto;
