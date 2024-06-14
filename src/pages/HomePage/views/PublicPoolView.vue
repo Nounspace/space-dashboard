@@ -95,7 +95,7 @@
       width="640"
       height="360"
       allow="autoplay; fullscreen"
-      style="width: 100%; max-width: 640px; height: auto; min-height: 360px;"
+      style="width: 100%; max-width: 640px; height: auto; min-height: 360px; border-radius: 8px;"
     ></iframe>
   </div>
 </template>
