@@ -109,10 +109,10 @@
   },
   "zero-pool-description": {
     "list": {
-      "1": "Deposit stETH on Ethereum to earn SPACE",
+      "1": "Deposit stETH on Ethereum to earn $SPACE",
       "2": "stETH can be withdrawn after day 7",
-      "3": "Claim your SPACE tokens starting Sept 12th",
-      "4": "SPACE tokens are rewarded on Base"
+      "3": "",
+      "4": "Claim $SPACE on Base starting Sept 12th"
     },
     "details": "Details on"
   },
