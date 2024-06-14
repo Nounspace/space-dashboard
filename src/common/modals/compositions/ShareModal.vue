@@ -25,7 +25,7 @@
               @click="onSubmit"
             />
             <p>Connect with us:</p>
-            <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom</a>
+            <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
             <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
           </div>
       </div>

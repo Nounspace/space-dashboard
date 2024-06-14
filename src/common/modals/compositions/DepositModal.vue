@@ -7,7 +7,7 @@
     :subtitle="$t('deposit-modal.subtitle')"
     @update:is-shown="emit('update:is-shown', $event)"
   >
-    <template #default="{ modal }">
+    <template #default="{ modal } ">
       <deposit-form
         class="deposit-modal__form"
         :pool-id="poolId"
