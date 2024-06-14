@@ -35,14 +35,14 @@
                   :href="$config.HOW_GET_STETH_URL"
                 />
               </div>
-              <!-- <deposit-modal
+              <deposit-modal
                 v-if="!isDepositDisabled && poolData?.minimalStake"
                 v-model:is-shown="isDepositModalShown"
                 :pool-id="poolId"
                 :min-stake="poolData.minimalStake"
-              /> -->
+              />
               <share-modal
-                v-if="!isDepositDisabled"
+                v-if="!isWithdrawDisabled && userPoolData"
                 v-model:is-shown="isDepositModalShown"
                 :pool-id="poolId"
                 :available-amount="userPoolData.deposited"
