@@ -41,6 +41,10 @@
                 :pool-id="poolId"
                 :min-stake="poolData.minimalStake"
               />
+              <share-modal
+                v-if="!isShareDisabled"
+                v-model:is-shown="isShareModalShown"
+              />
             </div>
           </transition>
         </template>
@@ -124,6 +128,7 @@ const props = defineProps<{ poolId: number }>()
 
 const isClaimModalShown = ref(false)
 const isDepositModalShown = ref(false)
+const isShareModalShown = ref(false)
 const isWithdrawModalShown = ref(false)
 
 const poolId = computed(() => props.poolId)
@@ -138,6 +143,7 @@ const {
 
   isClaimDisabled,
   isDepositDisabled,
+  isShareDisabled,
   isWithdrawDisabled,
 
   isInitializing,
