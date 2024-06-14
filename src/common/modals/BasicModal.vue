@@ -60,11 +60,11 @@ const emit = defineEmits<{
 .basic-modal__pane {
   padding: toRem(40) toRem(38) toRem(28);
   width: toRem(584);
-  border: toRem(1) solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(180deg, #7c7c7d 0%, #cacaca 100%);
-  background: linear-gradient(180deg, #222322 0%, #1d201c 100%),
-    linear-gradient(180deg, #7c7c7d 0%, #cacaca 100%);
+  // border: toRem(1) solid;
+  border-radius: 6px;
+  // border-image-slice: 1;
+  // border-image-source: linear-gradient(180deg, #7c7c7d 0%, #cacaca 100%);
+  background: #ffffff;
 
   @include respond-to(medium) {
     padding: toRem(36) toRem(20) toRem(24);

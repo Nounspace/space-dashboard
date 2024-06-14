@@ -318,11 +318,13 @@ watch([selectedMonth, () => props.poolData], async ([newSelectedMonth]) => {
 }
 
 .info-dashboard__logo {
-  height: toRem(220);
+    max-width: 100%;
+    height: auto;
+    max-height: 13.75rem;
 
   @include respond-to(medium) {
     height: toRem(112);
-    width: toRem(80);
+    // width: toRem(80);
   }
 }
 

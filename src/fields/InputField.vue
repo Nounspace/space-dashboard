@@ -251,6 +251,7 @@ $z-index-side-nodes: 1;
   box-shadow: inset 0 0 0 toRem(50) var(--field-bg-primary);
   transition: var(--field-transition-duration) var(--field-transition-timing);
   transition-property: color, box-shadow, border-color, background-color;
+  color: #000000;
 
   &:disabled,
   &:read-only {

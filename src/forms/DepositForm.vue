@@ -307,6 +307,7 @@ onMounted(() => {
 }
 
 .deposit-form .deposit-form__input-field {
+  color: #000000;
   margin-top: toRem(40);
 
   @include respond-to(medium) {
