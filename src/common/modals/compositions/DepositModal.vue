@@ -12,7 +12,7 @@
         class="deposit-modal__form"
         :pool-id="poolId"
         :min-stake="minStake"
-        @cancel="modal.close; share = true"
+        @cancel="modal.close; emit('share');"
         @stake-tx-sent="modal.close"
       />
     </template>

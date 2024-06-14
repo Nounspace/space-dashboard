@@ -40,7 +40,7 @@
                 v-model:is-shown="isDepositModalShown"
                 :pool-id="poolId"
                 :min-stake="poolData.minimalStake"
-                :share="isShareModalShown"
+                @share="isShareModalShown = true"
               />
               <share-modal
                 v-if="!isWithdrawDisabled && userPoolData"
