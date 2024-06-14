@@ -128,7 +128,7 @@
   --field-label-font-weight: 400;
   --field-label-line-height: #{toRem(24)};
   --field-label-letter-spacing: 0;
-  --field-label: var(--text-secondary-main);
+  --field-label: var(--text-secondary-dark);
   --field-label-margin-bottom: #{toRem(6)};
 
   /* text */
@@ -137,9 +137,9 @@
   --field-text-font-weight: 400;
   --field-text-line-height: #{toRem(26)};
   --field-text-letter-spacing: 0;
-  --field-text: var(--text-secondary-main);
+  --field-text: var(--text-secondary-dark);
   --field-text-readonly: var(--disable-tertiary-light);
-  --field-placeholder: var(--text-secondary-main);
+  --field-placeholder: var(--text-secondary-dark);
   --field-placeholder-readonly: var(--disable-secondary-main);
 
   @include respond-to(medium) {
