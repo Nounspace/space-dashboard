@@ -24,9 +24,11 @@
               :is-loading="isInitializing"
               @click="onSubmit"
             />
-            <p>Connect with us:</p>
-            <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
-            <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
+            <div>
+              <p>Connect with us:</p>
+              <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
+              <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
+            </div>
           </div>
       </div>
     </template>
@@ -56,6 +58,8 @@ withDefaults(
 </script>
 
 <style lang="scss" scoped>
+
+
 .share-modal__form {
   margin-top: toRem(24);
 

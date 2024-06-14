@@ -12,7 +12,7 @@
         class="deposit-modal__form"
         :pool-id="poolId"
         :min-stake="minStake"
-        @cancel="modal.close"
+        @cancel="modal.close; share = true"
         @stake-tx-sent="modal.close"
       />
     </template>
@@ -33,6 +33,7 @@ withDefaults(
     isShown: boolean
     poolId: number
     minStake: BigNumber
+    share: boolean
     isCloseByClickOutside?: boolean
   }>(),
   {
