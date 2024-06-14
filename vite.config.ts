@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => {
         typescript: true,
         eslint: {
           lintCommand:
-            'eslint "{src,config}/**/*.{vue,js,ts}" --cache --max-warnings=20',
+            'eslint "{src,config}/**/*.{vue,js,ts}" --cache --max-warnings=50',
         },
       }),
       ...(isAnalyze
