@@ -1,49 +1,58 @@
 <template>
   <div class="public-pool-view">
-    <info-bar
-      status="public"
-      :indicators="barIndicators"
-      :is-loading="isInitializing"
-    >
-      <template v-if="poolId === 0" #description>
-        <zero-pool-description />
-      </template>
-      <template #default>
-        <transition name="fade">
-          <div
-            v-if="web3ProvidersStore.isConnected"
-            class="public-pool-view__bar-slot-wrp"
-          >
-            <div class="public-pool-view__bar-buttons-wrp">
-              <app-button
-                class="public-pool-view__bar-button"
-                :text="$t('home-page.public-pool-view.deposit-btn')"
-                :is-loading="isInitializing"
-                :disabled="isDepositDisabled"
-                @click="isDepositModalShown = true"
-              />
-              <app-button
-                class="public-pool-view__bar-button"
-                scheme="link"
-                color="none"
-                target="_blank"
-                rel="noopener noreferrer"
-                :text="$t('home-page.public-pool-view.external-link')"
-                :icon-right="$icons.externalLink"
-                :is-loading="isInitializing"
-                :href="$config.HOW_GET_STETH_URL"
+    <div>
+      <info-bar
+        status="public"
+        :indicators="barIndicators"
+        :is-loading="isInitializing"
+      >
+        <template v-if="poolId === 0" #description>
+          <zero-pool-description />
+        </template>
+        <template #default>
+          <transition name="fade">
+            <div
+              v-if="web3ProvidersStore.isConnected"
+              class="public-pool-view__bar-slot-wrp"
+            >
+              <div class="public-pool-view__bar-buttons-wrp">
+                <app-button
+                  class="public-pool-view__bar-button"
+                  :text="$t('home-page.public-pool-view.deposit-btn')"
+                  :is-loading="isInitializing"
+                  :disabled="isDepositDisabled"
+                  @click="isDepositModalShown = true"
+                />
+                <app-button
+                  class="public-pool-view__bar-button"
+                  scheme="link"
+                  color="none"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  :text="$t('home-page.public-pool-view.external-link')"
+                  :icon-right="$icons.externalLink"
+                  :is-loading="isInitializing"
+                  :href="$config.HOW_GET_STETH_URL"
+                />
+              </div>
+              <deposit-modal
+                v-if="!isDepositDisabled && poolData?.minimalStake"
+                v-model:is-shown="isDepositModalShown"
+                :pool-id="poolId"
+                :min-stake="poolData.minimalStake"
               />
             </div>
-            <deposit-modal
-              v-if="!isDepositDisabled && poolData?.minimalStake"
-              v-model:is-shown="isDepositModalShown"
-              :pool-id="poolId"
-              :min-stake="poolData.minimalStake"
-            />
-          </div>
-        </transition>
-      </template>
-    </info-bar>
+          </transition>
+        </template>
+      </info-bar>
+      <iframe
+          src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
+          width="640"
+          height="360"
+          allow="autoplay; fullscreen"
+          class="video-iframe"
+      ></iframe>
+    </div>
     <info-dashboard
       :pool-id="poolId"
       :pool-data="poolData"
@@ -90,13 +99,6 @@
         :pool-id="poolId"
       />
     </info-dashboard>
-    <iframe
-      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
-      width="640"
-      height="360"
-      allow="autoplay; fullscreen"
-      class="video-iframe"
-    ></iframe>
   </div>
 </template>
 
@@ -211,6 +213,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
 <style lang="scss" scoped>
 .video-iframe {
+  margin-top:1.875rem;
   width: 100%;
   max-width: 640px;
   height: auto;
