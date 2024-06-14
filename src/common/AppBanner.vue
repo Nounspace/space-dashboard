@@ -1,10 +1,15 @@
 <template>
   <div class="app-banner">
-    <div class="app-banner__btn">
-      <p class="app-banner__text">
-        $SPACE Fair Launch is LIVE!
-      </p>
-    </div>
+    <a href="https://paragraph.xyz/@nounspace/space-fair-launch" target="_blank">
+      <div class="app-banner__btn">
+        <p class="app-banner__text">
+          $SPACE Fair Launch is LIVE!
+          <a href="https://paragraph.xyz/@nounspace/space-fair-launch" target="_blank" class="app-banner-inline-link">
+            Read the full announcement 🚀
+          </a>
+        </p>
+      </div>
+    </a>
   </div>
 </template>
 
@@ -32,7 +37,7 @@
   $color: #ffffff;
   display: grid;
   place-items: center;
-  padding: toRem(32) toRem(48);
+  padding: toRem(48) toRem(48);
   border-radius: 8px;
   color: #ffffff;
   cursor: pointer;
@@ -58,7 +63,7 @@
   @include body-2-regular;
 
   @include respond-to(medium) {
-    padding: toRem(12) toRem(16);
+    padding: toRem(32) toRem(16);
   }
 }
 
@@ -66,8 +71,17 @@
   font-size: 1.5rem;
   font-weight: 700;
   $color: #ffffff;
-  display: grid;
+  display: inline;
   place-items: center;
   color: #ffffff;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.app-banner-inline-link {
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  color: #00a7ff;
 }
 </style>
