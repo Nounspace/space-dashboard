@@ -95,7 +95,7 @@
       width="640"
       height="360"
       allow="autoplay; fullscreen"
-      style="width: 100%; max-width: 640px; height: auto; min-height: 360px; border-radius: 8px;"
+      class="video-iframe"
     ></iframe>
   </div>
 </template>
@@ -210,6 +210,19 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 </script>
 
 <style lang="scss" scoped>
+.video-iframe {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  min-height: 360px;
+  border-radius: 8px;
+
+  @include respond-to(medium) {
+    aspect-ratio: 16/9;
+    min-height: auto;
+    max-width: none;
+  }
+}
 .public-pool-view__bar-slot-wrp {
   margin-top: toRem(16);
   border-top: toRem(2) solid #494949;
