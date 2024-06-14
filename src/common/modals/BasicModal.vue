@@ -79,7 +79,7 @@ const emit = defineEmits<{
 }
 
 .basic-modal__title {
-  background: linear-gradient(90deg, #06f684, #1ab479);
+  background: var(--text-primary-dark);
   background-clip: text;
   color: transparent;
   text-align: center;
