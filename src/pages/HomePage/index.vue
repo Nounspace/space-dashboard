@@ -132,7 +132,7 @@ const tabs = computed<Tab[]>(() => {
 
 .home-page__content-wrp {
   width: 100%;
-  max-width: toRem(1240);
+  max-width: toRem(846);
 
   @include respond-to(medium) {
     max-width: unset;

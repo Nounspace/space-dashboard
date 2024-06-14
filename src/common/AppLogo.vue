@@ -26,8 +26,8 @@ const onClick = () => {
 <style lang="scss" scoped>
 .app-logo__img {
   display: block;
-  height: toRem(20);
-  width: toRem(90);
+  height: toRem(15);
+  width: toRem(40);
   color: #000000;
   transition: color var(--transition-duration-fast)
     var(--transition-timing-default);

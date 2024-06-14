@@ -90,11 +90,11 @@
   --app-txt: #{$text-primary-main};
   --app-font-family: 'Inter', 'Arial', sans-serif;
   --app-navbar-height: #{toRem(112)};
-  --app-sidebar-width: #{toRem(250)};
+  --app-sidebar-width: #{toRem(270)};
   --app-padding-top: #{toRem(1)};
   --app-padding-right: #{toRem(80)};
   --app-padding-bottom: #{toRem(80)};
-  --app-padding-left: #{toRem(80)};
+  --app-padding-left: #{toRem(32)};
   --app-padding:
     var(--app-padding-top)
     var(--app-padding-right)

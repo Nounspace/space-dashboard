@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig, loadEnv } from 'vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import reactIcons from 'vite-plugin-react-icons';
 
 /**
  * @description Enable import if you need polyfills
@@ -56,6 +57,7 @@ export default defineConfig(({ mode }) => {
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
         symbolId: '[name]',
       }),
+      reactIcons(),
       checker({
         overlay: {
           initialIsOpen: false,
