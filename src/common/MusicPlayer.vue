@@ -17,25 +17,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 
-const audio = ref(null);
-const isPlaying = ref(false);
+const audio = ref(null)
+const isPlaying = ref(false)
 
 onMounted(() => {
-  audio.value = new Audio('/branding/Nounish_Lofi_Radio_-_61224_11.19_PM.mp3');
-});
+  audio.value = new Audio('/branding/Nounish_Lofi_Radio_-_61224_11.19_PM.mp3')
+})
 
 const togglePlay = () => {
-  if (!audio.value) return;
+  if (!audio.value) return
 
   if (isPlaying.value) {
-    audio.value.pause();
+    audio.value.pause()
   } else {
-    audio.value.play();
+    audio.value.play()
   }
-  isPlaying.value = !isPlaying.value;
-};
+  isPlaying.value = !isPlaying.value
+}
 
 </script>
 
@@ -45,7 +45,7 @@ const togglePlay = () => {
   align-items: center;
   background: #ffffff;
   border-radius: 8px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #e2e8f0;
 
   @include respond-to(medium) {
     border-radius: 64px;
@@ -98,7 +98,7 @@ const togglePlay = () => {
     font-weight: 700;
     font-size: 0.75rem;
     line-height: 1.2;
-    color: #A0AEC0;
+    color: #a0aec0;
     overflow: hidden;
     @include respond-to(medium) {
       font-size: 0.6rem;
@@ -112,7 +112,7 @@ const togglePlay = () => {
     border-radius: 50%;
     display: grid;
     place-content: center;
-    background: #CBD5E0;
+    background: #cbd5e0;
     flex-shrink: 0;
     cursor: pointer;
   }
