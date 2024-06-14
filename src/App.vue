@@ -94,6 +94,7 @@ init()
 
   @include respond-to(medium) {
     padding-left: 0px;
+    padding-bottom: 7rem;
   }
 }
 </style>
