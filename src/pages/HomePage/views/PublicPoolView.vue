@@ -42,7 +42,7 @@
                 :min-stake="poolData.minimalStake"
               /> -->
               <share-modal
-                v-if="!isDepositDisabled && userPoolData"
+                v-if="!isDepositDisabled"
                 v-model:is-shown="isDepositModalShown"
                 :pool-id="poolId"
                 :available-amount="userPoolData.deposited"
