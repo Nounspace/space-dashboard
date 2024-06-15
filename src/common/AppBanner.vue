@@ -68,6 +68,7 @@
 }
 
 .app-banner__text {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-size: 1.5rem;
   font-weight: 700;
   $color: #ffffff;
