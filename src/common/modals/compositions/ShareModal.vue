@@ -72,23 +72,21 @@ const props = withDefaults(
   },
 )
 
-var totalDeposited = BigNumber.from(0);
+let totalDeposited = BigNumber.from(0)
 
-const fetchTotal = async() => {
+async function fetchTotal() {
   if (!props.poolData) throw new Error('poolData unavailable')
 
   try {
-       totalDeposited = props.poolData.totalDeposited
+       totalDeposited = await props.poolData.totalDeposited
   } catch (error) {
     ErrorHandler.process(error)
   }
 }
 
 onMounted(() => {
-  fetchTotal();
+  fetchTotal()
 })
-
-
 </script>
 
 <style lang="scss" scoped>
