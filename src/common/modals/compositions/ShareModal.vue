@@ -69,8 +69,13 @@ withDefaults(
 
 <style lang="scss" scoped>
 .share-modal__logo{
-  width: 30%;
-  padding: toRem(8);
+  width: 50px;
+  padding: toRem(16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.25rem;
+  margin: toRem(16) auto;
 }
 
 .share-modal__connect-wrp {
