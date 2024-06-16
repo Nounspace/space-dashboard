@@ -12,7 +12,7 @@
         <div class="modal-content">
             <div class="share-modal__buttons-wrp">
               <div>
-                <img :src="'@/assets/farcaster.png'">
+                <img src="../../../assets/farcaster.png" class="share-modal__buttons-wrp">
                 <a href="https://warpcast.com/~/compose?text=Hello%20@farcaster!&embeds[]=https://space.nounspace.com/">
                 <app-button
                   class="share-modal__buttons-wrp"
@@ -26,7 +26,7 @@
               </div>
 
               <div>
-                <img :src="'@/assets/x.webp'">
+                <img src="../../../assets/x.webp" class="share-modal__buttons-wrp">
                 <a href="https://twitter.com/intent/tweet?text=I%20just%20staked%20%24%7BethAmount%7D%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21">
                   <app-button
                     class="share-modal__buttons-wrp"
@@ -87,6 +87,7 @@ withDefaults(
   align-items: center;
   justify-content: center;
   gap: toRem(36);
+  margin:auto;
 
   @include respond-to(medium) {
     margin-top: toRem(16);
