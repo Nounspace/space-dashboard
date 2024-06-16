@@ -45,7 +45,7 @@
               <share-modal
                 v-if="userPoolData && poolData"
                 v-model:is-shown="isShareModalShown"
-                :total-deposited="poolData.value.totalDeposited"
+                :pool-data="poolData"
                 :available-amount="userPoolData.deposited"
               />
             </div>
@@ -127,6 +127,7 @@ import type { InfoBarType, InfoDashboardType } from '@/types'
 import { formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
+import { type BigNumber } from '@/types'
 
 const props = defineProps<{ poolId: number }>()
 

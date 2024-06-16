@@ -25,7 +25,6 @@
                 </div>
               </div>
 
-              <v-divider class="vertical-divider" vertical></v-divider>
               <div style="border-left:1px solid #000;height:500px"></div>
 
               <div>
@@ -49,10 +48,11 @@
 </template>
 
 <script lang="ts" setup>
-import { type BigNumber } from '@/types'
 import BasicModal from '../BasicModal.vue'
 import { AppButton } from '@/common'
-import { formatEther } from '@/utils'
+import { formatEther, BigNumber } from '@/utils'
+import { ErrorHandler } from '@/helpers'
+import { onMounted } from 'vue'
 import type { Erc1967ProxyType,
 } from '@/types'
 
@@ -60,17 +60,35 @@ const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
 }>()
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     isShown: boolean
-    totalDeposited: BigNumber
     availableAmount: BigNumber
+    poolData: Erc1967ProxyType.PoolData | null
     isCloseByClickOutside?: boolean
   }>(),
   {
     isCloseByClickOutside: true,
   },
 )
+
+var totalDeposited = BigNumber.from(0);
+
+const fetchTotal = async() => {
+  if (!props.poolData) throw new Error('poolData unavailable')
+
+  try {
+       totalDeposited = props.poolData.totalDeposited
+  } catch (error) {
+    ErrorHandler.process(error)
+  }
+}
+
+onMounted(() => {
+  fetchTotal();
+})
+
+
 </script>
 
 <style lang="scss" scoped>
