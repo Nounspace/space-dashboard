@@ -68,6 +68,8 @@
       "withdraw-at-note": "Note: Withdraw is locked until the specified time",
       "claim-at-note": "Note: Claim is locked until the specified time",
       "deposit-btn": "Deposit stETH",
+      "tweet-btn": "Tweet",
+      "cast-btn": "Cast",
       "external-link": "How to receive stETH?",
       "withdraw-btn": "Withdraw stETH",
       "user-deposit-title": "Your deposit",
