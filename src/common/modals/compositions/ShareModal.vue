@@ -13,7 +13,7 @@
             <div class="share-modal__buttons-wrp">
               <div>
                 <img src="../../../assets/farcaster.png" class="share-modal__logo">
-                <a :href="`https://warpcast.com/~/compose?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21&embeds[]=https://space.nounspace.com/`">
+                <a :href="`https://warpcast.com/~/compose?text=I%20just%20staked%20${formatEther(availableAmount)}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20%0ATotal%20staked%3A%20${formatEther(poolData.value.totalDeposited)}%20stETH.%20%0A%0AConnect%20with%20@NounspaceTom%20and%20join%20/nounspace%21&embeds[]=https://space.nounspace.com/`">
                 <app-button
                   class="share-modal__buttons-wrp"
                   :text="$t('home-page.public-pool-view.cast-btn')"
@@ -25,9 +25,12 @@
                 </div>
               </div>
 
+              <v-divider class="vertical-divider" vertical></v-divider>
+              <div style="border-left:1px solid #000;height:500px"></div>
+
               <div>
                 <img src="../../../assets/x.webp" class="share-modal__logo">
-                <a :href="`https://twitter.com/intent/tweet?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21`">
+                <a :href="`https://twitter.com/intent/tweet?text=I%20just%20staked%20${formatEther(availableAmount)}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20%0ATotal%20staked%3A%20%${formatEther(poolData.value.totalDeposited)}%20stETH.%20%0A%0AConnect%20with%20@NounspaceTom%20and%20@nounspace%21`">
                   <app-button
                     class="share-modal__buttons-wrp"
                     :text="$t('home-page.public-pool-view.tweet-btn')"
@@ -49,6 +52,7 @@
 import { type BigNumber } from '@/types'
 import BasicModal from '../BasicModal.vue'
 import { AppButton } from '@/common'
+import { formatEther } from '@/utils'
 
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
