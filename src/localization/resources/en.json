@@ -33,6 +33,10 @@
     "title": "Deposit",
     "subtitle": "Your funds will be redirected to the platform. Enter the desired amount, in case of the first transaction, you will need to approve the transfer of funds."
   },
+  "share-modal": {
+    "title": "Thank you for staking!",
+    "subtitle": "Claims for $SPACE will open starting Sept 12th. If you wish to withdraw your stETH from the platform, you will be able to after 7 days."
+  },
   "home-page": {
     "capital-tab": "Capital Providers",
     "community-tab": "Community",
@@ -64,6 +68,8 @@
       "withdraw-at-note": "Note: Withdraw is locked until the specified time",
       "claim-at-note": "Note: Claim is locked until the specified time",
       "deposit-btn": "Deposit stETH",
+      "tweet-btn": "Tweet",
+      "cast-btn": "Cast",
       "external-link": "How to receive stETH?",
       "withdraw-btn": "Withdraw stETH",
       "user-deposit-title": "Your deposit",

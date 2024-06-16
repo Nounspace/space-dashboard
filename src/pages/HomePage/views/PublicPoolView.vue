@@ -40,6 +40,13 @@
                 v-model:is-shown="isDepositModalShown"
                 :pool-id="poolId"
                 :min-stake="poolData.minimalStake"
+                @share="isShareModalShown = true; isDepositModalShown = false"
+              />
+              <share-modal
+                v-if="userPoolData && poolData"
+                v-model:is-shown="isShareModalShown"
+                :pool-data="poolData"
+                :available-amount="userPoolData.deposited"
               />
             </div>
           </transition>
@@ -107,6 +114,7 @@ import {
   AppButton,
   ClaimModal,
   DepositModal,
+  ShareModal,
   InfoBar,
   InfoDashboard,
   WithdrawModal,
@@ -119,11 +127,13 @@ import type { InfoBarType, InfoDashboardType } from '@/types'
 import { formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
+import { type BigNumber } from '@/types'
 
 const props = defineProps<{ poolId: number }>()
 
 const isClaimModalShown = ref(false)
 const isDepositModalShown = ref(false)
+const isShareModalShown = ref(false)
 const isWithdrawModalShown = ref(false)
 
 const poolId = computed(() => props.poolId)

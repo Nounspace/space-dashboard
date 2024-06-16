@@ -7,13 +7,13 @@
     :subtitle="$t('deposit-modal.subtitle')"
     @update:is-shown="emit('update:is-shown', $event)"
   >
-    <template #default="{ modal }">
+    <template #default="{ modal } ">
       <deposit-form
         class="deposit-modal__form"
         :pool-id="poolId"
         :min-stake="minStake"
         @cancel="modal.close"
-        @stake-tx-sent="modal.close"
+        @stake-tx-sent="modal.close; emit('share', true);"
       />
     </template>
   </basic-modal>
@@ -26,6 +26,7 @@ import BasicModal from '../BasicModal.vue'
 
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
+  (e: 'share', v: boolean): void
 }>()
 
 withDefaults(
