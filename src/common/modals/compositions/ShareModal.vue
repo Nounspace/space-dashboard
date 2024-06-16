@@ -12,7 +12,7 @@
         <div class="modal-content">
             <div class="share-modal__buttons-wrp">
               <div>
-                <img :src="'../../../assets/farcaster.png'">
+                <img :src="'@/assets/farcaster.png'">
                 <a href="https://warpcast.com/~/compose?text=Hello%20@farcaster!&embeds[]=https://space.nounspace.com/">
                 <app-button
                   class="share-modal__buttons-wrp"
@@ -20,13 +20,13 @@
                 />
                 </a>
                 <div class="share-modal__connect-wrp">
-                  <a href="https://warpcast.com/nounspacetom" target="_blank">@NounspaceTom </a><br/>
+                  <a href="https://warpcast.com/nounspacetom" target="_blank">@NounspaceTom </a>
                   <a href="https://warpcast.com/~/channel/nounspace" target="_blank">/nounspace</a>
                 </div>
               </div>
 
               <div>
-                <img :src="'../../../assets/x.webp'">
+                <img :src="'@/assets/x.webp'">
                 <a href="https://twitter.com/intent/tweet?text=I%20just%20staked%20%24%7BethAmount%7D%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21">
                   <app-button
                     class="share-modal__buttons-wrp"
@@ -34,7 +34,7 @@
                   /> 
                 </a>
                 <div class="share-modal__connect-wrp">
-                  <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a><br/>
+                  <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
                   <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
                 </div>
               </div>
@@ -73,6 +73,7 @@ withDefaults(
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   gap: toRem(16);
 
   @include respond-to(medium) {
