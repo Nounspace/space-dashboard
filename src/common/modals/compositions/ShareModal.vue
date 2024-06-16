@@ -42,6 +42,7 @@
 <script lang="ts" setup>
 import { type BigNumber } from '@/types'
 import BasicModal from '../BasicModal.vue'
+import { AppButton } from '@/common'
 
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
