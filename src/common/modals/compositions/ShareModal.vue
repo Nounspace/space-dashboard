@@ -13,7 +13,7 @@
             <div class="share-modal__buttons-wrp">
               <div>
                 <img src="../../../assets/farcaster.png" class="share-modal__logo">
-                <a href="require(`https://warpcast.com/~/compose?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21&embeds[]=https://space.nounspace.com/`)">
+                <a href="`https://warpcast.com/~/compose?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21&embeds[]=https://space.nounspace.com/`">
                 <app-button
                   class="share-modal__buttons-wrp"
                   :text="$t('home-page.public-pool-view.cast-btn')"
@@ -27,7 +27,7 @@
 
               <div>
                 <img src="../../../assets/x.webp" class="share-modal__logo">
-                <a href="require(`https://twitter.com/intent/tweet?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21`)">
+                <a href="`https://twitter.com/intent/tweet?text=I%20just%20staked%20${availableAmount}%20stETH%20in%20the%20Nounspace%20Fair%20Launch%21%20Total%20staked%3A%20%24%7BtotalStaked%7D%20stETH.%20Connect%20with%20@NounspaceTom%20and%20@nounspace%21`">
                   <app-button
                     class="share-modal__buttons-wrp"
                     :text="$t('home-page.public-pool-view.tweet-btn')"
@@ -69,7 +69,7 @@ withDefaults(
 
 <style lang="scss" scoped>
 .share-modal__logo{
-  width: 50px;
+  width: 80px;
   padding: toRem(16);
   display: flex;
   align-items: center;
