@@ -43,9 +43,9 @@
                 @share="isShareModalShown = true; isDepositModalShown = false"
               />
               <share-modal
-                v-if="userPoolData"
+                v-if="userPoolData && poolData"
                 v-model:is-shown="isShareModalShown"
-                :pool-id="poolId"
+                :total-deposited="poolData.value.totalDeposited"
                 :available-amount="userPoolData.deposited"
               />
             </div>
