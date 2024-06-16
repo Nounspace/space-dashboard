@@ -10,20 +10,6 @@
     <template #default="{ modal }">
       <div id="share-modal" class="modal">
         <div class="modal-content">
-            <app-button
-              class="cast__btn"
-              :text="Cast"
-              :disabled="isSubmitting || !isFieldsValid"
-              :is-loading="isInitializing"
-              @click="onSubmit"
-            />
-            <app-button
-              class="tweet__btn"
-              :text="Tweet"
-              :disabled="isSubmitting || !isFieldsValid"
-              :is-loading="isInitializing"
-              @click="onSubmit"
-            />
             <div class="share-modal__buttons-wrp">
               <p>Connect with us:</p>
               <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
@@ -38,7 +24,6 @@
 <script lang="ts" setup>
 import { type BigNumber } from '@/types'
 import BasicModal from '../BasicModal.vue'
-import { AppButton } from '@/common'
 
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
@@ -48,7 +33,7 @@ withDefaults(
   defineProps<{
     isShown: boolean
     poolId: number
-    minStake: BigNumber
+    availableAmount: BigNumber
     isCloseByClickOutside?: boolean
   }>(),
   {

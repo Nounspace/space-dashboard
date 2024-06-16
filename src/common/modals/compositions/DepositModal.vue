@@ -12,8 +12,8 @@
         class="deposit-modal__form"
         :pool-id="poolId"
         :min-stake="minStake"
-        @cancel="modal.close; emit('share');"
-        @stake-tx-sent="modal.close"
+        @cancel="modal.close; emit('share', true);"
+        @stake-tx-sent="modal.close; emit('share', true);"
       />
     </template>
   </basic-modal>
@@ -26,6 +26,7 @@ import BasicModal from '../BasicModal.vue'
 
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
+  (e: 'share', v: boolean): void
 }>()
 
 withDefaults(
@@ -33,7 +34,6 @@ withDefaults(
     isShown: boolean
     poolId: number
     minStake: BigNumber
-    share: boolean
     isCloseByClickOutside?: boolean
   }>(),
   {

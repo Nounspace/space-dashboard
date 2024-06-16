@@ -147,7 +147,6 @@ const {
 
   isClaimDisabled,
   isDepositDisabled,
-  isShareDisabled,
   isWithdrawDisabled,
 
   isInitializing,
