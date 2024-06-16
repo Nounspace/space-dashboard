@@ -25,7 +25,7 @@
                 </div>
               </div>
 
-              <div style="border-left:1px solid #000;height:100%"></div>
+              <div style="border-left:1px solid #000;height:100px"></div>
 
               <div>
                 <img src="../../../assets/x.webp" class="share-modal__logo">
