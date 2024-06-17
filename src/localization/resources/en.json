@@ -61,6 +61,7 @@
         "subtitle--0": "Group 1"
       },
       "total-deposits-title": "Total deposits",
+      "total-usd-title": "Total USD value",
       "daily-reward-title": "Daily reward",
       "started-at-title": "Started at",
       "withdraw-at-title": "Withdraw is locked until",

@@ -124,10 +124,9 @@ import { DEFAULT_TIME_FORMAT } from '@/const'
 import { ICON_NAMES } from '@/enums'
 import { useWeb3ProvidersStore } from '@/store'
 import type { InfoBarType, InfoDashboardType } from '@/types'
-import { formatEther, Time } from '@/utils'
+import { convertStEthToUsd, formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
-import { type BigNumber } from '@/types'
 
 const props = defineProps<{ poolId: number }>()
 
@@ -161,6 +160,12 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
     title: t('home-page.public-pool-view.total-deposits-title'),
     value: poolData.value
       ? `${formatEther(poolData.value.totalDeposited)} stETH`
+      : '',
+  },
+  {
+    title: t('home-page.public-pool-view.total-usd-title'),
+    value: poolData.value
+      ? `${convertStEthToUsd(poolData.value.totalDeposited, poolData.value.stEThPriceInUsd) || '🚀'}`
       : '',
   },
   {
