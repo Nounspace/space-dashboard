@@ -33,11 +33,11 @@
                   <app-button
                     class="share-modal__buttons-wrp"
                     :text="$t('home-page.public-pool-view.tweet-btn')"
-                  /> 
+                  />
                 </a>
                 <div class="share-modal__connect-wrp">
                   <a href="https://twitter.com/NounspaceTom" target="_blank">@NounspaceTom </a>
-                  <a href="https://twitter.com/nounspace" target="_blank">@nounspace</a>
+                  <a href="https://x.com/thenounspace" target="_blank">@thenounspace</a>
                 </div>
               </div>
             </div>
