@@ -77,7 +77,9 @@ export const usePool = (poolId: number) => {
 
   const fetchCurrent_stEthPrice = async (): Promise<number | undefined> => {
     try {
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=staked-ether&vs_currencies=usd')
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=staked-ether&vs_currencies=usd',
+      )
       const data = await response.json()
       return data['staked-ether'].usd as number
     } catch (error) {
@@ -121,7 +123,7 @@ export const usePool = (poolId: number) => {
       payoutStart: poolDataResponses[1].payoutStart,
       rewardDecrease: poolDataResponses[1].rewardDecrease,
       totalDeposited: poolDataResponses[0].totalDeposited,
-      stEThPriceInUsd: poolDataResponses[2],
+      stEThPriceInUsd: poolDataResponses[2] || 0,
       withdrawLockPeriod: poolDataResponses[1].withdrawLockPeriod,
       withdrawLockPeriodAfterStake:
         poolDataResponses[1].withdrawLockPeriodAfterStake,
