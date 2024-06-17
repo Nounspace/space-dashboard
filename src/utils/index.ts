@@ -21,14 +21,12 @@ const convertStEthToUsd = (stEthAmountInWei: BigNumber, priceInUsd: number): str
   try {
     const etherAmount = parseFloat(formatEther(stEthAmountInWei))
     const totalUsdUnformatted = etherAmount * priceInUsd
-    const totalUsdValue = new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(totalUsdUnformatted)
-
-    return totalUsdValue
   } catch (error) {
     console.error('Error calculating USD value:', error)
   }
