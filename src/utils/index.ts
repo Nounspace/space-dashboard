@@ -17,6 +17,23 @@ const formatEther: typeof toEther = (...params) => {
   return Number(Number(sliced).toFixed(4)).toString()
 }
 
+const convertStEthToUsd = (stEthAmountInWei: BigNumber, priceInUsd: number): string | undefined => {
+  try {
+    const etherAmount = parseFloat(formatEther(stEthAmountInWei))
+    const totalUsdUnformatted = etherAmount * priceInUsd
+    const totalUsdValue = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(totalUsdUnformatted)
+
+    return totalUsdValue
+  } catch (error) {
+    console.error('Error calculating USD value:', error)
+  }
+}
+
 export {
   formatEther,
   formatUnits,
@@ -26,4 +43,5 @@ export {
   toEther,
   Time,
   BigNumber,
+  convertStEthToUsd
 }
