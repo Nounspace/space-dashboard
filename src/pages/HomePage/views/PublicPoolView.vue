@@ -124,7 +124,7 @@ import { DEFAULT_TIME_FORMAT } from '@/const'
 import { ICON_NAMES } from '@/enums'
 import { useWeb3ProvidersStore } from '@/store'
 import type { InfoBarType, InfoDashboardType } from '@/types'
-import { convertStEthToUsd, formatEther, Time } from '@/utils'
+import { formatNumberInt, convertStEthToUsd, formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
 
@@ -159,7 +159,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   {
     title: t('home-page.public-pool-view.total-deposits-title'),
     value: poolData.value
-      ? `${formatEther(poolData.value.totalDeposited)} stETH`
+      ? `${formatNumberInt(formatEther(poolData.value.totalDeposited))} stETH`
       : '',
   },
   {
@@ -170,7 +170,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   },
   {
     title: t('home-page.public-pool-view.daily-reward-title'),
-    value: dailyReward.value ? `${formatEther(dailyReward.value)} SPACE` : '',
+    value: dailyReward.value ? `${formatNumberInt(formatEther(dailyReward.value))} SPACE` : '',
   },
   {
     title: t('home-page.public-pool-view.started-at-title'),
@@ -213,14 +213,14 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
     iconName: ICON_NAMES.ethereum,
     title: t('home-page.public-pool-view.user-deposit-title'),
     value: userPoolData.value
-      ? `${formatEther(userPoolData.value.deposited)} stETH`
+      ? `${formatNumberInt(formatEther(userPoolData.value.deposited))} stETH`
       : '',
   },
   {
     iconName: ICON_NAMES.base,
     title: t('home-page.public-pool-view.available-to-claim-title'),
     value: currentUserReward.value
-      ? `${formatEther(currentUserReward.value)} SPACE`
+      ? `${formatNumberInt(formatEther(currentUserReward.value))} SPACE`
       : '',
   },
 ])

@@ -8,11 +8,6 @@
               <h5 class="info-dashboard__header-title">
                 {{ $t('info-dashboard.header-title') }}
               </h5>
-              <app-icon
-                v-tooltip="$t('info-dashboard.header-note')"
-                class="info-dashboard__header-title-icon"
-                :name="$icons.exclamationCircle"
-              />
             </div>
             <p class="info-dashboard__header-subtitle">
               {{ $t('info-dashboard.header-subtitle') }}

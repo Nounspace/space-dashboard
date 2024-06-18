@@ -76,7 +76,7 @@
       "user-deposit-title": "Your deposit",
       "available-to-claim-title": "Available to claim",
       "claim-btn": "Claim SPACE",
-      "dashboard-description--0": "Upon withdrawal, your deposited stETH will be sent to your address. In case of claim, tokens will be minted on the Base network. This may take some time.",
+      "dashboard-description--0": "Upon withdrawal, deposited stETH will be returned to your address. $SPACE claiming opens on September 12th at 1:11pm UTC, and claimed tokens are minted on Base network.",
       "dashboard-note--0": "Note: You can withdraw your stETH {daysCount} days after deposit."
     }
   },

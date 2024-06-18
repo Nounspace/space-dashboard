@@ -9,6 +9,14 @@ const {
   parseUnits,
 } = utils
 
+const formatNumberInt = (number: string | number, locale: string = 'en-US'): string => {
+  const num = typeof number === 'string' ? parseFloat(number) : number
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(num)
+}
+
 const formatEther: typeof toEther = (...params) => {
   const str = toEther(...params)
   const indexOfDot = str.indexOf('.')
@@ -33,6 +41,7 @@ const convertStEthToUsd = (stEthAmountInWei: BigNumber, priceInUsd: number): str
 }
 
 export {
+  formatNumberInt,
   formatEther,
   formatUnits,
   hexlify,
