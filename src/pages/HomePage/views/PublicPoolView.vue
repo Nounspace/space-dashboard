@@ -188,9 +188,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
             ? userPoolData.value.lastStake
                 .add(poolData.value.withdrawLockPeriodAfterStake)
                 .toNumber()
-            : poolData.value.payoutStart
-                .add(poolData.value.withdrawLockPeriod)
-                .toNumber(),
+            : Math.floor(Date.now() / 1000) + poolData.value.withdrawLockPeriodAfterStake.toNumber(),
         ).format(DEFAULT_TIME_FORMAT)
       : '',
     note: t('home-page.public-pool-view.withdraw-at-note'),
