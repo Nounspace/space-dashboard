@@ -13,7 +13,7 @@
             <div class="share-modal__buttons-wrp">
               <div>
                 <img src="../../../assets/farcaster.png" class="share-modal__logo">
-                <a target="_blank" :href="`https://warpcast.com/~/compose?text=I%20just%20deposited%20stETH%20and%20started%20earning%20%24SPACE%20in%20the%20%2Fnounspace%20fair%20launch!%20%0A%0ATotal%20staked%3A%20${formatEther(totalDeposited)}%20stETH.%20%0A%0AJoin%20us%20in%20building%20the%20community-owned%20future%20of%20social%20on%20space.nounspace.com%21&embeds[]=https://space.nounspace.com/`">
+                <a target="_blank" :href="`https://warpcast.com/~/compose?text=I%20just%20deposited%20stETH%20and%20started%20earning%20%24SPACE%20in%20the%20%2Fnounspace%20fair%20launch!%20%0A%0ATotal%20staked%3A%20${formatEther(totalDeposited)}%20stETH.%20%0A%0AJoin%20us%20in%20building%20the%20community-owned%20future%20of%20social%20on%20space.nounspace.com&embeds[]=https://space.nounspace.com/`">
                 <app-button
                   class="share-modal__buttons-wrp"
                   :text="$t('home-page.public-pool-view.cast-btn')"
@@ -29,7 +29,7 @@
 
               <div>
                 <img src="../../../assets/x.webp" class="share-modal__logo">
-                <a target="_blank" :href="`https://twitter.com/intent/tweet?text=I%20just%20deposited%20stETH%20and%20started%20earning%20%24SPACE%20in%20the%20%40nounspace%20fair%20launch!%20%0A%0ATotal%20staked%3A%20${formatEther(totalDeposited)}%20stETH.%20%0A%0AJoin%20us%20in%20building%20the%20community-owned%20future%20of%20social%20on%20space.nounspace.com%21&embeds[]=https://space.nounspace.com/`">
+                <a target="_blank" :href="`https://twitter.com/intent/tweet?text=I%20just%20deposited%20stETH%20and%20started%20earning%20%24SPACE%20in%20%40thenounspace%20fair%20launch!%20%0A%0ATotal%20staked%3A%20${formatEther(totalDeposited)}%20stETH.%20%0A%0AJoin%20us%20in%20building%20the%20community-owned%20future%20of%20social%20on%20space.nounspace.com&embeds[]=https://space.nounspace.com/`">
                   <app-button
                     class="share-modal__buttons-wrp"
                     :text="$t('home-page.public-pool-view.tweet-btn')"
