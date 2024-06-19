@@ -40,8 +40,7 @@ export const CHART_CONFIG: Readonly<ChartConfig> = Object.freeze({
         },
         ticks: {
           color: '#ffffff',
-          callback: (val: unknown) => String(val).replace(/000$/, 'K'),
-          stepSize: 5000,
+          stepSize: 50,
         },
       },
     },
