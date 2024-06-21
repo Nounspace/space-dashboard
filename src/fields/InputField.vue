@@ -361,6 +361,10 @@ $z-index-side-nodes: 1;
   @include field-msg-icon;
 }
 
+.input-field__err-msg {
+  color: black !important;
+}
+
 .input-field__err-msg,
 .input-field__note-msg {
   @include field-error;

@@ -21,7 +21,6 @@ import { useNotifications } from '@/composables'
 import { bus, BUS_EVENTS, ErrorHandler } from '@/helpers'
 import { useWeb3ProvidersStore } from '@/store'
 import { type NotificationPayload } from '@/types'
-import { config } from '@config'
 import { ref } from 'vue'
 
 const isAppInitialized = ref(false)
