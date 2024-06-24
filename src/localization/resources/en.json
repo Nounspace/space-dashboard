@@ -65,9 +65,9 @@
       "daily-reward-title": "Daily reward",
       "started-at-title": "Started at",
       "withdraw-at-title": "Withdraw is locked until",
-      "claim-at-title": "Claim is locked until",
-      "withdraw-at-note": "Note: Withdraw is locked until the specified time",
-      "claim-at-note": "Note: Claim is locked until the specified time",
+      "claim-at-title": "Claiming begins",
+      "withdraw-at-note": "You can withdraw your stETH 7 days after depositing. When you withdraw, you stop earning $SPACE.",
+      "claim-at-note": "Beginning at the time specified, return to this page any time to claim $SPACE",
       "deposit-btn": "Deposit stETH",
       "tweet-btn": "Tweet",
       "cast-btn": "Cast",
@@ -76,8 +76,8 @@
       "user-deposit-title": "Your deposit",
       "available-to-claim-title": "Available to claim",
       "claim-btn": "Claim SPACE",
-      "dashboard-description--0": "Upon withdrawal, deposited stETH will be returned to your address. $SPACE claiming opens on September 12th at 1:11pm UTC, and claimed tokens are minted on Base network.",
-      "dashboard-note--0": "Note: You can withdraw your stETH {daysCount} days after deposit."
+      "dashboard-description--0": "Upon withdrawal, deposited stETH will be returned to your address on Ethereum Mainnet.",
+      "dashboard-note--0": "Note: $SPACE claiming opens on September 12th at 1:11pm UTC, and claimed tokens are minted on Base Network."
     }
   },
   "info-dashboard": {
@@ -117,7 +117,7 @@
   "zero-pool-description": {
     "list": {
       "1": "Deposit stETH on Ethereum to earn $SPACE",
-      "2": "stETH can be withdrawn after day 7",
+      "2": "Contribute your yield to the $SPACE LP",
       "3": "",
       "4": "Claim $SPACE on Base starting Sept 12th"
     },
