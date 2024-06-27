@@ -1,27 +1,12 @@
 <template>
   <div class="app-logo">
-    <router-link
-      class="app-logo__link"
-      :to="{ name: $routes.app }"
-      @click="onClick"
-    >
+    <a class="app-logo__link" href="https://www.nounspace.com/">
       <svg class="app-logo__img">
         <use href="/branding/logo.svg#logo" />
       </svg>
-    </router-link>
+    </a>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ROUTE_NAMES } from '@/enums'
-import { useRoute } from '@/router'
-
-const route = useRoute()
-
-const onClick = () => {
-  if (route.name === ROUTE_NAMES.appCommunity) window.location.reload()
-}
-</script>
 
 <style lang="scss" scoped>
 .app-logo__img {
