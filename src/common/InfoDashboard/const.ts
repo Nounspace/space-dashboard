@@ -13,15 +13,10 @@ export const CHART_CONFIG: Readonly<ChartConfig> = Object.freeze({
           dash: [2],
         },
         grid: {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          color: (ctx: any) => {
-            return ctx.index === 0 || (ctx.index + 1) % 5 === 0
-              ? '#b1b1b1'
-              : '#4f4f4f'
-          },
+          display: false,
         },
         ticks: {
-          color: '#ffffff',
+          color: '#4f4f4f',
           autoSkip: false,
           maxRotation: 0,
           callback: function (value: unknown, idx: number) {
@@ -39,7 +34,7 @@ export const CHART_CONFIG: Readonly<ChartConfig> = Object.freeze({
           color: '#4f4f4f',
         },
         ticks: {
-          color: '#ffffff',
+          color: '#4f4f4f',
           stepSize: 50,
         },
       },
@@ -51,7 +46,7 @@ export const CHART_CONFIG: Readonly<ChartConfig> = Object.freeze({
         backgroundColor: 'transparent',
         borderColor: '#00ff00',
         pointBackgroundColor: '#00ff00',
-        pointRadius: 4,
+        pointRadius: 3,
         data: [],
       },
     ],
