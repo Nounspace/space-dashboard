@@ -309,7 +309,7 @@ $button-transition: var(--transition-duration-fast)
   }
 
   &--primary {
-    $bg: var(--primary-main);
+    $bg: #3263e9;
 
     --app-button-filled-bg: #{$bg};
     --app-button-filled-bg-hover: #{$bg};
@@ -317,10 +317,10 @@ $button-transition: var(--transition-duration-fast)
     --app-button-filled-bg-active: #{$bg};
     --app-button-filled-bg-disabled: var(--disable-primary-dark);
 
-    --app-button-filled-text: var(--text-primary-dark);
-    --app-button-filled-text-hover: var(--text-primary-dark);
-    --app-button-filled-text-focused: var(--text-primary-dark);
-    --app-button-filled-text-active: var(--text-primary-dark);
+    --app-button-filled-text: #ffffff;
+    --app-button-filled-text-hover: #ffffff;
+    --app-button-filled-text-focused: #ffffff;
+    --app-button-filled-text-active: #ffffff;
     --app-button-filled-text-disabled: var(--disable-primary-main);
 
     --app-button-filled-border: #{toRem(2)} solid transparent;
@@ -329,26 +329,26 @@ $button-transition: var(--transition-duration-fast)
     --app-button-filled-border-active: #{toRem(2)} solid var(--primary-main);
     --app-button-filled-border-disabled: #{toRem(2)} solid transparent;
 
-    --app-button-flat-text: var(--primary-main);
-    --app-button-flat-text-hover: var(--primary-main);
-    --app-button-flat-text-focused: var(--primary-main);
-    --app-button-flat-text-active: var(--primary-main);
+    --app-button-flat-text: #ffffff;
+    --app-button-flat-text-hover: #ffffff;
+    --app-button-flat-text-focused: #ffffff;
+    --app-button-flat-text-active: #ffffff;
 
     --app-button-flat-border: #{toRem(1)} solid var(--secondary-light);
     --app-button-flat-border-hover: var(--app-button-flat-border);
     --app-button-flat-border-focused: var(--app-button-flat-border);
     --app-button-flat-border-active: var(--app-button-flat-border);
 
-    --app-button-link-text: var(--primary-main);
-    --app-button-link-text-hover: var(--primary-main);
-    --app-button-link-text-focused: var(--primary-main);
-    --app-button-link-text-active: var(--primary-main);
+    --app-button-link-text: #ffffff;
+    --app-button-link-text-hover: #ffffff;
+    --app-button-link-text-focused: #ffffff;
+    --app-button-link-text-active: #ffffff;
     --app-button-link-text-disabled: var(--disable-secondary-main);
 
     --app-button-link-underline: transparent;
-    --app-button-link-underline-hover: var(--primary-main);
-    --app-button-link-underline-focus: var(--primary-main);
-    --app-button-link-underline-active: var(--primary-main);
+    --app-button-link-underline-hover: #ffffff;
+    --app-button-link-underline-focus: #ffffff;
+    --app-button-link-underline-active: #ffffff;
 
     &.app-button--scheme-filled {
       $box-shadow-hover: 0 toRem(4) toRem(24) rgba(#ffffff, 0.25);
@@ -372,10 +372,10 @@ $button-transition: var(--transition-duration-fast)
     --app-button-filled-bg-active: var(--background-secondary-main);
     --app-button-filled-bg-disabled: var(--disable-secondary-dark);
 
-    --app-button-filled-text: var(--text-secondary-light);
-    --app-button-filled-text-hover: var(--text-secondary-light);
-    --app-button-filled-text-focused: var(--text-secondary-light);
-    --app-button-filled-text-active: var(--text-secondary-light);
+    --app-button-filled-text: var(--text-secondary-dark);
+    --app-button-filled-text-hover: var(--text-secondary-dark);
+    --app-button-filled-text-focused: var(--text-secondary-dark);
+    --app-button-filled-text-active: var(--text-secondary-dark);
     --app-button-filled-text-disabled: var(--disable-secondary-main);
 
     --app-button-filled-border: #{toRem(1)} solid transparent;
@@ -384,10 +384,10 @@ $button-transition: var(--transition-duration-fast)
     --app-button-filled-border-active: #{toRem(1)} solid var(--primary-main);
     --app-button-filled-border-disabled: #{toRem(1)} solid transparent;
 
-    --app-button-flat-text: rgba(255, 255, 255, 0.8);
-    --app-button-flat-text-hover: var(--primary-main);
-    --app-button-flat-text-focused: var(--primary-main);
-    --app-button-flat-text-active: var(--primary-main);
+    --app-button-flat-text: var(--text-secondary-dark);
+    --app-button-flat-text-hover: var(--text-secondary-dark);
+    --app-button-flat-text-focused: var(--text-secondary-dark);
+    --app-button-flat-text-active: var(--text-secondary-dark);
 
     --app-button-flat-border: #{toRem(1)} solid #494949;
     --app-button-flat-border-hover: #{toRem(1)} solid var(--primary-main);
@@ -608,7 +608,7 @@ $button-transition: var(--transition-duration-fast)
 }
 
 .app-button__text {
-  color: var(--text-primary-dark);
+  color: inherit;
   font: inherit;
   pointer-events: none;
   word-break: break-all;

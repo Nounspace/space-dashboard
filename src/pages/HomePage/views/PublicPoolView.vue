@@ -18,6 +18,7 @@
               <div class="public-pool-view__bar-buttons-wrp">
                 <app-button
                   class="public-pool-view__bar-button"
+                  color="primary"
                   :text="$t('home-page.public-pool-view.deposit-btn')"
                   :is-loading="isInitializing"
                   :disabled="isDepositDisabled"
@@ -77,6 +78,7 @@
         />
         <app-button
           class="public-pool-view__dashboard-button"
+          color="primary"
           :text="$t('home-page.public-pool-view.claim-btn')"
           :is-loading="isInitializing || isUserDataUpdating"
           :disabled="isClaimDisabled"
