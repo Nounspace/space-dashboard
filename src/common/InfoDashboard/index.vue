@@ -13,7 +13,6 @@
               {{ $t('info-dashboard.header-subtitle') }}
             </p>
           </div>
-          <select-field v-model="selectedMonth" :value-options="monthOptions" />
         </div>
         <div class="info-dashboard__app-chart-wrp">
           <app-chart
@@ -63,15 +62,9 @@
 
 <script lang="ts" setup>
 import { useI18n } from '@/composables'
-import { SelectField } from '@/fields'
 import { ErrorHandler } from '@/helpers'
 import { useWeb3ProvidersStore } from '@/store'
-import type {
-  ChartConfig,
-  Erc1967ProxyType,
-  FieldOption,
-  InfoDashboardType,
-} from '@/types'
+import type { ChartConfig, Erc1967ProxyType, InfoDashboardType } from '@/types'
 import { Time, formatEther } from '@/utils'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { CHART_CONFIG } from './const'
@@ -97,36 +90,26 @@ const { t } = useI18n()
 
 const web3ProvidersStore = useWeb3ProvidersStore()
 
-const monthOptions: FieldOption<number>[] = [
-  {
-    title: t('months.june'),
-    value: 6,
-  },
-]
-
-const selectedMonth = ref(monthOptions[monthOptions.length - 1])
-
 const isChartDataUpdating = ref(false)
 
 const chartConfig = reactive<ChartConfig>({ ...CHART_CONFIG })
 
-const updateChartData = async (month: number) => {
-  if (!props.poolData) throw new Error('poolData unavailable')
+const ONE_DAY_TIMESTAMP = 24 * 60 * 60
 
+const updateChartData = async () => {
   isChartDataUpdating.value = true
 
   try {
-    const chartData = await getChartData(
-      props.poolId,
-      props.poolData.payoutStart,
-      month,
-    )
+    if (!props.poolData) throw new Error('poolData unavailable')
 
-    const monthTime = new Time(month.toString(), 'M')
+    const chartData = await getChartData(props.poolId, props.poolData.payoutStart)
 
-    chartConfig.data.labels = Object.keys(chartData).map(
-      day => `${monthTime.format('MMMM')} ${day}`,
-    )
+    chartConfig.data.labels = Object.keys(chartData).map(key => {
+      const timestamp = (Number(key) + 1) * ONE_DAY_TIMESTAMP
+      const date = new Date(timestamp * 1000)
+      return new Time(date).format('MMMM D')
+    })
+
     chartConfig.data.datasets[0].data = Object.values(chartData).map(amount =>
       Math.ceil(Number(formatEther(amount))),
     )
@@ -138,13 +121,22 @@ const updateChartData = async (month: number) => {
 }
 
 onMounted(() => {
-  if (props.poolData) updateChartData(selectedMonth.value.value)
+  if (props.poolData) {
+    updateChartData()
+  }
 })
 
-watch([selectedMonth, () => props.poolData], async ([newSelectedMonth]) => {
-  await updateChartData(newSelectedMonth.value)
-})
+watch(
+  () => props.poolData,
+  (newPoolData) => {
+    if (newPoolData) {
+      updateChartData()
+    }
+  }
+)
 </script>
+
+
 
 <style lang="scss" scoped>
 .info-dashboard {
