@@ -17,12 +17,12 @@ export const CHART_CONFIG: Readonly<ChartConfig> = Object.freeze({
         },
         ticks: {
           color: '#4f4f4f',
-          autoSkip: false,
+          autoSkip: true,
           maxRotation: 0,
-          callback: function (value: unknown, idx: number) {
+          callback: function (value: unknown, idx: number, values: any[]) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const label = (this as any).getLabelForValue(value)
-            return idx === 0 || (idx + 1) % 5 === 0 ? label : ''
+            return label
           },
         },
       },
