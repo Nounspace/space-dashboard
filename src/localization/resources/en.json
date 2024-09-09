@@ -39,21 +39,25 @@
   },
   "home-page": {
     "capital-tab": "Capital Providers",
+    "users-tab": "Users",
+    "developers-tab": "Developers",
     "community-tab": "Community",
-    "coders-tab": "Coders",
-    "compute-tab": "Compute",
+    "team-tab": "Team",
     "private-pool-view": {
-      "info-bar": {
-        "title--1": "Community",
-        "subtitle--1": "Group 2",
-        "description--1": "The people who create interfaces and tools for the Morpheus ecosystem are also part of its community."
-      },
+
       "daily-reward-title": "Daily reward",
       "started-at-title": "Started at",
       "claim-at-title": "Claim is locked until",
       "claim-at-note": "Note: Claim is locked until the specified time",
       "available-to-claim-title": "Available to claim",
       "claim-btn": "Claim SPACE"
+    },
+    "community-view": {
+      "text-bar": {
+        "title--1": "Community",
+        "subtitle--1": "20% of $SPACE emissions are allocated to a community treasury governed by $SPACE holders",
+        "description--1": "$SPACE holders have the autonomous power to allocate the treasury toward any txs or initiatives they propose and pass via governance. The nounspace Community Treasury has admin power on both the $SPACE Distribution contract as well as the User and Developer pools. While Nounspace governance is powered by SnapShot and occurs offchain (no gas cost to vote), the treasury is powered by Safe and oSnap. oSnap, powered by Uma, enables $SPACE holders to execute transactions included in SnapShot proposals autonomously. At launch, the Based Space Foundation will manage the treasury via a 3/6 multisig, but the community has the power to update or remove the multisig autonomously at any point via governance."
+      }
     },
     "public-pool-view": {
       "info-bar": {
@@ -110,6 +114,11 @@
     "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
   },
   "withdraw-modal": {
+    "title": "Withdraw Funds",
+    "subtitle": "Specify the amount to be withdrawn. The funds will be sent to your wallet.",
+    "available-to-withdraw-title": "Available to withdraw"
+  },
+  "claim-space-modal": {
     "title": "Withdraw Funds",
     "subtitle": "Specify the amount to be withdrawn. The funds will be sent to your wallet.",
     "available-to-withdraw-title": "Available to withdraw"
