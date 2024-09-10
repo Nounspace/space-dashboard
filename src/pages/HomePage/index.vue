@@ -195,6 +195,12 @@ const viewClass = computed(() => {
     grid-template-columns: 1fr;
     grid-gap: toRem(28);
   }
+
+  @media (min-width: 1023px) and (max-width: 1280px) {
+    grid-template-columns: 1fr;
+    grid-gap: toRem(16);
+  }
+
 }
 
 .home-page .community-page__view {

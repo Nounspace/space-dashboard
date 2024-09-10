@@ -2,25 +2,6 @@
   <div class="info-dashboard" :class="{ 'info-dashboard--loading': isLoading }">
     <transition name="fade" mode="out-in">
       <div v-if="web3ProvidersStore.isConnected" class="info-dashboard__wrp">
-        <div class="info-dashboard__header">
-          <div>
-            <div class="info-dashboard__header-title-wrp">
-              <h5 class="info-dashboard__header-title">
-                {{ $t('info-dashboard.header-title') }}
-              </h5>
-            </div>
-            <p class="info-dashboard__header-subtitle">
-              {{ $t('info-dashboard.header-subtitle') }}
-            </p>
-          </div>
-        </div>
-        <div class="info-dashboard__app-chart-wrp">
-          <app-chart
-            class="info-dashboard__app-chart"
-            :config="chartConfig"
-            :is-loading="isLoading || isChartDataUpdating"
-          />
-        </div>
         <ul v-if="indicators?.length" class="info-dashboard__indicators">
           <li
             v-for="(indicator, idx) in indicators"
@@ -140,17 +121,10 @@ watch(
 
 <style lang="scss" scoped>
 .info-dashboard {
-  padding: toRem(24) toRem(20) toRem(30);
-  height: max-content;
-  border: toRem(1) solid;
-  border-image-slice: 1;
-  border-image-source: linear-gradient(
-    -84deg,
-    rgba(255, 255, 255, 0.48),
-    rgba(255, 255, 255, 0.08)
-  );
-  background: #c0c0c0;
   border-radius: 6px;
+  border: 1px solid #eeeeee;
+  padding: 20px;
+  height: max-content;
 
   @include respond-to(medium) {
     padding: toRem(20) toRem(16) toRem(22);
@@ -214,12 +188,13 @@ watch(
 }
 
 .info-dashboard__indicators {
-  margin-top: toRem(16);
   width: 100%;
   display: grid;
   grid-gap: toRem(8);
-  padding-top: toRem(24);
+  padding-top: toRem(8);
+  padding-bottom: toRem(8);
   border-top: toRem(2) solid #494949;
+  border-bottom: toRem(2) solid #494949;
 }
 
 .info-dashboard__indicator {
