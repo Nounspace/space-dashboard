@@ -85,6 +85,21 @@ const updateTab = (tab: Tab) => {
 
   @include respond-to(medium) {
     padding: toRem(12) toRem(16);
+
+    &.router-link-active,
+    &--active {
+      &:after {
+        bottom: 5px;
+      }
+    }
+  }
+
+  @include respond-to(small) {
+    font-size: 1rem !important;
+  }
+
+  @include respond-to(xsmall) {
+    font-size: 0.9rem !important;
   }
 }
 </style>
