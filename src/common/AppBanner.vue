@@ -30,7 +30,7 @@
 }
 
 .app-banner__btn {
-  background: url('/branding/woods.png') no-repeat center center;
+  background: url('/branding/space-banner.png') no-repeat center center;
   background-size: cover;
   font-size: 1.5rem;
   font-weight: 700;
