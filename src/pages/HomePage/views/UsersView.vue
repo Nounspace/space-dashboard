@@ -60,8 +60,8 @@ import { ref, computed } from 'vue'
 const isClaimSpaceModalShown = ref(false)
 const isMintNogsModalShown = ref(false)
 
-const dailyTipAllowance = 12345.21
-const spaceTipsEarned = 1234567.23
+const dailyTipAllowance = null
+const spaceTipsEarned = null
 
 const formattedDailyTipAllowance = computed(() => {
   return new Intl.NumberFormat().format(dailyTipAllowance)
