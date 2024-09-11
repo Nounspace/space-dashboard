@@ -16,28 +16,28 @@
     <div class="text-bar">
       <p class="text-bar-title">Meet the Cadets</p>
       <div class="cadet-list">
+        <a href="https://www.nounspace.com/s/nounspacetom" target="_blank" class="cadet-link">
+          <img src="../../../assets/cadets/Tom.gif" alt="Tom" class="cadet-img" />
+          <span class="cadet">Tom</span>
+          <span class="cadet-title">Former CEO</span>
+        </a>
         <a href="https://www.nounspace.com/s/willywonka.eth" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/willy.png" alt="Willy" class="cadet-img" />
+          <img src="../../../assets/cadets/willy.gif" alt="Willy" class="cadet-img" />
           <span class="cadet">Willy</span>
           <span class="cadet-title">Product</span>
         </a>
         <a href="https://www.nounspace.com/s/realitycrafter.eth" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/jesse.png" alt="Jesse" class="cadet-img" />
+          <img src="../../../assets/cadets/Jesse.gif" alt="Jesse" class="cadet-img" />
           <span class="cadet">Jesse</span>
           <span class="cadet-title">Engineering</span>
         </a>
         <a href="https://www.nounspace.com/s/skateboard" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/vlad.png" alt="Vlad" class="cadet-img" />
+          <img src="../../../assets/cadets/Vlad.gif" alt="Vlad" class="cadet-img" />
           <span class="cadet">Vlad</span>
           <span class="cadet-title">Engineering</span>
         </a>
-        <a href="https://www.nounspace.com/s/hypocrisy" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/hypocrisy.png" alt="Hypocrisy" class="cadet-img" />
-          <span class="cadet">Hypocrisy</span>
-          <span class="cadet-title">Engineering</span>
-        </a>
         <a href="https://www.nounspace.com/s/ryannorton" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/ryan.png" alt="Ryan" class="cadet-img" />
+          <img src="../../../assets/cadets/Ryan3.gif" alt="Ryan" class="cadet-img" />
           <span class="cadet">Ryan</span>
           <span class="cadet-title">Engineering</span>
         </a>
