@@ -54,10 +54,14 @@ import ERC20ABI from '@/abi/ERC20.json';
 import ERC1967ProxyABI from '@/abi/ERC1967Proxy.json';
 
 
-// Select the network configuration
+// Select the network configuration for Mainnet
 const networkConfig = config.networks[NETWORK_IDS.mainnet];
 const provider = networkConfig.provider;
 
+// Select Base Network provider
+const extendedChainProvider = config.networks[NETWORK_IDS.mainnet].extendedChainProvider
+
+// ERC1967 Proxy contract
 const erc1967ProxyAddress = config.ERC1967_PROXY_MAINNET_CONTRACT_ADDRESS;
 const erc1967ProxyContract = new Contract(erc1967ProxyAddress, ERC1967ProxyABI, provider);
 
@@ -72,11 +76,22 @@ async function getEthBalance(address: string): Promise<string> {
   }
 }
 
-async function getTokenBalance(address: string, tokenAddress: string): Promise<string> {
+async function getTokenBalance(address: string, tokenAddress: string, tokenDecimals: number): Promise<string> {
   try {
     const tokenContract = new Contract(tokenAddress, ERC20ABI, provider);
     const balance = await tokenContract.balanceOf(address);
-    return utils.formatUnits(balance, 6); // USDC has 6 decimal places
+    return utils.formatUnits(balance, tokenDecimals);
+  } catch (error) {
+    console.error('Error fetching token balance:', error);
+    throw error;
+  }
+}
+
+async function getBaseTokenBalance(address: string, tokenAddress: string, tokenDecimals: number): Promise<string> {
+  try {
+    const tokenContract = new Contract(tokenAddress, ERC20ABI, extendedChainProvider);
+    const balance = await tokenContract.balanceOf(address);
+    return utils.formatUnits(balance, tokenDecimals);
   } catch (error) {
     console.error('Error fetching token balance:', error);
     throw error;
@@ -93,37 +108,33 @@ async function getClaimableSpace(address: string): Promise<string> {
     throw error;
   }
 }
-
+// SPACE Token Address on BASE Network
+const spaceAddress = '0x48C6740BcF807d6C47C864FaEEA15Ed4dA3910Ab';
+// Developer Treasury Address on Ethereum Mainnet
 const treasuryAddress = '0x36677C978D6e4Cf617cb67cb40A40dAB96D044Af';
+// Developer Treasury Address on BASE Network
+const treasuryBaseAddress = '0x0093d7F7Ef2B7c0ad7633b4955641FCf23743a8d';
 
-getEthBalance(treasuryAddress).then(balance => {
-  console.log(`Balance of ${treasuryAddress}: ${balance} ETH`);
-});
-
-const usdcAddress = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
-getTokenBalance(treasuryAddress, usdcAddress).then(balance => {
-  console.log(`USDC Balance of ${treasuryAddress}: ${balance} USDC`);
-});
-
-// Pull from BASE L2 network and address
-// const treasuryBaseAddress = '0x0093d7F7Ef2B7c0ad7633b4955641FCf23743a8d';
-// const spaceAddress = '0x48C6740BcF807d6C47C864FaEEA15Ed4dA3910Ab';
-// getTokenBalance(treasuryBaseAddress, spaceAddress).then(balance => {
-//   console.log(`SPACE Balance of ${treasuryBaseAddress}: ${balance} SPACE`);
-// });
-
+const treasuryBalance = ref<string | null>(null);
 const currentUserReward = ref<string | null>(null);
 
 onMounted(async () => {
   try {
     currentUserReward.value = await getClaimableSpace(treasuryAddress);
+    treasuryBalance.value = await getBaseTokenBalance(treasuryBaseAddress, spaceAddress, 18);
   } catch (error) {
     console.error('Error fetching claimable SPACE:', error);
   }
 });
 
-const formattedTreasuryBalance = '-' // Example value, replace with actual data
+const formattedTreasuryBalance = computed(() => {
+  return treasuryBalance.value
+    ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(treasuryBalance.value))
+    : '0.00';
+});
+
 const formattedSpaceValue = '-' // Example value, replace with actual data
+
 const formattedCurrentUserReward = computed(() => {
   return currentUserReward.value
     ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(currentUserReward.value))
