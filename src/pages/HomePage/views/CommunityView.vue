@@ -4,17 +4,13 @@
       <div class="text-bar">
         <p class="text-bar-title">Community</p>
         <div class="text-bar__subtitle-wrp">
-          <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to a community treasury governed by $SPACE
-            holders</p>
+          <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to the nounspace DAO Treasury</p>
         </div>
         <div class="text-bar__description-wrp">
-          <p class="text-bar-description">$SPACE holders have the autonomous power to allocate the treasury toward any
-            txs or initiatives they propose and pass via governance. The nounspace Community Treasury has admin power on
-            both the $SPACE Distribution contract as well as the User and Developer pools. While Nounspace governance is
-            powered by SnapShot and occurs offchain (no gas cost to vote), the treasury is powered by Safe and oSnap.
-            oSnap, powered by Uma, enables $SPACE holders to execute transactions included in SnapShot proposals
-            autonomously. At launch, the Based Space Foundation will manage the treasury via a 3/6 multisig, but the
-            community has the power to update or remove the multisig autonomously at any point via governance.</p>
+          <p class="text-bar-description">$SPACE holders are empowered to allocate the DAO Treasury via governance. The DAO Treasury has admin power on
+            both the $SPACE Distribution contract as well as the User and Developer pools. oSnap, powered by UMA, enables $SPACE holders to execute transactions included in SnapShot proposals
+            autonomously. Initially the Based Space Foundation will manage the treasury via a 3/6 multisig, but the
+            community has the power to update or remove the multisig at any point via governance.</p>
         </div>
       </div>
       <div class="community-view__container">
