@@ -7,12 +7,9 @@
       </div>
       <div class="text-bar__description-wrp">
         <p class="text-bar-description">The Based Spaced Foundation is an independent organization dedicated to
-          supporting the open source development, growth, and decentralization of Nounspace. Because Nounspace is
-          entirely open source, the Based Space Foundation has no ownership over the Nounspace brand or code, nor does
-          it have any special powers. The Based Space Foundation is responsible for the development of Nounspace so far,
-          and intends to continue developing Nounspace in collaboration with the community indefinitely. However, the
-          Based Space Foundation strategically designed Nounspace to be independent itself, and to be in a position
-          where the community can carry Nounspace forward in any direction they choose, with or without the Foundation.
+          supporting the open source development, growth, and decentralization of nounspace, and has no ownership over nounspace's brand or code. The Foundation is responsible for the development of nounspace so far,
+          and intends to continue developing in collaboration with the community. However, the
+          Based Space Foundation intentionally designed nounspace to be independent and empowered to evolve in any direction they choose, with or without the Foundation.
         </p>
       </div>
     </div>
