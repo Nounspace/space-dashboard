@@ -9,7 +9,7 @@
         <p class="text-bar-description">The Based Spaced Foundation is an independent organization dedicated to
           supporting the open source development, growth, and decentralization of nounspace, and has no ownership over nounspace's brand or code. The Foundation is responsible for the development of nounspace so far,
           and intends to continue developing in collaboration with the community. However, the
-          Based Space Foundation intentionally designed nounspace to be independent and empowered to evolve in any direction they choose, with or without the Foundation.
+          Based Space Foundation intentionally designed nounspace to be independent and empowered to evolve in any direction the community chooses, with or without the Foundation.
         </p>
       </div>
     </div>
