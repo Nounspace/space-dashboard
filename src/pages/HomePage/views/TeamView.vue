@@ -22,7 +22,7 @@
           <span class="cadet-title">Former CEO</span>
         </a>
         <a href="https://www.nounspace.com/s/willywonka.eth" target="_blank" class="cadet-link">
-          <img src="../../../assets/cadets/willy.gif" alt="Willy" class="cadet-img" />
+          <img src="../../../assets/cadets/Willy.gif" alt="Willy" class="cadet-img" />
           <span class="cadet">Willy</span>
           <span class="cadet-title">Product</span>
         </a>
