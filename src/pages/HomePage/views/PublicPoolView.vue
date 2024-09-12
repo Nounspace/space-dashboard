@@ -1,71 +1,11 @@
 <template>
   <div class="public-pool-view">
-    <div>
-      <info-bar
-        status="public"
-        :indicators="barIndicators"
-        :is-loading="isInitializing"
-      >
-        <template v-if="poolId === 0" #description>
-          <zero-pool-description />
-        </template>
-        <template #default>
-          <transition name="fade">
-            <div
-              v-if="web3ProvidersStore.isConnected"
-              class="public-pool-view__bar-slot-wrp"
-            >
-              <div class="public-pool-view__bar-buttons-wrp">
-                <app-button
-                  class="public-pool-view__bar-button"
-                  color="primary"
-                  :text="$t('home-page.public-pool-view.deposit-btn')"
-                  :is-loading="isInitializing"
-                  :disabled="isDepositDisabled"
-                  @click="isDepositModalShown = true"
-                />
-                <app-button
-                  class="public-pool-view__bar-button"
-                  scheme="link"
-                  color="none"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  :text="$t('home-page.public-pool-view.external-link')"
-                  :icon-right="$icons.externalLink"
-                  :is-loading="isInitializing"
-                  :href="$config.HOW_GET_STETH_URL"
-                />
-              </div>
-              <deposit-modal
-                v-if="!isDepositDisabled && poolData?.minimalStake"
-                v-model:is-shown="isDepositModalShown"
-                :pool-id="poolId"
-                :min-stake="poolData.minimalStake"
-                @share="isShareModalShown = true; isDepositModalShown = false"
-              />
-              <share-modal
-                v-if="userPoolData && poolData"
-                v-model:is-shown="isShareModalShown"
-                :pool-data="poolData"
-                :available-amount="userPoolData.deposited"
-              />
-            </div>
-          </transition>
-        </template>
-      </info-bar>
-      <iframe
-      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
-      width="640"
-      height="360"
-      allow="autoplay; fullscreen"
-      class="video-iframe"
-      ></iframe>
-    </div>
     <info-dashboard
       :pool-id="poolId"
       :pool-data="poolData"
       :indicators="dashboardIndicators"
       :is-loading="isInitializing || isUserDataUpdating"
+      class="public-pool-view__dashboard"
     >
       <div class="public-pool-view__dashboard-buttons-wrp">
         <app-button
@@ -108,8 +48,70 @@
         :pool-id="poolId"
       />
     </info-dashboard>
+
+    <info-bar
+      status="public"
+      :indicators="barIndicators"
+      :is-loading="isInitializing"
+      class="public-pool-view__bar"
+    >
+      <template v-if="poolId === 0" #description>
+        <zero-pool-description />
+      </template>
+      <template #default>
+        <transition name="fade">
+          <div
+            v-if="web3ProvidersStore.isConnected"
+            class="public-pool-view__bar-slot-wrp"
+          >
+            <div class="public-pool-view__bar-buttons-wrp">
+              <app-button
+                class="public-pool-view__bar-button"
+                color="primary"
+                :text="$t('home-page.public-pool-view.deposit-btn')"
+                :is-loading="isInitializing"
+                :disabled="isDepositDisabled"
+                @click="isDepositModalShown = true"
+              />
+              <app-button
+                class="public-pool-view__bar-button"
+                scheme="link"
+                color="none"
+                target="_blank"
+                rel="noopener noreferrer"
+                :text="$t('home-page.public-pool-view.external-link')"
+                :icon-right="$icons.externalLink"
+                :is-loading="isInitializing"
+                :href="$config.HOW_GET_STETH_URL"
+              />
+            </div>
+            <deposit-modal
+              v-if="!isDepositDisabled && poolData?.minimalStake"
+              v-model:is-shown="isDepositModalShown"
+              :pool-id="poolId"
+              :min-stake="poolData.minimalStake"
+              @share="isShareModalShown = true; isDepositModalShown = false"
+            />
+            <share-modal
+              v-if="userPoolData && poolData"
+              v-model:is-shown="isShareModalShown"
+              :pool-data="poolData"
+              :available-amount="userPoolData.deposited"
+            />
+          </div>
+        </transition>
+      </template>
+    </info-bar>
+    <iframe
+      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
+      width="640"
+      height="360"
+      allow="autoplay; fullscreen"
+      class="video-iframe"
+    ></iframe>
   </div>
 </template>
+
 
 <script lang="ts" setup>
 import {
@@ -227,18 +229,55 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 </script>
 
 <style lang="scss" scoped>
+.public-pool-view {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-column-gap: 24px;
+    grid-row-gap: 24px;
+    align-items: start;
+  }
+}
+
+.public-pool-view__dashboard {
+  order: 1;
+  @media (min-width: 1280px) {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+.public-pool-view__bar {
+  order: 2;
+  @media (min-width: 1280px) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
 .video-iframe {
-  margin-top: 1.875rem;
+  order: 3;
   width: 100%;
-  max-width: 640px;
   height: auto;
   min-height: 360px;
   border-radius: 8px;
 
+  @media (min-width: 1280px) {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    margin-top: -10.5rem;
+    max-width: none;
+    width: 100%;
+  }
+
   @include respond-to(medium) {
     aspect-ratio: 16/9;
     min-height: auto;
-    max-width: none;
   }
 }
 .public-pool-view__bar-slot-wrp {
@@ -273,16 +312,12 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
 .public-pool-view__dashboard-buttons-wrp {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: toRem(16);
-
-  @include respond-to(medium) {
-    grid-gap: toRem(12);
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.public-pool-view .public-pool-view__dashboard-button {
+.public-pool-view .public-ppool-view__dashboard-button {
   width: 100%;
 }
 

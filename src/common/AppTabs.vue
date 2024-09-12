@@ -36,33 +36,38 @@ const updateTab = (tab: Tab) => {
 
 <style lang="scss" scoped>
 .app-tabs {
-  display: grid;
-  grid-auto-columns: 1fr;
-  grid-auto-flow: column;
-  grid-gap: toRem(24);
-
-  @include respond-to(medium) {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-flow: row;
-    grid-gap: toRem(12);
-  }
+  display: flex;
+  justify-content: center;
 }
 
 .app-tabs__btn {
   $color: #444b58;
-
   display: grid;
   place-items: center;
   padding: toRem(16) toRem(24);
-  // border: toRem(1) solid #494949;
   color: $color;
   cursor: pointer;
   transition: var(--transition-duration-fast) var(--transition-timing-default);
+  position: relative;
+  font-size: 1.15rem !important;
+  text-align: center;
 
   &.router-link-active,
   &--active {
-    border-color: var(--primary-main);
-    color: var(--primary-main);
+    font-weight: bold;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 4px;
+      background-color: #00ff00;
+      border-radius: 2px;
+    }
 
     @include body-2-semi-bold;
   }
@@ -71,8 +76,8 @@ const updateTab = (tab: Tab) => {
     &:not([disabled]):hover,
     &:not([disabled]):focus,
     &:not([disabled]):active {
-      border-color: var(--primary-main);
-      color: var(--primary-main);
+      border-color: #00D318;
+      color: #00D318;
     }
   }
 
@@ -80,6 +85,21 @@ const updateTab = (tab: Tab) => {
 
   @include respond-to(medium) {
     padding: toRem(12) toRem(16);
+
+    &.router-link-active,
+    &--active {
+      &:after {
+        bottom: 5px;
+      }
+    }
+  }
+
+  @include respond-to(small) {
+    font-size: 1rem !important;
+  }
+
+  @include respond-to(xsmall) {
+    font-size: 0.9rem !important;
   }
 }
 </style>

@@ -1,15 +1,15 @@
 <template>
   <div class="app-banner">
-    <a href="https://paragraph.xyz/@nounspace/space-fair-launch" target="_blank">
+    <router-link :to="{ name: 'app-mainnet-users' }">
       <div class="app-banner__btn">
         <p class="app-banner__text">
-          $SPACE Fair Launch is LIVE!
-          <a href="https://paragraph.xyz/@nounspace/space-fair-launch" target="_blank" class="app-banner-inline-link">
-            Read the full announcement 🚀
-          </a>
+          $SPACE Drop 0 is LIVE!
+          <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
+            Claim now 🚀
+          </router-link>
         </p>
       </div>
-    </a>
+    </router-link>
   </div>
 </template>
 
@@ -30,7 +30,7 @@
 }
 
 .app-banner__btn {
-  background: url('/branding/woods.png') no-repeat center center;
+  background: url('/branding/space-banner.png') no-repeat center center;
   background-size: cover;
   font-size: 1.5rem;
   font-weight: 700;

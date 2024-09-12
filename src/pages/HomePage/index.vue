@@ -1,8 +1,9 @@
 <template>
   <main class="home-page">
     <div class="home-page__content-wrp">
-      <app-banner />
-      <router-view v-slot="{ Component }" class="home-page__view">
+      <app-tabs :tabs="tabs" />
+      <app-banner v-if="viewClass === 'capital-page__view'" />
+      <router-view v-slot="{ Component }" :class="viewClass">
         <keep-alive>
           <component :is="Component" :key="$route.name" />
         </keep-alive>
@@ -20,9 +21,11 @@ import { useWeb3ProvidersStore } from '@/store'
 import { type Tab } from '@/types'
 import { config } from '@config'
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const { t } = useI18n()
 const web3ProvidersStore = useWeb3ProvidersStore()
+const route = useRoute()
 
 const tabs = computed<Tab[]>(() => {
   switch (web3ProvidersStore.networkId) {
@@ -34,19 +37,24 @@ const tabs = computed<Tab[]>(() => {
           route: { name: ROUTE_NAMES.appMainnetCapital },
         },
         {
-          title: t('home-page.coders-tab'),
-          id: 'coders',
-          href: config.CODE_CONTRIBUTION_URL,
+          title: t('home-page.users-tab'),
+          id: 'users',
+          route: { name: ROUTE_NAMES.appMainnetUsers },
         },
         {
-          title: t('home-page.compute-tab'),
-          id: 'compute',
-          href: config.COMPUTE_CONTRIBUTION_URL,
+          title: t('home-page.developers-tab'),
+          id: 'developers',
+          route: { name: ROUTE_NAMES.appMainnetDevelopers },
         },
         {
           title: t('home-page.community-tab'),
           id: 'community',
-          href: config.COMMUNITY_CONTRIBUTION_URL,
+          route: { name: ROUTE_NAMES.appMainnetCommunity },
+        },
+        {
+          title: t('home-page.team-tab'),
+          id: 'team',
+          route: { name: ROUTE_NAMES.appMainnetTeam },
         },
       ]
 
@@ -58,25 +66,48 @@ const tabs = computed<Tab[]>(() => {
           route: { name: ROUTE_NAMES.appTestnetCapital },
         },
         {
-          title: t('home-page.coders-tab'),
-          id: 'coders',
-          href: config.CODE_CONTRIBUTION_URL,
+          title: t('home-page.users-tab'),
+          id: 'users',
+          route: { name: ROUTE_NAMES.appMainnetCapital },
         },
         {
-          title: t('home-page.compute-tab'),
-          id: 'compute',
-          href: config.COMPUTE_CONTRIBUTION_URL,
+          title: t('home-page.developers-tab'),
+          id: 'developers',
+          route: { name: ROUTE_NAMES.appMainnetCapital },
         },
         {
           title: t('home-page.community-tab'),
           id: 'community',
           route: { name: ROUTE_NAMES.appTestnetCommunity },
         },
+        {
+          title: t('home-page.team-tab'),
+          id: 'team',
+          route: { name: ROUTE_NAMES.appMainnetCapital },
+        },
       ]
   }
 
   return []
 })
+
+const viewClass = computed(() => {
+  switch (route.name) {
+    case ROUTE_NAMES.appMainnetCapital:
+      return 'capital-page__view'
+    case ROUTE_NAMES.appMainnetUsers:
+      return 'users-page__view'
+    case ROUTE_NAMES.appMainnetDevelopers:
+      return 'developers-page__view'
+    case ROUTE_NAMES.appMainnetCommunity:
+      return 'community-page__view'
+    case ROUTE_NAMES.appMainnetTeam:
+      return 'team-page__view'
+    default:
+      return 'home-page__view'
+  }
+})
+
 </script>
 
 <style lang="scss" scoped>
@@ -144,6 +175,38 @@ const tabs = computed<Tab[]>(() => {
   // margin-top: toRem(32);
   display: grid;
   grid-template-columns: 1fr minmax(0, toRem(704));
+  grid-gap: toRem(30);
+
+  @include respond-to(medium) {
+    margin-top: toRem(30);
+    grid-template-columns: 1fr;
+    grid-gap: toRem(28);
+  }
+}
+
+.home-page .capital-page__view {
+  // margin-top: toRem(32);
+  display: grid;
+  grid-template-columns: 1fr minmax(0, toRem(704));
+  grid-gap: toRem(30);
+
+  @include respond-to(medium) {
+    margin-top: toRem(30);
+    grid-template-columns: 1fr;
+    grid-gap: toRem(28);
+  }
+
+  @media (min-width: 1023px) and (max-width: 1280px) {
+    grid-template-columns: 1fr;
+    grid-gap: toRem(16);
+  }
+
+}
+
+.home-page .community-page__view {
+  // margin-top: toRem(32);
+  display: grid;
+  grid-template-columns: 1fr;
   grid-gap: toRem(30);
 
   @include respond-to(medium) {

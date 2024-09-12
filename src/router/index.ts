@@ -32,6 +32,34 @@ const routes: Array<RouteRecordRaw> = [
               import('@/pages/HomePage/views/PublicPoolView.vue'),
             props: { poolId: 0 },
           },
+          {
+            path: 'users',
+            name: ROUTE_NAMES.appMainnetUsers,
+            component: () =>
+              import('@/pages/HomePage/views/UsersView.vue'),
+            props: { poolId: 4 },
+          },
+          {
+            path: 'developers',
+            name: ROUTE_NAMES.appMainnetDevelopers,
+            component: () =>
+              import('@/pages/HomePage/views/DevelopersView.vue'),
+            props: { poolId: 2 },
+          },
+          {
+            path: 'community',
+            name: ROUTE_NAMES.appMainnetCommunity,
+            component: () =>
+              import('@/pages/HomePage/views/CommunityView.vue'),
+            props: { poolId: 1 },
+          },
+          {
+            path: 'team',
+            name: ROUTE_NAMES.appMainnetTeam,
+            component: () =>
+              import('@/pages/HomePage/views/TeamView.vue'),
+            props: { poolId: 3 },
+          },
         ],
       },
       {

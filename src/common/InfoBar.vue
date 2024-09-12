@@ -1,11 +1,12 @@
 <template>
   <div class="info-bar" :class="{ 'info-bar--loading': isLoading }">
+    
+    <h1>{{ title }}</h1>
     <div class="info-bar__subtitle-wrp">
       <p class="info-bar__subtitle">
         {{ subtitle }}
       </p>
     </div>
-    <h1>{{ title }}</h1>
     <div class="info-bar__description-wrp">
       <template v-if="$slots.description">
         <slot name="description" />
