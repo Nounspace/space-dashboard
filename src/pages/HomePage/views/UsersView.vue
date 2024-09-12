@@ -43,7 +43,7 @@
           <p class="tip-container-title">$SPACE tips earned:</p>
           <p class="tip-container-value">{{ formattedSpaceTipsEarned }}</p>
         </div>
-        <p class="container-subtitle">season 1 claims begin on October 15th</p>
+        <p class="container-subtitle">season 1 begins September 19th</p>
       </div>
     </div>
     <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
