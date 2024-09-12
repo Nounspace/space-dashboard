@@ -104,7 +104,7 @@
     </info-bar>
     <iframe
       src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
-      width="640"
+      width="640" 
       height="360"
       allow="autoplay; fullscreen"
       class="video-iframe"
@@ -260,6 +260,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 }
 
 .video-iframe {
+  display: flex;
   order: 3;
   width: 100%;
   height: auto;
@@ -268,7 +269,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
   @media (min-width: 1280px) {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 5;
     align-self: start;
     margin-top: -10.5rem;
     max-width: none;
