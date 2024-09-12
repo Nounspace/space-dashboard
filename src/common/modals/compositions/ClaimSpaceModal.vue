@@ -41,5 +41,7 @@ const props = withDefaults(
   width: 100%;
   height: 100%;
   border: none;
+  min-width: calc(100vw - 120px);
+  min-height: calc(100vh - 120px);
 }
 </style>
