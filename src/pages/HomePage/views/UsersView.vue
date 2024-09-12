@@ -19,18 +19,18 @@
         </div>
       </div>
       <button class="app-view__container space-drop-button" @click="isClaimSpaceModalShown = true">
-        <p class="container-title">check or claim $SPACE drop #0</p>
+        <p class="container-title">Check or Claim $SPACE Drop 0</p>
       </button>
       <button class="app-view__container mint-nogs-button" @click="isMintNogsModalShown = true">
-        <p class="container-title">mint nOGs to activate $SPACE tips</p>
+        <p class="container-title">Mint nOGs to Activate $SPACE Tips</p>
       </button>
       <div class="app-view__container mint-nogs-container">
-        <p class="container-title mint-nogs-container-text">mint nOGs, get rewarded.</p>
+        <p class="container-title mint-nogs-container-text">Mint nOGs, get rewarded.</p>
         <ul class="mint-nogs-list">
-          <li class="mint-nogs-container-text">earn $SPACE</li>
-          <li class="mint-nogs-container-text">activate $SPACE tip allowance</li>
-          <li class="mint-nogs-container-text">access to new features early</li>
-          <li class="mint-nogs-container-text">enjoy premium access for life</li>
+          <li class="mint-nogs-container-text">Earn $SPACE</li>
+          <li class="mint-nogs-container-text">Activate $SPACE tip allowance</li>
+          <li class="mint-nogs-container-text">Access to new features early</li>
+          <li class="mint-nogs-container-text">Enjoy premium access for life</li>
         </ul>
       </div>
       <div class="app-view__container">
