@@ -245,6 +245,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
 .public-pool-view__dashboard {
   order: 1;
+  height: 100%;
   @media (min-width: 1280px) {
     grid-column: 2;
     grid-row: 1;
@@ -269,9 +270,8 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
   @media (min-width: 1280px) {
     grid-column: 2;
-    grid-row: 5;
+    grid-row: 2;
     align-self: start;
-    margin-top: -10.5rem;
     max-width: none;
     width: 100%;
   }
