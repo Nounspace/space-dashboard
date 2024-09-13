@@ -8,7 +8,7 @@
     "cancel-btn": "Cancel",
     "submit-btn": "Claim",
     "tx-sent-message": "The transaction was sent, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>",
-    "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
+    "success-message": "The transaction was confirmed, please allow 15 minutes for your $SPACE to land on Base <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>"
   },
   "claim-modal": {
     "title": "Claim rewards",
