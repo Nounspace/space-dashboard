@@ -1,23 +1,34 @@
 <template>
   <div class="app-tabs">
-    <component
-      v-for="tab in tabs"
-      :key="tab.id"
-      :is="tab.route ? 'router-link' : 'a'"
-      :to="tab.route"
-      :href="tab.href"
-      :target="tab.href ? '_blank' : undefined"
-      :rel="tab.href ? 'noopener noreferrer' : undefined"
-      class="app-tabs__btn"
-      :class="{ 'app-tabs__btn--active': modelValue?.id === tab.id }"
-      @click="updateTab(tab)"
-    >
-      {{ tab.title }}
-    </component>
+    <div class="app-tabs__wrapper">
+      <button v-if="isMobile" class="app-tabs__nav app-tabs__nav--prev" @click="scrollLeft">
+        &lt;
+      </button>
+      <div class="app-tabs__carousel" ref="carousel">
+        <div v-for="tab in tabs" :key="tab.id" class="app-tabs__carousel-item">
+          <component
+            :is="tab.route ? 'router-link' : 'a'"
+            :to="tab.route"
+            :href="tab.href"
+            :target="tab.href ? '_blank' : undefined"
+            :rel="tab.href ? 'noopener noreferrer' : undefined"
+            class="app-tabs__btn"
+            :class="{ 'app-tabs__btn--active': modelValue?.id === tab.id }"
+            @click="updateTab(tab)"
+          >
+            {{ tab.title }}
+          </component>
+        </div>
+      </div>
+      <button v-if="isMobile" class="app-tabs__nav app-tabs__nav--next" @click="scrollRight">
+        &gt;
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
 import { type Tab } from '@/types'
 
 defineProps<{
@@ -32,12 +43,82 @@ const emit = defineEmits<{
 const updateTab = (tab: Tab) => {
   emit('update:modelValue', tab)
 }
+
+const isMobile = ref(false)
+const carousel = ref<HTMLElement | null>(null)
+
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
+const scrollLeft = () => {
+  if (carousel.value) {
+    carousel.value.scrollBy({ left: -200, behavior: 'smooth' })
+  }
+}
+
+const scrollRight = () => {
+  if (carousel.value) {
+    carousel.value.scrollBy({ left: 200, behavior: 'smooth' })
+  }
+}
+
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', checkIsMobile)
+})
 </script>
 
 <style lang="scss" scoped>
 .app-tabs {
   display: flex;
-  justify-content: center;
+  position: relative;
+
+  .app-tabs__wrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .app-tabs__carousel {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .app-tabs__carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .app-tabs__carousel-item {
+    flex: 0 0 auto;
+  }
+
+  .app-tabs__nav {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 10px;
+    color: #000;
+  }
+
+  .app-tabs__nav--prev {
+    margin-right: 10px;
+  }
+
+  .app-tabs__nav--next {
+    margin-left: 10px;
+  }
 }
 
 .app-tabs__btn {
@@ -100,6 +181,12 @@ const updateTab = (tab: Tab) => {
 
   @include respond-to(xsmall) {
     font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-tabs__carousel {
+    justify-content: flex-start !important;
   }
 }
 </style>
