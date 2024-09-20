@@ -52,40 +52,58 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useWeb3ProvidersStore } from '@/store'
 
-// Replace with actual ethAddress from user's wallet connection
-const ethAddress = ref('0x123...abc') // This should dynamically update based on the connected wallet
-const totalSpace = ref(0)
+const web3ProvidersStore = useWeb3ProvidersStore();
+const totalSpace = ref(0);
+
+const ethAddress = computed(() => web3ProvidersStore.currentAddress);
 
 async function fetchTotalSpace() {
+  if (!ethAddress.value) {
+    console.error('No connected ethAddress found.');
+    return;
+  }
+
   try {
-    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate')
-    const result = await response.json()
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
+    const result = await response.json();
 
     if (result.success && result.data && result.data.allocations) {
-      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.value.toLowerCase())
-      
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.value.toLowerCase());
+
       if (userAllocation && userAllocation.totalSpace) {
-        totalSpace.value = userAllocation.totalSpace
+        totalSpace.value = userAllocation.totalSpace;
       } else {
-        console.error('No totalSpace found for this ethAddress:', ethAddress.value)
+        console.error('No totalSpace found for this ethAddress:', ethAddress.value);
       }
     } else {
-      console.error('Unexpected response structure:', result)
+      console.error('Unexpected response structure:', result);
     }
   } catch (error) {
-    console.error('Error fetching totalSpace:', error)
+    console.error('Error fetching totalSpace:', error);
   }
 }
 
 const formattedTotalSpace = computed(() => {
-  return new Intl.NumberFormat().format(totalSpace.value)
-})
+  return new Intl.NumberFormat().format(totalSpace.value);
+});
 
 onMounted(() => {
-  fetchTotalSpace()
-})
+  if (web3ProvidersStore.isConnected) {
+    fetchTotalSpace();
+  }
+});
+
+watch(() => web3ProvidersStore.isConnected, (isConnected) => {
+  if (isConnected) {
+    fetchTotalSpace();
+  } else {
+    totalSpace.value = 0; // reset when disconnected
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>
