@@ -40,6 +40,31 @@ const convertStEthToUsd = (stEthAmountInWei: BigNumber, priceInUsd: number): str
   }
 }
 
+const convertSpaceToUsd = (spaceAmountInWei: BigNumber, priceInUsd: number): string | undefined => {
+  try {
+    const etherAmount = parseFloat(formatEther(spaceAmountInWei))
+    const totalUsdUnformatted = etherAmount * priceInUsd
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(totalUsdUnformatted)
+  } catch (error) {
+    console.error('Error calculating USD value:', error)
+  }
+}
+
+const calculateDepositsAPY = (dailyRewardInUsd: number, totalDepositsInUsd: number): string | undefined => {
+  try {
+    const annualRewardUsd = dailyRewardInUsd * 365
+    const apy = (annualRewardUsd / totalDepositsInUsd) * 100
+    return `${apy.toFixed(2)}%`
+  } catch (error) {
+    console.error('Error calculating APY:', error)
+  }
+}
+
 export {
   formatNumberInt,
   formatEther,
@@ -50,5 +75,7 @@ export {
   toEther,
   Time,
   BigNumber,
-  convertStEthToUsd
+  convertStEthToUsd,
+  convertSpaceToUsd,
+  calculateDepositsAPY,
 }

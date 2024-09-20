@@ -75,6 +75,18 @@ export const usePool = (poolId: number) => {
     )
   }
 
+  const fetchCurrentSpacePrice = async (): Promise<number | undefined> => {
+    try {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=nounspace&vs_currencies=usd',
+      )
+      const data = await response.json()
+      return data['nounspace'].usd as number
+    } catch (error) {
+      console.warn('Error fetching SPACE price:', error)
+    }
+  }
+
   const fetchCurrent_stEthPrice = async (): Promise<number | undefined> => {
     try {
       const response = await fetch(
@@ -109,7 +121,8 @@ export const usePool = (poolId: number) => {
     const poolDataResponses = await Promise.all([
       erc1967ProxyContract.value.providerBased.value.poolsData(poolId),
       erc1967ProxyContract.value.providerBased.value.pools(poolId),
-      fetchCurrent_stEthPrice()
+      fetchCurrent_stEthPrice(),
+      fetchCurrentSpacePrice(),
     ])
 
     return {
@@ -124,6 +137,7 @@ export const usePool = (poolId: number) => {
       rewardDecrease: poolDataResponses[1].rewardDecrease,
       totalDeposited: poolDataResponses[0].totalDeposited,
       stEThPriceInUsd: poolDataResponses[2] || 0,
+      spacePriceInUsd: poolDataResponses[3] || 0,
       withdrawLockPeriod: poolDataResponses[1].withdrawLockPeriod,
       withdrawLockPeriodAfterStake:
         poolDataResponses[1].withdrawLockPeriodAfterStake,

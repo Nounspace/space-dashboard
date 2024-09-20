@@ -12,6 +12,7 @@ export type PoolData = {
   rewardDecrease: BigNumber
   totalDeposited: BigNumber
   stEThPriceInUsd: number
+  spacePriceInUsd: number
   withdrawLockPeriod: BigNumber
   withdrawLockPeriodAfterStake: BigNumber
 }

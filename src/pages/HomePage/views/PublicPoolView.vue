@@ -50,6 +50,9 @@
     </info-dashboard>
 
     <info-bar
+      title=""
+      subtitle=""
+      description=""
       status="public"
       :indicators="barIndicators"
       :is-loading="isInitializing"
@@ -128,7 +131,7 @@ import { DEFAULT_TIME_FORMAT } from '@/const'
 import { ICON_NAMES } from '@/enums'
 import { useWeb3ProvidersStore } from '@/store'
 import type { InfoBarType, InfoDashboardType } from '@/types'
-import { formatNumberInt, convertStEthToUsd, formatEther, Time } from '@/utils'
+import { formatNumberInt, convertStEthToUsd, convertSpaceToUsd, calculateDepositsAPY, formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
 
@@ -157,6 +160,24 @@ const {
   isUserDataUpdating,
 } = usePool(poolId.value)
 
+
+const totalDepositedInUsd = computed(() => {
+  if (!poolData.value || !poolData.value.totalDeposited || !poolData.value.stEThPriceInUsd) return ''
+  return convertStEthToUsd(poolData.value.totalDeposited, poolData.value.stEThPriceInUsd)
+})
+
+const dailyRewardInUsd = computed(() => {
+  if (!dailyReward.value || !poolData.value || !poolData.value.spacePriceInUsd) return ''
+  return convertSpaceToUsd(dailyReward.value, poolData.value.spacePriceInUsd)
+})
+
+const apy = computed(() => {
+  if (!dailyRewardInUsd.value || !totalDepositedInUsd.value) return ''
+  const dailyRewardUsd = parseFloat(dailyRewardInUsd.value.replace(/[^0-9.-]+/g, ""))
+  const totalDepositedUsd = parseFloat(totalDepositedInUsd.value.replace(/[^0-9.-]+/g, ""))
+  return calculateDepositsAPY(dailyRewardUsd, totalDepositedUsd)
+})
+
 const web3ProvidersStore = useWeb3ProvidersStore()
 
 const barIndicators = computed<InfoBarType.Indicator[]>(() => [
@@ -164,17 +185,20 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
     title: t('home-page.public-pool-view.total-deposits-title'),
     value: poolData.value
       ? `${formatNumberInt(formatEther(poolData.value.totalDeposited))} stETH`
-      : '',
+      : '0 stETH',
   },
   {
     title: t('home-page.public-pool-view.total-usd-title'),
-    value: poolData.value
-      ? `${convertStEthToUsd(poolData.value.totalDeposited, poolData.value.stEThPriceInUsd) || '🚀'}`
-      : '',
+    value: totalDepositedInUsd.value || '-',
   },
   {
     title: t('home-page.public-pool-view.daily-reward-title'),
-    value: dailyReward.value ? `${formatNumberInt(formatEther(dailyReward.value))} SPACE` : '',
+    value: dailyReward.value ? `${formatNumberInt(formatEther(dailyReward.value))} SPACE` : '-',
+  },
+  {
+    title: 'APY',
+    value: apy.value || '%',
+    note: 'SPACE APY on deposited stETH',
   },
   {
     title: t('home-page.public-pool-view.started-at-title'),
@@ -196,17 +220,6 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
         ).format(DEFAULT_TIME_FORMAT)
       : '',
     note: t('home-page.public-pool-view.withdraw-at-note'),
-  },
-  {
-    title: t('home-page.public-pool-view.claim-at-title'),
-    value: poolData.value
-      ? new Time(
-          poolData.value.payoutStart
-            .add(poolData.value.claimLockPeriod)
-            .toNumber(),
-        ).format(DEFAULT_TIME_FORMAT)
-      : '',
-    note: t('home-page.public-pool-view.claim-at-note'),
   },
 ])
 
