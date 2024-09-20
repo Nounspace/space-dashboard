@@ -60,12 +60,22 @@ const totalSpace = ref(0);
 
 const ethAddress = computed(() => web3ProvidersStore.currentAddress);
 
+// Watch for ethAddress changes
+watch(ethAddress, (newAddress) => {
+  if (newAddress) {
+    console.log('ethAddress changed:', newAddress);
+    fetchTotalSpace(); // Fetch when ethAddress becomes available
+  }
+});
+
 async function fetchTotalSpace() {
   if (!ethAddress.value) {
     console.error('No connected ethAddress found.');
     return;
   }
 
+console.log("ethAddress:", ethAddress.value);
+  
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
     const result = await response.json();
@@ -91,6 +101,9 @@ const formattedTotalSpace = computed(() => {
 });
 
 onMounted(() => {
+  console.log('Store isConnected:', web3ProvidersStore.isConnected);
+  console.log('Current ethAddress:', ethAddress.value);
+  
   if (web3ProvidersStore.isConnected) {
     fetchTotalSpace();
   }
