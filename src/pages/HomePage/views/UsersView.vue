@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
-import { useWeb3ProvidersStore } from '@/store' // Import your Web3 provider store
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useWeb3ProvidersStore } from '@/store'
 
 // Set up the store and variables
 const web3ProvidersStore = useWeb3ProvidersStore();
@@ -64,13 +64,24 @@ const ethAddress = computed(() => {
   return web3ProvidersStore.currentAddress || null; // Fallback to null if undefined
 });
 
-// Debugging logs to check the state of ethAddress
+// Watch for changes in the wallet connection status
+watch(() => web3ProvidersStore.isConnected, (isConnected) => {
+  if (isConnected) {
+    console.log('Wallet connected, ethAddress:', ethAddress.value);
+    fetchTotalSpace(ethAddress.value);
+  } else {
+    console.log('No wallet connected.');
+    totalSpace.value = 0; // Reset totalSpace on disconnect
+  }
+});
+
+// Watch for changes in ethAddress, only trigger fetch if ethAddress is valid
 watch(ethAddress, (newAddress) => {
   if (newAddress) {
     console.log('New ethAddress detected:', newAddress);
-    fetchTotalSpace(newAddress); // Trigger fetch when a new address is detected
+    fetchTotalSpace(newAddress);
   } else {
-    console.log('ethAddress is null or undefined');
+    console.log('ethAddress is null or undefined.');
   }
 });
 
@@ -111,15 +122,16 @@ const formattedTotalSpace = computed(() => {
 
 // Fetch totalSpace on mount if connected
 onMounted(() => {
-  if (web3ProvidersStore.isConnected) {
-    if (ethAddress.value) {
-      fetchTotalSpace(ethAddress.value); // Fetch if ethAddress exists
-    } else {
-      console.log('ethAddress is not available yet, waiting for connection...');
-    }
+  if (web3ProvidersStore.isConnected && ethAddress.value) {
+    fetchTotalSpace(ethAddress.value);
   } else {
-    console.log('Wallet not connected.');
+    console.log('Waiting for wallet connection...');
   }
+});
+
+// Cleanup when the component unmounts or wallet is disconnected
+onBeforeUnmount(() => {
+  totalSpace.value = 0; // Reset totalSpace when component unmounts
 });
 </script>
 
