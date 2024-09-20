@@ -53,24 +53,31 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
-import { useWeb3ProvidersStore } from '@/store'
+import { useWeb3ProvidersStore } from '@/store' // Import your Web3 provider store
 
+// Set up the store and variables
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 
-const ethAddress = computed(() => web3ProvidersStore.currentAddress);
+// Reactive computed value for ethAddress
+const ethAddress = computed(() => {
+  return web3ProvidersStore.currentAddress || null; // Fallback to null if undefined
+});
 
-// Watch for ethAddress changes
+// Debugging logs to check the state of ethAddress
 watch(ethAddress, (newAddress) => {
   if (newAddress) {
-    console.log('ethAddress changed:', newAddress);
-    fetchTotalSpace(); // Fetch when ethAddress becomes available
+    console.log('New ethAddress detected:', newAddress);
+    fetchTotalSpace(newAddress); // Trigger fetch when a new address is detected
+  } else {
+    console.log('ethAddress is null or undefined');
   }
 });
 
-async function fetchTotalSpace() {
-  if (!ethAddress.value) {
-    console.error('No connected ethAddress found.');
+// Fetch totalSpace for the given ethAddress
+async function fetchTotalSpace(ethAddress) {
+  if (!ethAddress) {
+    console.error('No connected ethAddress found, cannot fetch totalSpace.');
     return;
   }
 
@@ -79,30 +86,39 @@ async function fetchTotalSpace() {
     const result = await response.json();
 
     if (result.success && result.data && result.data.allocations) {
-      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.value.toLowerCase());
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase());
 
       if (userAllocation && userAllocation.totalSpace) {
         totalSpace.value = userAllocation.totalSpace;
       } else {
-        console.error('No totalSpace found for this ethAddress:', ethAddress.value);
+        console.error('No totalSpace found for this ethAddress:', ethAddress);
+        totalSpace.value = 0; // Set to 0 if not found
       }
     } else {
       console.error('Unexpected response structure:', result);
+      totalSpace.value = 0; // Set to 0 if response structure is unexpected
     }
   } catch (error) {
     console.error('Error fetching totalSpace:', error);
+    totalSpace.value = 0; // Set to 0 on error
   }
 }
 
+// Computed value to format the totalSpace
 const formattedTotalSpace = computed(() => {
   return new Intl.NumberFormat().format(totalSpace.value);
 });
 
+// Fetch totalSpace on mount if connected
 onMounted(() => {
   if (web3ProvidersStore.isConnected) {
-    fetchTotalSpace();
+    if (ethAddress.value) {
+      fetchTotalSpace(ethAddress.value); // Fetch if ethAddress exists
+    } else {
+      console.log('ethAddress is not available yet, waiting for connection...');
+    }
   } else {
-    console.log('Waiting for wallet connection...');
+    console.log('Wallet not connected.');
   }
 });
 </script>
