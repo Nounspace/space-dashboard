@@ -57,11 +57,11 @@ import { useWeb3ProvidersStore } from '@/store'
 
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
-
 // Reactive computed value for ethAddress
 const ethAddress = computed(() => {
-  console.log('Computed ethAddress:', web3ProvidersStore.currentAddress); // Log the currentAddress from the store
-  return web3ProvidersStore.currentAddress || null; // Fallback to null if undefined
+  console.log('store:', web3ProvidersStore.address); // Log the currentAddress from the store
+  console.log('Computed ethAddress:', web3ProvidersStore.address); // Log the currentAddress from the store
+  return web3ProvidersStore.address || null; // Fallback to null if undefined
 });
 
 // Watch for changes in the wallet connection status
@@ -86,7 +86,7 @@ watch(ethAddress, (newAddress) => {
 });
 
 // Fetch totalSpace for the given ethAddress
-async function fetchTotalSpace(ethAddress) {
+async function fetchTotalSpace(ethAddress:any) {
   if (!ethAddress) {
     console.error('No connected ethAddress found, cannot fetch totalSpace.');
     return;
@@ -97,13 +97,17 @@ async function fetchTotalSpace(ethAddress) {
     const result = await response.json();
 
     if (result.success && result.data && result.data.allocations) {
-      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase());
+      console.log('result.data.allocations:', result.data);
 
-      if (userAllocation && userAllocation.totalSpace) {
-        totalSpace.value = userAllocation.totalSpace;
+const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress === ethAddress);
+
+
+      if (userAllocation) {
+        console.log('userAllocation:', userAllocation.allocation);
+        totalSpace.value = userAllocation.allocation; // Update the totalSpace with allocation value
       } else {
-        console.error('No totalSpace found for this ethAddress:', ethAddress);
-        totalSpace.value = 0; // Set to 0 if not found
+        console.error('No allocation found for the user:', ethAddress);
+        totalSpace.value = 0; // Set to 0 if no allocation found
       }
     } else {
       console.error('Unexpected response structure:', result);
@@ -114,7 +118,6 @@ async function fetchTotalSpace(ethAddress) {
     totalSpace.value = 0; // Set to 0 on error
   }
 }
-
 // Computed value to format the totalSpace
 const formattedTotalSpace = computed(() => {
   return new Intl.NumberFormat().format(totalSpace.value);
