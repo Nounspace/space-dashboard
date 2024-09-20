@@ -36,7 +36,7 @@
       <div class="app-view__container">
         <div class="tip-container">
           <p class="tip-container-title">Daily tip allowance:</p>
-          <p class="tip-container-value">{{ formattedDailyTipAllowance }}</p>
+          <p class="tip-container-value">{{ formattedTotalSpace }}</p>
         </div>
         <p class="container-subtitle">hold 1 nOGs NFT & 11,111 $SPACE to receive a tip allowance</p>
         <div class="tip-container">
@@ -44,23 +44,6 @@
           <p class="tip-container-value">{{ formattedSpaceTipsEarned }}</p>
         </div>
         <p class="container-subtitle">season 1 begins September 19th</p>
-      </div>
-    </div>
-    <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
-    <mint-nogs-modal v-model:is-shown="isMintNogsModalShown" />
-  </div>
-</template>
-
-<template>
-  <div class="app-view">
-    <div class="app-view__grid">
-      <!-- Existing template content -->
-      <div class="app-view__container">
-        <div class="tip-container">
-          <p class="tip-container-title">Total $SPACE for connected wallet:</p>
-          <p class="tip-container-value">{{ formattedTotalSpace }}</p>
-        </div>
-        <p class="container-subtitle">Connected wallet: {{ ethAddress }}</p>
       </div>
     </div>
     <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
