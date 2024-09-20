@@ -36,7 +36,7 @@
       <div class="app-view__container">
         <div class="tip-container">
           <p class="tip-container-title">Daily tip allowance:</p>
-          <p class="tip-container-value">{{ formattedDailyTipAllowance }}</p>
+          <p class="tip-container-value">{{ formattedTotalSpace }}</p>
         </div>
         <p class="container-subtitle">hold 1 nOGs NFT & 11,111 $SPACE to receive a tip allowance</p>
         <div class="tip-container">
@@ -52,34 +52,95 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useWeb3ProvidersStore } from '@/store'
 
-const totalDailyTokenAllowance = ref(0)
+const web3ProvidersStore = useWeb3ProvidersStore();
+const totalSpace = ref(0);
+const isClaimSpaceModalShown = ref(false);
+const isMintNogsModalShown = ref(false);
+// Reactive computed value for ethAddress
+const ethAddress = computed(() => {
+  return web3ProvidersStore.address || null; // Fallback to null if undefined
+});
 
-async function fetchTotalDailyTokenAllowance() {
+// Watch for changes in the wallet connection status
+watch(() => web3ProvidersStore.isConnected, (isConnected) => {
+  if (isConnected) {
+    fetchTotalSpace(ethAddress.value);
+  } else {
+    totalSpace.value = 0; // Reset totalSpace on disconnect
+  }
+});
+
+// Watch for changes in ethAddress
+watch(ethAddress, (newAddress) => {
+  if (newAddress) {
+    fetchTotalSpace(newAddress);
+  } else {
+  }
+});
+
+// Fetch totalSpace for the given ethAddress
+async function fetchTotalSpace(ethAddress:any) {
+  if (!ethAddress) {
+    console.error('No connected ethAddress found, cannot fetch totalSpace.');
+    return;
+  }
+
   try {
-    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate')
-    const result = await response.json()
-    if (result.success && result.data && result.data.params) {
-      totalDailyTokenAllowance.value = result.data.params.totalDailyTokenAllowance
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
+    const result = await response.json();
+    if (result.success && result.data && result.data.allocations) {
+
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress?.toLowerCase());
+
+      if (userAllocation) {
+        totalSpace.value = userAllocation.allocation;
+      } else {
+        console.error('No allocation found for the user:', ethAddress);
+        totalSpace.value = 0; 
+      }
     } else {
-      console.error('Unexpected response structure:', result)
+      console.error('Unexpected response structure:', result);
+      totalSpace.value = 0; 
     }
   } catch (error) {
-    console.error('Error fetching totalDailyTokenAllowance:', error)
+    console.error('Error fetching totalSpace:', error);
+    totalSpace.value = 0; 
   }
 }
+// Computed value to format the totalSpace
+const formattedTotalSpace = computed(() => {
+  return new Intl.NumberFormat().format(totalSpace.value);
+});
 
-const formattedDailyTipAllowance = computed(() => {
-  return new Intl.NumberFormat().format(totalDailyTokenAllowance.value)
-})
+// Placeholder for space tips earned, replace with actual logic
+const spaceTipsEarned = ref(0);
 
+// Computed value to format the spaceTipsEarned
+const formattedSpaceTipsEarned = computed(() => {
+  return new Intl.NumberFormat().format(spaceTipsEarned.value);
+});
+
+// Log on mount to check if address is set
 onMounted(() => {
-  fetchTotalDailyTokenAllowance()
-})
+
+  if (web3ProvidersStore.isConnected && ethAddress.value) {
+    fetchTotalSpace(ethAddress.value);
+  } else {
+    console.log('Waiting for wallet connection...');
+  }
+});
+
+// Cleanup when the component unmounts or wallet is disconnected
+onBeforeUnmount(() => {
+  totalSpace.value = 0;
+});
 </script>
 
 <style lang="scss" scoped>
+/* Existing styles */
 .container-title {
   font-size: 1.5rem;
   font-weight: 700;
