@@ -89,14 +89,12 @@ async function fetchTotalSpace(ethAddress:any) {
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
     const result = await response.json();
-
     if (result.success && result.data && result.data.allocations) {
-      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress === ethAddress.value);
-      console.log('User allocation:', userAllocation);
+
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress?.toLowerCase());
 
       if (userAllocation) {
         totalSpace.value = userAllocation.allocation;
-        console.log('Total space:', totalSpace.value);
       } else {
         console.error('No allocation found for the user:', ethAddress);
         totalSpace.value = 0; 
