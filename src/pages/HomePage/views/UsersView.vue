@@ -54,7 +54,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useWeb3ProvidersStore } from '@/store'
-
+import MintNogsModal from '@/common/modals/compositions/MintNogsModal.vue';
+import ClaimSpaceModal from '@/common/modals/compositions/ClaimSpaceModal.vue';
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 const isClaimSpaceModalShown = ref(false);
