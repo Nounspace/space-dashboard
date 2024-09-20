@@ -59,18 +59,14 @@ const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 // Reactive computed value for ethAddress
 const ethAddress = computed(() => {
-  console.log('store:', web3ProvidersStore.address); // Log the currentAddress from the store
-  console.log('Computed ethAddress:', web3ProvidersStore.address); // Log the currentAddress from the store
   return web3ProvidersStore.address || null; // Fallback to null if undefined
 });
 
 // Watch for changes in the wallet connection status
 watch(() => web3ProvidersStore.isConnected, (isConnected) => {
   if (isConnected) {
-    console.log('Wallet connected, ethAddress:', ethAddress.value);
     fetchTotalSpace(ethAddress.value);
   } else {
-    console.log('No wallet connected.');
     totalSpace.value = 0; // Reset totalSpace on disconnect
   }
 });
@@ -78,10 +74,8 @@ watch(() => web3ProvidersStore.isConnected, (isConnected) => {
 // Watch for changes in ethAddress
 watch(ethAddress, (newAddress) => {
   if (newAddress) {
-    console.log('New ethAddress detected:', newAddress);
     fetchTotalSpace(newAddress);
   } else {
-    console.log('ethAddress is null or undefined.');
   }
 });
 
@@ -97,25 +91,23 @@ async function fetchTotalSpace(ethAddress:any) {
     const result = await response.json();
 
     if (result.success && result.data && result.data.allocations) {
-      console.log('result.data.allocations:', result.data);
-
-const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress === ethAddress);
-
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress === ethAddress.value);
+      console.log('User allocation:', userAllocation);
 
       if (userAllocation) {
-        console.log('userAllocation:', userAllocation.allocation);
-        totalSpace.value = userAllocation.allocation; // Update the totalSpace with allocation value
+        totalSpace.value = userAllocation.allocation;
+        console.log('Total space:', totalSpace.value);
       } else {
         console.error('No allocation found for the user:', ethAddress);
-        totalSpace.value = 0; // Set to 0 if no allocation found
+        totalSpace.value = 0; 
       }
     } else {
       console.error('Unexpected response structure:', result);
-      totalSpace.value = 0; // Set to 0 if response structure is unexpected
+      totalSpace.value = 0; 
     }
   } catch (error) {
     console.error('Error fetching totalSpace:', error);
-    totalSpace.value = 0; // Set to 0 on error
+    totalSpace.value = 0; 
   }
 }
 // Computed value to format the totalSpace
@@ -125,8 +117,6 @@ const formattedTotalSpace = computed(() => {
 
 // Log on mount to check if address is set
 onMounted(() => {
-  console.log('onMounted - Wallet connection status:', web3ProvidersStore.isConnected);
-  console.log('onMounted - ethAddress:', ethAddress.value);
 
   if (web3ProvidersStore.isConnected && ethAddress.value) {
     fetchTotalSpace(ethAddress.value);
@@ -137,7 +127,7 @@ onMounted(() => {
 
 // Cleanup when the component unmounts or wallet is disconnected
 onBeforeUnmount(() => {
-  totalSpace.value = 0; // Reset totalSpace when component unmounts
+  totalSpace.value = 0;
 });
 </script>
 
