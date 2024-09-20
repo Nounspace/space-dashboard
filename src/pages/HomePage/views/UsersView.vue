@@ -51,35 +51,62 @@
   </div>
 </template>
 
+<template>
+  <div class="app-view">
+    <div class="app-view__grid">
+      <!-- Existing template content -->
+      <div class="app-view__container">
+        <div class="tip-container">
+          <p class="tip-container-title">Total $SPACE for connected wallet:</p>
+          <p class="tip-container-value">{{ formattedTotalSpace }}</p>
+        </div>
+        <p class="container-subtitle">Connected wallet: {{ ethAddress }}</p>
+      </div>
+    </div>
+    <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
+    <mint-nogs-modal v-model:is-shown="isMintNogsModalShown" />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
-const totalDailyTokenAllowance = ref(0)
+// Replace with actual ethAddress from user's wallet connection
+const ethAddress = ref('0x123...abc') // This should dynamically update based on the connected wallet
+const totalSpace = ref(0)
 
-async function fetchTotalDailyTokenAllowance() {
+async function fetchTotalSpace() {
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate')
     const result = await response.json()
-    if (result.success && result.data && result.data.params) {
-      totalDailyTokenAllowance.value = result.data.params.totalDailyTokenAllowance
+
+    if (result.success && result.data && result.data.allocations) {
+      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress.value.toLowerCase())
+      
+      if (userAllocation && userAllocation.totalSpace) {
+        totalSpace.value = userAllocation.totalSpace
+      } else {
+        console.error('No totalSpace found for this ethAddress:', ethAddress.value)
+      }
     } else {
       console.error('Unexpected response structure:', result)
     }
   } catch (error) {
-    console.error('Error fetching totalDailyTokenAllowance:', error)
+    console.error('Error fetching totalSpace:', error)
   }
 }
 
-const formattedDailyTipAllowance = computed(() => {
-  return new Intl.NumberFormat().format(totalDailyTokenAllowance.value)
+const formattedTotalSpace = computed(() => {
+  return new Intl.NumberFormat().format(totalSpace.value)
 })
 
 onMounted(() => {
-  fetchTotalDailyTokenAllowance()
+  fetchTotalSpace()
 })
 </script>
 
 <style lang="scss" scoped>
+/* Existing styles */
 .container-title {
   font-size: 1.5rem;
   font-weight: 700;
