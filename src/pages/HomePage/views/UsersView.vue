@@ -51,26 +51,32 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import {
-  ClaimSpaceModal,
-  MintNogsModal,
-} from '@/common'
-import { ref, computed } from 'vue'
-const isClaimSpaceModalShown = ref(false)
-const isMintNogsModalShown = ref(false)
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 
-const dailyTipAllowance = null
-const spaceTipsEarned = null
+const totalDailyTokenAllowance = ref(0)
+
+async function fetchTotalDailyTokenAllowance() {
+  try {
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate')
+    const result = await response.json()
+    if (result.success && result.data && result.data.params) {
+      totalDailyTokenAllowance.value = result.data.params.totalDailyTokenAllowance
+    } else {
+      console.error('Unexpected response structure:', result)
+    }
+  } catch (error) {
+    console.error('Error fetching totalDailyTokenAllowance:', error)
+  }
+}
 
 const formattedDailyTipAllowance = computed(() => {
-  return new Intl.NumberFormat().format(dailyTipAllowance)
+  return new Intl.NumberFormat().format(totalDailyTokenAllowance.value)
 })
 
-const formattedSpaceTipsEarned = computed(() => {
-  return new Intl.NumberFormat().format(spaceTipsEarned)
+onMounted(() => {
+  fetchTotalDailyTokenAllowance()
 })
-
 </script>
 
 <style lang="scss" scoped>
