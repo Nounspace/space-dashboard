@@ -55,12 +55,12 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useWeb3ProvidersStore } from '@/store'
 
-// Set up the store and variables
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 
 // Reactive computed value for ethAddress
 const ethAddress = computed(() => {
+  console.log('Computed ethAddress:', web3ProvidersStore.currentAddress); // Log the currentAddress from the store
   return web3ProvidersStore.currentAddress || null; // Fallback to null if undefined
 });
 
@@ -75,7 +75,7 @@ watch(() => web3ProvidersStore.isConnected, (isConnected) => {
   }
 });
 
-// Watch for changes in ethAddress, only trigger fetch if ethAddress is valid
+// Watch for changes in ethAddress
 watch(ethAddress, (newAddress) => {
   if (newAddress) {
     console.log('New ethAddress detected:', newAddress);
@@ -120,8 +120,11 @@ const formattedTotalSpace = computed(() => {
   return new Intl.NumberFormat().format(totalSpace.value);
 });
 
-// Fetch totalSpace on mount if connected
+// Log on mount to check if address is set
 onMounted(() => {
+  console.log('onMounted - Wallet connection status:', web3ProvidersStore.isConnected);
+  console.log('onMounted - ethAddress:', ethAddress.value);
+
   if (web3ProvidersStore.isConnected && ethAddress.value) {
     fetchTotalSpace(ethAddress.value);
   } else {
