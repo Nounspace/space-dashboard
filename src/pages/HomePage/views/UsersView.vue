@@ -74,8 +74,6 @@ async function fetchTotalSpace() {
     return;
   }
 
-console.log("ethAddress:", ethAddress.value);
-  
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
     const result = await response.json();
@@ -101,22 +99,12 @@ const formattedTotalSpace = computed(() => {
 });
 
 onMounted(() => {
-  console.log('Store isConnected:', web3ProvidersStore.isConnected);
-  console.log('Current ethAddress:', ethAddress.value);
-  
   if (web3ProvidersStore.isConnected) {
     fetchTotalSpace();
-  }
-});
-
-watch(() => web3ProvidersStore.isConnected, (isConnected) => {
-  if (isConnected) {
-    fetchTotalSpace();
   } else {
-    totalSpace.value = 0; // reset when disconnected
+    console.log('Waiting for wallet connection...');
   }
 });
-
 </script>
 
 <style lang="scss" scoped>
