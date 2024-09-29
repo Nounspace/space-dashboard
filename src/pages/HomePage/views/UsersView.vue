@@ -57,7 +57,11 @@
           </thead>
           <tbody>
             <tr v-for="(entry, index) in leaderboard" :key="index">
-              <td>{{ entry.User }}</td>
+              <td>
+                <a :href="`https://nounspace.com/s/${entry.User}`" target="_blank" rel="noopener noreferrer">
+                  {{ entry.User }}
+                </a>
+              </td>
               <td>{{ entry.Total }}</td>
             </tr>
           </tbody>
