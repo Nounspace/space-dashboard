@@ -57,14 +57,17 @@
           </thead>
           <tbody>
             <tr v-for="(entry, index) in leaderboard" :key="index">
-              <td>
-                <a :href="`https://nounspace.com/s/${entry.User}`" target="_blank" rel="noopener noreferrer">
-                  {{ entry.User }}
+              <td class="user-cell">
+                <a :href="`https://nounspace.com/s/${entry.username}`" target="_blank" rel="noopener noreferrer"
+                  class="user-link">
+                  <img v-if="entry.pfp_url" :src="entry.pfp_url" alt="Profile Picture" class="profile-pic" />
+                  <span>{{ entry.display_name }}</span>
                 </a>
               </td>
-              <td>{{ entry.Total }}</td>
+              <td>{{ entry.amount_received }}</td>
             </tr>
           </tbody>
+
         </table>
       </div>
     </div>
@@ -109,17 +112,23 @@ watch(ethAddress, (newAddress) => {
 // Function to fetch leaderboard data
 async function fetchLeaderboard() {
   try {
-    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard?format=csv&columns=display_name:User,amount_received:Total');
-    const csvData = await response.text();
-    const parsedData = csvData.split('\n').slice(1).map(row => {
-      const [User, Total] = row.split(',');
-      return { User, Total: parseInt(Total) }; // Convert Total to a number
-    });
-    leaderboard.value = parsedData;
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard');
+    const result = await response.json();
+    if (result.success && result.data) {
+      leaderboard.value = result.data.map(user => ({
+        username: user.username,
+        display_name: user.display_name,
+        amount_received: user.amount_received,
+        pfp_url: user.pfp_url,
+      }));
+    } else {
+      console.error('Failed to fetch leaderboard data:', result);
+    }
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
   }
 }
+
 
 // Fetch totalSpace for the given ethAddress
 async function fetchTotalSpace(ethAddress: any) {
@@ -377,5 +386,19 @@ onBeforeUnmount(() => {
 
 .leaderboard-table tbody tr:hover {
   background-color: #f0f0f0;
+}
+
+.profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
 }
 </style>
