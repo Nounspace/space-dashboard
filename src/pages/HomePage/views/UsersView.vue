@@ -7,7 +7,8 @@
           <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to nounspace users</p>
         </div>
         <div class="text-bar__description-wrp">
-          <p class="container-description">📢 $SPACE Drop 0 claims open at 1:11pm UTC on September 12! Check your eligibility and claim from the
+          <p class="container-description">📢 $SPACE Drop 0 claims open at 1:11pm UTC on September 12! Check your
+            eligibility and claim from the
             Fidget below.</p>
           <p class="container-description">$SPACE Tips launch on September 19th. mint nOGs and hold at least 11,111
             $SPACE to activate your tip allowance.</p>
@@ -39,11 +40,35 @@
           <p class="tip-container-value">{{ formattedTotalSpace }}</p>
         </div>
         <p class="container-subtitle">hold 1 nOGs NFT & 11,111 $SPACE to receive a tip allowance</p>
-        <div class="tip-container">
+        <!-- <div class="tip-container">
           <p class="tip-container-title">$SPACE tips earned:</p>
           <p class="tip-container-value">{{ formattedSpaceTipsEarned }}</p>
         </div>
-        <p class="container-subtitle">season 1 begins September 19th</p>
+        <p class="container-subtitle">season 1 begins September 19th</p> -->
+      </div>
+      <div class="app-view__container">
+        <h2 class="leaderboard-title">Leaderboard</h2>
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(entry, index) in leaderboard" :key="index">
+              <td class="user-cell">
+                <a :href="`https://nounspace.com/s/${entry.username}`" target="_blank" rel="noopener noreferrer"
+                  class="user-link">
+                  <img v-if="entry.pfp_url" :src="entry.pfp_url" alt="Profile Picture" class="profile-pic" />
+                  <span>{{ entry.display_name }}</span>
+                </a>
+              </td>
+              <td>{{ entry.amount_received }}</td>
+            </tr>
+          </tbody>
+
+        </table>
       </div>
     </div>
     <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
@@ -60,6 +85,8 @@ const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 const isClaimSpaceModalShown = ref(false);
 const isMintNogsModalShown = ref(false);
+const leaderboard = ref([]); // New ref for leaderboard data
+
 // Reactive computed value for ethAddress
 const ethAddress = computed(() => {
   return web3ProvidersStore.address || null; // Fallback to null if undefined
@@ -82,8 +109,29 @@ watch(ethAddress, (newAddress) => {
   }
 });
 
+// Function to fetch leaderboard data
+async function fetchLeaderboard() {
+  try {
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard');
+    const result = await response.json();
+    if (result.success && result.data) {
+      leaderboard.value = result.data.map(user => ({
+        username: user.username,
+        display_name: user.display_name,
+        amount_received: user.amount_received,
+        pfp_url: user.pfp_url,
+      }));
+    } else {
+      console.error('Failed to fetch leaderboard data:', result);
+    }
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+  }
+}
+
+
 // Fetch totalSpace for the given ethAddress
-async function fetchTotalSpace(ethAddress:any) {
+async function fetchTotalSpace(ethAddress: any) {
   if (!ethAddress) {
     console.error('No connected ethAddress found, cannot fetch totalSpace.');
     return;
@@ -100,15 +148,15 @@ async function fetchTotalSpace(ethAddress:any) {
         totalSpace.value = userAllocation.allocation;
       } else {
         console.error('No allocation found for the user:', ethAddress);
-        totalSpace.value = 0; 
+        totalSpace.value = 0;
       }
     } else {
       console.error('Unexpected response structure:', result);
-      totalSpace.value = 0; 
+      totalSpace.value = 0;
     }
   } catch (error) {
     console.error('Error fetching totalSpace:', error);
-    totalSpace.value = 0; 
+    totalSpace.value = 0;
   }
 }
 // Computed value to format the totalSpace
@@ -126,7 +174,7 @@ const formattedSpaceTipsEarned = computed(() => {
 
 // Log on mount to check if address is set
 onMounted(() => {
-
+  fetchLeaderboard();
   if (web3ProvidersStore.isConnected && ethAddress.value) {
     fetchTotalSpace(ethAddress.value);
   } else {
@@ -151,16 +199,19 @@ onBeforeUnmount(() => {
 }
 
 .tip-container-title {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   font-weight: 700;
   line-height: 1.2;
 }
 
 .tip-container-value {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   font-weight: 700;
   line-height: 1.2;
-  margin-left: auto; /* Push the value to the right */
+  margin-left: auto;
+  /* Push the value to the right */
 }
 
 .tip-container {
@@ -308,5 +359,46 @@ onBeforeUnmount(() => {
 
 .text-bar__description-wrp {
   margin-top: 1.5rem;
+}
+
+.leaderboard-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  border: 1px solid #eeeeee;
+  padding: 8px;
+  text-align: left;
+}
+
+.leaderboard-table th {
+  background-color: #f4f4f4;
+  font-weight: 700;
+}
+
+.leaderboard-table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+.profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
 }
 </style>
