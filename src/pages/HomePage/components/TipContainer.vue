@@ -13,10 +13,11 @@ import { defineProps } from 'vue';
 const props = defineProps({
   totalSpace: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 </script>
+
 
 <style scoped>
 .tip-container {

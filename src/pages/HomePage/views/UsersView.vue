@@ -163,6 +163,7 @@ async function fetchTotalSpace(ethAddress) {
         (alloc) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase()
       );
       totalSpace.value = userAllocation ? userAllocation.allocation : 0;
+      console.log("Total Space fetched:", totalSpace.value); // Debugging log
     } else {
       console.error('Unexpected response structure:', result);
       totalSpace.value = 0;
@@ -173,7 +174,12 @@ async function fetchTotalSpace(ethAddress) {
   }
 }
 
-const formattedTotalSpace = computed(() => new Intl.NumberFormat().format(totalSpace.value));
+// Computed property to format `totalSpace`
+const formattedTotalSpace = computed(() => {
+  const formatted = new Intl.NumberFormat().format(totalSpace.value);
+  console.log("Formatted Total Space:", formatted); // Debugging log
+  return formatted;
+});
 
 onMounted(() => {
   fetchData();
@@ -186,6 +192,7 @@ onBeforeUnmount(() => {
   totalSpace.value = 0;
 });
 </script>
+
 
 <style lang="scss" scoped>
 /* Main layout */
