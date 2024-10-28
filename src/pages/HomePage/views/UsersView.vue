@@ -1,115 +1,114 @@
 <template>
   <div class="app-view">
     <div class="app-view__grid">
-      <div class="text-bar">
-        <p class="text-bar-title">Users</p>
-        <div class="text-bar__subtitle-wrp">
-          <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to nounspace users</p>
-        </div>
-        <div class="text-bar__description-wrp">
-          <p class="container-description">📢 $SPACE Drop 0 claims open at 1:11pm UTC on September 12! Check your
-            eligibility and claim from the
-            Fidget below.</p>
-          <p class="container-description">$SPACE Tips launch on September 19th. mint nOGs and hold at least 11,111
-            $SPACE to activate your tip allowance.</p>
-          <p class="container-description">
-            More ways to earn $SPACE are coming soon! Have an idea for distributing $SPACE to nounspace users?
-            <a href="https://app.charmverse.io/nounspace/governance-process-03537464653772093" target="_blank">Make a
-              proposal</a>
-          </p>
-        </div>
-      </div>
-      <button class="app-view__container space-drop-button" @click="isClaimSpaceModalShown = true">
-        <p class="container-title">Check or Claim $SPACE Drop 0</p>
-      </button>
-      <button class="app-view__container mint-nogs-button" @click="isMintNogsModalShown = true">
-        <p class="container-title">Mint nOGs to Activate $SPACE Tips</p>
-      </button>
-      <div class="app-view__container mint-nogs-container">
-        <p class="container-title mint-nogs-container-text">Mint nOGs, get rewarded.</p>
-        <ul class="mint-nogs-list">
-          <li class="mint-nogs-container-text">Earn $SPACE</li>
-          <li class="mint-nogs-container-text">Activate $SPACE tip allowance</li>
-          <li class="mint-nogs-container-text">Access to new features early</li>
-          <li class="mint-nogs-container-text">Enjoy premium access for life</li>
-        </ul>
-      </div>
-      <div class="app-view__container">
-        <div class="tip-container">
-          <p class="tip-container-title">Daily tip allowance:</p>
-          <p class="tip-container-value">{{ formattedTotalSpace }}</p>
-        </div>
-        <p class="container-subtitle">hold 1 nOGs NFT & 11,111 $SPACE to receive a tip allowance</p>
-        <!-- <div class="tip-container">
-          <p class="tip-container-title">$SPACE tips earned:</p>
-          <p class="tip-container-value">{{ formattedSpaceTipsEarned }}</p>
-        </div>
-        <p class="container-subtitle">season 1 begins September 19th</p> -->
-      </div>
-      <div class="app-view__container">
-        <h2 class="leaderboard-title">Leaderboard</h2>
-        <table class="leaderboard-table">
-          <thead>
-            <tr>
-              <th>User</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(entry, index) in leaderboard" :key="index">
-              <td class="user-cell">
-                <a :href="`https://nounspace.com/s/${entry.username}`" target="_blank" rel="noopener noreferrer"
-                  class="user-link">
-                  <img v-if="entry.pfp_url" :src="entry.pfp_url" alt="Profile Picture" class="profile-pic" />
-                  <span>{{ entry.display_name }}</span>
-                </a>
-              </td>
-              <td>{{ entry.amount_received }}</td>
-            </tr>
-          </tbody>
+      <!-- TextBar component -->
+      <TextBar />
 
-        </table>
+      <!-- Button Section -->
+      <div class="button-container">
+        <SpaceButton
+          title="Check or Claim $SPACE Drop 0"
+          buttonClass="space-drop-button"
+          @click="isClaimSpaceModalShown = true"
+        />
+        <SpaceButton
+          title="Mint nOGs"
+          buttonClass="mint-nogs-button"
+          @click="isMintNogsModalShown = true"
+        />
+      </div>
+
+      <!-- Container for MintNogsContainer and TipContainer -->
+      <div class="container-flex side-by-side">
+        <MintNogsContainer />
+        <TipContainer :totalSpace="formattedTotalSpace" />
+      </div>
+
+      <!-- Inline Tab Buttons to select leaderboard season -->
+      <div class="tabs-container">
+        <button :class="{ active: activeTab === 0 }" @click="activeTab = 0">Season 2</button>
+        <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Season 1</button>
+      </div>
+
+      <!-- Center-aligned Leaderboard component based on activeTab -->
+      <div class="leaderboard-wrapper">
+        <Leaderboard
+          v-if="activeTab === 0"
+          title="Leaderboard - Season 2"
+          :entries="adjustedSeason2Results"
+        />
+        <Leaderboard
+          v-if="activeTab === 1"
+          title="Leaderboard - Season 1"
+          :entries="season1Results"
+        />
       </div>
     </div>
-    <claim-space-modal v-model:is-shown="isClaimSpaceModalShown" />
-    <mint-nogs-modal v-model:is-shown="isMintNogsModalShown" />
+
+    <ClaimSpaceModal v-model:is-shown="isClaimSpaceModalShown" />
+    <MintNogsModal v-model:is-shown="isMintNogsModalShown" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useWeb3ProvidersStore } from '@/store'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { useWeb3ProvidersStore } from '@/store';
 import MintNogsModal from '@/common/modals/compositions/MintNogsModal.vue';
 import ClaimSpaceModal from '@/common/modals/compositions/ClaimSpaceModal.vue';
+import season1ResultsData from '@/pages/HomePage/components/season1_results.json';
+
+// Components
+import TextBar from '../components/TextBar.vue';
+import SpaceButton from '../components/SpaceButton.vue';
+import MintNogsContainer from '../components/MintNogsContainer.vue';
+import Leaderboard from '../components/Leaderboard.vue';
+import TipContainer from '../components/TipContainer.vue';
+
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 const isClaimSpaceModalShown = ref(false);
 const isMintNogsModalShown = ref(false);
-const leaderboard = ref([]); // New ref for leaderboard data
+const leaderboard = ref([]);
+const adjustedSeason2Results = ref([]);
+const activeTab = ref(0); // Controls active tab state
+const season1Results = ref(season1ResultsData.data);
+const ethAddress = computed(() => web3ProvidersStore.address || null);
 
-// Reactive computed value for ethAddress
-const ethAddress = computed(() => {
-  return web3ProvidersStore.address || null; // Fallback to null if undefined
-});
+function showMintNogsModal() {
+  isMintNogsModalShown.value = true;
+  console.log("MintNogsModal shown:", isMintNogsModalShown.value);
+}
 
-// Watch for changes in the wallet connection status
 watch(() => web3ProvidersStore.isConnected, (isConnected) => {
   if (isConnected) {
     fetchTotalSpace(ethAddress.value);
   } else {
-    totalSpace.value = 0; // Reset totalSpace on disconnect
+    totalSpace.value = 0;
   }
 });
 
-// Watch for changes in ethAddress
 watch(ethAddress, (newAddress) => {
   if (newAddress) {
     fetchTotalSpace(newAddress);
-  } else {
   }
 });
 
-// Function to fetch leaderboard data
+// Fetch Season 1 results from JSON
+async function fetchSeason1Results() {
+  return new Promise((resolve) => {
+    if (!Array.isArray(season1Results.value)) {
+      console.error("Season 1 Results is not an array:", season1Results.value);
+      resolve(new Map());
+      return;
+    }
+    const season1Map = new Map(
+      season1Results.value.map((user) => [user.username, user.amount_received])
+    );
+    resolve(season1Map);
+  });
+}
+
+// Fetch Season 2 leaderboard from API
 async function fetchLeaderboard() {
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard');
@@ -129,9 +128,28 @@ async function fetchLeaderboard() {
   }
 }
 
+// Calculate adjusted Season 2 results based on Season 1 data and sort by amount_received
+async function calculateAdjustedSeason2Results() {
+  const season1Map = await fetchSeason1Results();
+  adjustedSeason2Results.value = leaderboard.value
+    .map(user => {
+      const season1Amount = season1Map.get(user.username) || 0;
+      const adjustedAmount = user.amount_received - season1Amount;
+      return {
+        ...user,
+        amount_received: adjustedAmount,
+      };
+    })
+    .sort((a, b) => b.amount_received - a.amount_received); // Sort by highest amount_received
+}
 
-// Fetch totalSpace for the given ethAddress
-async function fetchTotalSpace(ethAddress: any) {
+// Fetch leaderboard and calculate adjusted results
+async function fetchData() {
+  await fetchLeaderboard();
+  await calculateAdjustedSeason2Results();
+}
+
+async function fetchTotalSpace(ethAddress) {
   if (!ethAddress) {
     console.error('No connected ethAddress found, cannot fetch totalSpace.');
     return;
@@ -141,15 +159,11 @@ async function fetchTotalSpace(ethAddress: any) {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
     const result = await response.json();
     if (result.success && result.data && result.data.allocations) {
-
-      const userAllocation = result.data.allocations.find((alloc: any) => alloc.ethAddress.toLowerCase() === ethAddress?.toLowerCase());
-
-      if (userAllocation) {
-        totalSpace.value = userAllocation.allocation;
-      } else {
-        console.error('No allocation found for the user:', ethAddress);
-        totalSpace.value = 0;
-      }
+      const userAllocation = result.data.allocations.find(
+        (alloc) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase()
+      );
+      totalSpace.value = userAllocation ? userAllocation.allocation : 0;
+      console.log("Total Space fetched:", totalSpace.value); // Debugging log
     } else {
       console.error('Unexpected response structure:', result);
       totalSpace.value = 0;
@@ -159,92 +173,29 @@ async function fetchTotalSpace(ethAddress: any) {
     totalSpace.value = 0;
   }
 }
-// Computed value to format the totalSpace
+
+// Computed property to format `totalSpace`
 const formattedTotalSpace = computed(() => {
-  return new Intl.NumberFormat().format(totalSpace.value);
+  const formatted = new Intl.NumberFormat().format(totalSpace.value);
+  console.log("Formatted Total Space:", formatted); // Debugging log
+  return formatted;
 });
 
-// Placeholder for space tips earned, replace with actual logic
-const spaceTipsEarned = ref(0);
-
-// Computed value to format the spaceTipsEarned
-const formattedSpaceTipsEarned = computed(() => {
-  return new Intl.NumberFormat().format(spaceTipsEarned.value);
-});
-
-// Log on mount to check if address is set
 onMounted(() => {
-  fetchLeaderboard();
+  fetchData();
   if (web3ProvidersStore.isConnected && ethAddress.value) {
     fetchTotalSpace(ethAddress.value);
-  } else {
-    console.log('Waiting for wallet connection...');
   }
 });
 
-// Cleanup when the component unmounts or wallet is disconnected
 onBeforeUnmount(() => {
   totalSpace.value = 0;
 });
 </script>
 
+
 <style lang="scss" scoped>
-/* Existing styles */
-.container-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: left;
-  margin-bottom: 1rem;
-}
-
-.tip-container-title {
-  font-size: 1.5rem;
-  /* 24px */
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.tip-container-value {
-  font-size: 1.5rem;
-  /* 24px */
-  font-weight: 700;
-  line-height: 1.2;
-  margin-left: auto;
-  /* Push the value to the right */
-}
-
-.tip-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.container-subtitle {
-  font-size: .75rem;
-  line-height: 1.4;
-  margin-bottom: 1.75rem;
-}
-
-.container-description {
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.4;
-  margin-top: 1rem;
-}
-
-.container-description a {
-  font-size: inherit;
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px dotted currentColor;
-  transition: border-bottom 0.2s ease-in-out;
-
-  &:hover {
-    border-bottom: 1px solid currentColor;
-  }
-}
-
+/* Main layout */
 .app-view {
   display: flex;
   flex-direction: column;
@@ -252,153 +203,95 @@ onBeforeUnmount(() => {
 }
 
 .app-view__grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 
-.app-view__container {
-  flex: 1 1 calc(50% - 1rem);
-  border-radius: 6px;
-  border: 1px solid #eeeeee;
-  padding: 20px;
-  height: max-content;
+/* Button container styling */
+.button-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.space-drop-button,
+.mint-nogs-button {
+  flex: 1;
+  padding: 1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
 }
 
 .space-drop-button {
   background-color: #00ff00;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-}
-
-.space-drop-button .container-title {
-  margin: 0;
-  text-align: center;
-  font-size: 1.25rem;
 }
 
 .space-drop-button:hover {
   background-color: #00cc00;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mint-nogs-button {
   background-color: #FF5A1F;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-}
-
-.mint-nogs-button .container-title {
-  margin: 0;
-  text-align: center;
-  font-size: 1.25rem;
 }
 
 .mint-nogs-button:hover {
   background-color: #e04e1a;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.mint-nogs-container {
-  background-image: url('@/assets/mint_nogs.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+/* Tabs container styling */
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-.mint-nogs-container-text {
+.tabs-container button {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background-color: #eeeeee;
+  color: black;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tabs-container button.active {
+  background-color: #00cc00;
   color: white;
+  border-bottom: 3px solid #007b00;
 }
 
-.mint-nogs-list {
-  padding-left: 1.5rem;
+.tabs-container button:not(.active):hover {
+  background-color: #cccccc;
 }
 
-.mint-nogs-list li {
-  list-style-type: disc;
-  padding: 0;
-  font-weight: 500;
+/* Leaderboard styling */
+.leaderboard-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2px;
+}
+
+/* Modal styling */
+.mint-nogs-modal,
+.claim-space-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 768px) {
-  .app-view__container {
-    flex: 1 1 100%;
+  .button-container {
+    flex-direction: column;
   }
-}
-
-.text-bar {
-  border-radius: 0.375rem;
-  border: 1px solid #eeeeee;
-  padding: 1.25rem;
-  height: max-content;
-  width: 100%;
-}
-
-.text-bar-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: left;
-}
-
-.text-bar__subtitle-wrp {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.text-bar__subtitle {
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-align: left;
-  margin-top: 0.75rem;
-}
-
-.text-bar__description-wrp {
-  margin-top: 1.5rem;
-}
-
-.leaderboard-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 1rem 0;
-}
-
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.leaderboard-table th,
-.leaderboard-table td {
-  border: 1px solid #eeeeee;
-  padding: 8px;
-  text-align: left;
-}
-
-.leaderboard-table th {
-  background-color: #f4f4f4;
-  font-weight: 700;
-}
-
-.leaderboard-table tbody tr:hover {
-  background-color: #f0f0f0;
-}
-
-.profile-pic {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  margin-right: 8px;
-  object-fit: cover;
-  vertical-align: middle;
-}
-
-.user-cell {
-  display: flex;
-  align-items: center;
 }
 </style>

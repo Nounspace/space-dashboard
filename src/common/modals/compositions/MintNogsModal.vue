@@ -23,12 +23,10 @@
 import { defineEmits, defineProps, withDefaults, watch, onMounted } from 'vue';
 import IframeModal from '../IframeModal.vue';
 
-// Emit event for closing the modal
 const emit = defineEmits<{
   (e: 'update:is-shown', v: boolean): void
 }>()
 
-// Define props with defaults
 const props = withDefaults(
   defineProps<{
     isShown: boolean
@@ -39,9 +37,7 @@ const props = withDefaults(
   },
 )
 
-// Log when modal props change
 watch(() => props.isShown, (newVal) => {
-  console.log(`Modal isShown prop changed: ${newVal}`);
   if (newVal) {
     console.log("Modal opened");
   } else {
@@ -49,13 +45,10 @@ watch(() => props.isShown, (newVal) => {
   }
 });
 
-// Function to handle modal closing
 function handleModalClose(event: boolean) {
-  console.log(`Modal closing: ${event}`);
-  emit('update:is-shown', event); // Emit event to update parent
+  emit('update:is-shown', event);
 }
 
-// Log when component mounts
 onMounted(() => {
   console.log('mint-nogs-modal component mounted');
 });
@@ -66,13 +59,23 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Dimmed background for modal focus */
+  z-index: 1000; /* Ensure modal appears on top */
 }
 
 .full-size-iframe {
-  width: 100%;
-  height: 100%;
+  width: 80%; /* Adjust width as needed */
+  max-width: 600px; /* Limit max width */
+  height: 80%; /* Adjust height as needed */
   border: none;
+  background: #ffffff; /* White background for the iframe content */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Shadow for depth */
 }
 </style>
