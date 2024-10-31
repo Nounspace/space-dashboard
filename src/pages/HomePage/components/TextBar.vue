@@ -6,8 +6,8 @@
       <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to nounspace users</p>
     </div>
     <div class="text-bar__description-wrp">
-      <p class="container-description">📢 $SPACE Drop 0 claims open at 1:11pm UTC on September 12! Check your eligibility and claim from the Fidget below.</p>
-      <p class="container-description">$SPACE Tips launch on September 19th. Mint nOGs and hold at least 11,111 $SPACE to activate your tip allowance.</p>
+      <p class="container-description">📢 $SPACE Drop 1 claims open on Oct 31! Check your eligibility and claim from the Fidget below.</p>
+      <p class="container-description">$SPACE Tips are live! Mint nOGs and hold at least 11,111 $SPACE to activate your tip allowance.</p>
       <p class="container-description">
         More ways to earn $SPACE are coming soon! Have an idea for distributing $SPACE to nounspace users?
         <a href="https://app.charmverse.io/nounspace/governance-process-03537464653772093" target="_blank">Make a proposal</a>
