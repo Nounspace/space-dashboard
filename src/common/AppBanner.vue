@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'app-mainnet-users' }">
       <div class="app-banner__btn">
         <p class="app-banner__text">
-          Claim $SPACE Drop 1 Oct 31 - Nov 30 on the 
+          Claim $SPACE Drop 1 from Oct 31 - Nov 30 on the 
           <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
             Users Tab 🚀
           </router-link>
