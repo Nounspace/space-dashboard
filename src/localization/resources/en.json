@@ -81,7 +81,7 @@
       "available-to-claim-title": "Available to claim",
       "claim-btn": "Claim SPACE",
       "dashboard-description--0": "Upon withdrawal, deposited stETH will be returned to your address on Ethereum Mainnet.",
-      "dashboard-note--0": "Note: $SPACE claiming opens on September 12th at 1:11pm UTC, and claimed tokens are minted on Base Network."
+      "dashboard-note--0": "Upon claiming, $SPACE is minted on Base to the address specified."
     }
   },
   "info-dashboard": {
