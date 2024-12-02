@@ -6,7 +6,7 @@
       <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to nounspace users</p>
     </div>
     <div class="text-bar__description-wrp">
-      <p class="container-description">📢 $SPACE Drop 1 claims open on October 31! Check your eligibility and claim from the Fidget below by November 30.</p>
+      <p class="container-description">📢 $SPACE Drop 2 claims open on December 1! Check your eligibility and claim from the Fidget below by December 31.</p>
       <p class="container-description">$SPACE Tips are live! Mint nOGs and hold at least 11,111 $SPACE to activate your tip allowance.</p>
       <p class="container-description">
         More ways to earn $SPACE are coming soon! Have an idea for distributing $SPACE to nounspace users?
