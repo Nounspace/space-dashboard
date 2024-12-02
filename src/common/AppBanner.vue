@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'app-mainnet-users' }">
       <div class="app-banner__btn">
         <p class="app-banner__text">
-          Claim $SPACE Drop 1 from Oct 31 - Nov 30 on the 
+          Claim $SPACE Drop 2 from Dec 1 - 31 on the 
           <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
             Users Tab 🚀
           </router-link>
@@ -30,7 +30,7 @@
 }
 
 .app-banner__btn {
-  background: url('/branding/halloween-banner.png') no-repeat center center;
+  background: url('/branding/december-banner.png') no-repeat center center;
   background-size: cover;
   font-size: 1.5rem;
   font-weight: 700;
