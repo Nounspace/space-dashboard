@@ -3,11 +3,10 @@
     <div class="app-view__grid">
       <!-- TextBar component -->
       <TextBar />
-
       <!-- Button Section -->
       <div class="button-container">
         <SpaceButton
-          title="Check or Claim $SPACE Drop 1"
+          title="Check or Claim $SPACE Drop 0"
           buttonClass="space-drop-button"
           @click="isClaimSpaceModalShown = true"
         />
@@ -17,62 +16,72 @@
           @click="isMintNogsModalShown = true"
         />
       </div>
-
       <!-- Container for MintNogsContainer and TipContainer -->
       <div class="container-flex side-by-side">
         <MintNogsContainer />
         <TipContainer :totalSpace="formattedTotalSpace" />
       </div>
-
       <!-- Inline Tab Buttons to select leaderboard season -->
       <div class="tabs-container">
-        <button :class="{ active: activeTab === 0 }" @click="activeTab = 0">Season 2</button>
-        <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Season 1</button>
+        <button :class="{ active: activeTab === 0 }" @click="activeTab = 0">Season 3</button>
+        <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Season 2</button>
+        <button :class="{ active: activeTab === 2 }" @click="activeTab = 2">Season 1</button>
       </div>
-
       <!-- Center-aligned Leaderboard component based on activeTab -->
       <div class="leaderboard-wrapper">
         <Leaderboard
           v-if="activeTab === 0"
+          title="Leaderboard - Season 3"
+          :entries="season3Results"
+        />
+        <Leaderboard
+          v-if="activeTab === 1"
           title="Leaderboard - Season 2"
           :entries="adjustedSeason2Results"
         />
         <Leaderboard
-          v-if="activeTab === 1"
+          v-if="activeTab === 2"
           title="Leaderboard - Season 1"
           :entries="season1Results"
         />
       </div>
     </div>
-
     <ClaimSpaceModal v-model:is-shown="isClaimSpaceModalShown" />
     <MintNogsModal v-model:is-shown="isMintNogsModalShown" />
   </div>
 </template>
 
 <script setup lang="ts">
+// Core Vue Imports
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+
+// Store and JSON Imports
 import { useWeb3ProvidersStore } from '@/store';
-import MintNogsModal from '@/common/modals/compositions/MintNogsModal.vue';
-import ClaimSpaceModal from '@/common/modals/compositions/ClaimSpaceModal.vue';
 import season1ResultsData from '@/pages/HomePage/components/season1_results.json';
 
-// Components
+// Component Imports
 import TextBar from '../components/TextBar.vue';
 import SpaceButton from '../components/SpaceButton.vue';
 import MintNogsContainer from '../components/MintNogsContainer.vue';
 import Leaderboard from '../components/Leaderboard.vue';
 import TipContainer from '../components/TipContainer.vue';
+import MintNogsModal from '@/common/modals/compositions/MintNogsModal.vue';
+import ClaimSpaceModal from '@/common/modals/compositions/ClaimSpaceModal.vue';
 
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
 const isClaimSpaceModalShown = ref(false);
 const isMintNogsModalShown = ref(false);
 const leaderboard = ref([]);
-const adjustedSeason2Results = ref([]);
+const adjustedSeason2Results = ref<{ username: string; display_name: string; amount_received: number; pfp_url: string; }[]>([]);
 const activeTab = ref(0); // Controls active tab state
 const season1Results = ref(season1ResultsData.data);
 const ethAddress = computed(() => web3ProvidersStore.address || null);
+// Computed property to format `totalSpace`
+const formattedTotalSpace = computed(() => {
+  const formatted = new Intl.NumberFormat().format(totalSpace.value);
+  return formatted;
+});
 
 function showMintNogsModal() {
   isMintNogsModalShown.value = true;
@@ -98,7 +107,7 @@ async function fetchSeason1Results() {
   return new Promise((resolve) => {
     if (!Array.isArray(season1Results.value)) {
       console.error("Season 1 Results is not an array:", season1Results.value);
-      resolve(new Map());
+      resolve(new Map<string, number>());
       return;
     }
     const season1Map = new Map(
@@ -108,31 +117,14 @@ async function fetchSeason1Results() {
   });
 }
 
-// Fetch Season 2 leaderboard from API
-async function fetchLeaderboard() {
-  try {
-    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard');
-    const result = await response.json();
-    if (result.success && result.data) {
-      leaderboard.value = result.data.map(user => ({
-        username: user.username,
-        display_name: user.display_name,
-        amount_received: user.amount_received,
-        pfp_url: user.pfp_url,
-      }));
-    } else {
-      console.error('Failed to fetch leaderboard data:', result);
-    }
-  } catch (error) {
-    console.error('Error fetching leaderboard:', error);
-  }
-}
+
+const season3Results = ref<{ username: string; display_name: string; amount_received: number; pfp_url: string; }[]>([]);
 
 // Calculate adjusted Season 2 results based on Season 1 data and sort by amount_received
 async function calculateAdjustedSeason2Results() {
-  const season1Map = await fetchSeason1Results();
+  const season1Map = await fetchSeason1Results() as Map<string, number>;
   adjustedSeason2Results.value = leaderboard.value
-    .map(user => {
+    .map((user: { username: string; display_name: string; amount_received: number; pfp_url: string; }) => {
       const season1Amount = season1Map.get(user.username) || 0;
       const adjustedAmount = user.amount_received - season1Amount;
       return {
@@ -143,24 +135,18 @@ async function calculateAdjustedSeason2Results() {
     .sort((a, b) => b.amount_received - a.amount_received); // Sort by highest amount_received
 }
 
-// Fetch leaderboard and calculate adjusted results
-async function fetchData() {
-  await fetchLeaderboard();
-  await calculateAdjustedSeason2Results();
-}
 
-async function fetchTotalSpace(ethAddress) {
+async function fetchTotalSpace(ethAddress: string | null) {
   if (!ethAddress) {
     console.error('No connected ethAddress found, cannot fetch totalSpace.');
     return;
   }
-
   try {
     const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/allocate');
     const result = await response.json();
     if (result.success && result.data && result.data.allocations) {
       const userAllocation = result.data.allocations.find(
-        (alloc) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase()
+        (alloc: { ethAddress: string; }) => alloc.ethAddress.toLowerCase() === ethAddress.toLowerCase()
       );
       totalSpace.value = userAllocation ? userAllocation.allocation : 0;
       console.log("Total Space fetched:", totalSpace.value); // Debugging log
@@ -174,13 +160,65 @@ async function fetchTotalSpace(ethAddress) {
   }
 }
 
-// Computed property to format `totalSpace`
-const formattedTotalSpace = computed(() => {
-  const formatted = new Intl.NumberFormat().format(totalSpace.value);
-  console.log("Formatted Total Space:", formatted); // Debugging log
-  return formatted;
-});
 
+// Fetch the leaderboard data (current totals)
+async function fetchLeaderboard() {
+  try {
+    const response = await fetch('https://space-tip-allocator-git-main-nounspace.vercel.app/api/leaderboard');
+    const result = await response.json();
+    if (result.success && Array.isArray(result.data)) {
+      leaderboard.value = result.data.map((user: {
+        fid: number;
+        username: string;
+        display_name: string;
+        amount_received: number;
+        num_received: number;
+        pfp_url: string;
+      }) => ({
+        username: user.username,
+        display_name: user.display_name,
+        amount_received: user.amount_received,
+        pfp_url: user.pfp_url,
+      }));
+    } else {
+      console.error('Failed to fetch leaderboard data:', result.error || result);
+    }
+  } catch (error) {
+    console.error('Error fetching leaderboard:', error);
+  }
+}
+
+// Calculate Season 3 results
+async function calculateSeason3Results() {
+  if (!Array.isArray(leaderboard.value) || !Array.isArray(adjustedSeason2Results.value)) {
+    console.error('Leaderboard or Adjusted Season 2 Results are not arrays.');
+    return;
+  }
+
+  // Create a Map of Season 2 results for quick lookup
+  const season2Map = new Map(
+    adjustedSeason2Results.value.map(user => [user.username, user.amount_received])
+  );
+
+  // Compute Season 3 results
+  season3Results.value = leaderboard.value.map((user: { username: string; display_name: string; amount_received: number; pfp_url: string; }) => {
+    const season2Amount = season2Map.get(user.username) || 0; // Default to 0 if user not in Season 2
+    const adjustedAmount = user.amount_received - season2Amount; // Subtract Season 2 amount from current total
+    return {
+      ...user, // Include all existing user properties
+      amount_received: adjustedAmount,
+    };
+  }).sort((a, b) => b.amount_received - a.amount_received); // Sort by highest amount_received
+}
+
+// Fetch leaderboard and compute results for all seasons
+async function fetchData() {
+  await fetchLeaderboard(); // Fetch current totals
+  await calculateAdjustedSeason2Results(); // Calculate Season 2 results
+  await calculateSeason3Results(); // Derive Season 3 results
+}
+
+// On mount, fetch and calculate leaderboard data
 onMounted(() => {
   fetchData();
   if (web3ProvidersStore.isConnected && ethAddress.value) {
@@ -188,11 +226,11 @@ onMounted(() => {
   }
 });
 
+
 onBeforeUnmount(() => {
   totalSpace.value = 0;
 });
 </script>
-
 
 <style lang="scss" scoped>
 /* Main layout */
