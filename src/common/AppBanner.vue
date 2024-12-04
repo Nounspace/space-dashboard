@@ -3,9 +3,9 @@
     <router-link :to="{ name: 'app-mainnet-users' }">
       <div class="app-banner__btn">
         <p class="app-banner__text">
-          $SPACE Drop 0 is LIVE!
+          Claim $SPACE Drop 2 from Dec 1 - 31 on the 
           <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
-            Claim now 🚀
+            Users Tab 🚀
           </router-link>
         </p>
       </div>
@@ -30,7 +30,7 @@
 }
 
 .app-banner__btn {
-  background: url('/branding/space-banner.png') no-repeat center center;
+  background: url('/branding/december-banner.png') no-repeat center center;
   background-size: cover;
   font-size: 1.5rem;
   font-weight: 700;

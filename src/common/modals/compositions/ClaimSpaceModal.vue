@@ -5,7 +5,7 @@
     @update:is-shown="emit('update:is-shown', $event)"
   >
     <template #default="{ modal }">
-      <iframe src="https://app.hedgey.finance/claim/1da6c50a-badd-44d2-a005-00a89409ead6" frameborder="0" class="full-size-iframe"></iframe>
+      <iframe src="https://app.hedgey.finance/claim/200f07fc-07f6-46e0-8570-30bfa17445e0" frameborder="0" class="full-size-iframe"></iframe>
     </template>
   </iframe-modal>
 </template>
