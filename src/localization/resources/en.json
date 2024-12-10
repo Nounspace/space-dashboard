@@ -127,8 +127,8 @@
     "list": {
       "1": "Deposit stETH on Ethereum to earn $SPACE",
       "2": "Contribute your yield to the $SPACE LP",
-      "3": "",
-      "4": "Claim $SPACE on Base starting Sept 12th"
+      "3": "stETH can be withdrawn after 7 days",
+      "4": "Claim $SPACE on Base 90 days after deposit or last claim"
     },
     "details": "Details on"
   },
