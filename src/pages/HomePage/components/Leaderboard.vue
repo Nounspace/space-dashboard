@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(entry, index) in entries" :key="index">
+        <tr v-for="(entry, index) in sortedEntries" :key="index">
           <td class="user-cell">
             <a :href="`https://nounspace.com/s/${entry.username}`" target="_blank" class="user-link">
               <img v-if="entry.pfp_url" :src="entry.pfp_url" alt="Profile Picture" class="profile-pic" />
@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
 
 const props = defineProps({
   title: {
@@ -33,9 +33,13 @@ const props = defineProps({
     required: true
   },
   entries: {
-    type: Array,
+    type: Array as () => Array<{ username: string; pfp_url?: string; display_name: string; amount_received: number }>,
     required: true
   }
+});
+
+const sortedEntries = computed(() => {
+  return [...props.entries].sort((a, b) => b.amount_received - a.amount_received);
 });
 </script>
 
