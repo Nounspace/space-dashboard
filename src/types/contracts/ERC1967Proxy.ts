@@ -27,7 +27,7 @@ import type {
   OnEvent,
 } from "./common";
 
-export declare namespace IDistribution {
+export declare namespace IDistributionV5 {
   export type PoolStruct = {
     payoutStart: BigNumberish;
     decreaseInterval: BigNumberish;
@@ -61,89 +61,144 @@ export declare namespace IDistribution {
     minimalStake: BigNumber;
     isPublic: boolean;
   };
+
+  export type PoolLimitsStruct = {
+    claimLockPeriodAfterStake: BigNumberish;
+    claimLockPeriodAfterClaim: BigNumberish;
+  };
+
+  export type PoolLimitsStructOutput = [BigNumber, BigNumber] & {
+    claimLockPeriodAfterStake: BigNumber;
+    claimLockPeriodAfterClaim: BigNumber;
+  };
+
+  export type ReferrerTierStruct = {
+    amount: BigNumberish;
+    multiplier: BigNumberish;
+  };
+
+  export type ReferrerTierStructOutput = [BigNumber, BigNumber] & {
+    amount: BigNumber;
+    multiplier: BigNumber;
+  };
 }
 
 export interface ERC1967ProxyInterface extends utils.Interface {
   functions: {
-    "Distribution_init(address,address,(uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool)[])": FunctionFragment;
-    "bridgeOverplus(uint256,uint256,uint256)": FunctionFragment;
+    "DistributionToBaseV5_init(address,address,address,(uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool)[])": FunctionFragment;
+    "bridgeOverplus(uint24,bytes)": FunctionFragment;
     "claim(uint256,address)": FunctionFragment;
+    "claimReferrerTier(uint256,address)": FunctionFragment;
     "createPool((uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool))": FunctionFragment;
     "depositToken()": FunctionFragment;
-    "editPool(uint256,(uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool))": FunctionFragment;
+    "editPoolLimits(uint256,(uint128,uint128))": FunctionFragment;
+    "editReferrerTiers(uint256,(uint256,uint256)[])": FunctionFragment;
+    "feeConfig()": FunctionFragment;
+    "getClaimLockPeriodMultiplier(uint256,uint128,uint128)": FunctionFragment;
+    "getCurrentReferrerReward(uint256,address)": FunctionFragment;
+    "getCurrentUserMultiplier(uint256,address)": FunctionFragment;
     "getCurrentUserReward(uint256,address)": FunctionFragment;
     "getPeriodReward(uint256,uint128,uint128)": FunctionFragment;
-    "isNotUpgradeable()": FunctionFragment;
+    "getReferrerMultiplier(uint256,address)": FunctionFragment;
     "l1Sender()": FunctionFragment;
-    "manageUsersInPrivatePool(uint256,address[],uint256[])": FunctionFragment;
+    "lockClaim(uint256,uint128)": FunctionFragment;
+    "manageUsersInPrivatePool(uint256,address[],uint256[],uint128[],address[])": FunctionFragment;
     "overplus()": FunctionFragment;
     "owner()": FunctionFragment;
     "pools(uint256)": FunctionFragment;
     "poolsData(uint256)": FunctionFragment;
-    "proxiableUUID()": FunctionFragment;
-    "removeUpgradeability()": FunctionFragment;
+    "poolsLimits(uint256)": FunctionFragment;
+    "referrerTiers(uint256,uint256)": FunctionFragment;
+    "referrersData(address,uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "stake(uint256,uint256)": FunctionFragment;
+    "stake(uint256,uint256,uint128,address)": FunctionFragment;
     "totalDepositedInPublicPools()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "upgradeTo(address)": FunctionFragment;
-    "upgradeToAndCall(address,bytes)": FunctionFragment;
     "usersData(address,uint256)": FunctionFragment;
+    "version()": FunctionFragment;
     "withdraw(uint256,uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "Distribution_init"
+      | "DistributionToBaseV5_init"
       | "bridgeOverplus"
       | "claim"
+      | "claimReferrerTier"
       | "createPool"
       | "depositToken"
-      | "editPool"
+      | "editPoolLimits"
+      | "editReferrerTiers"
+      | "feeConfig"
+      | "getClaimLockPeriodMultiplier"
+      | "getCurrentReferrerReward"
+      | "getCurrentUserMultiplier"
       | "getCurrentUserReward"
       | "getPeriodReward"
-      | "isNotUpgradeable"
+      | "getReferrerMultiplier"
       | "l1Sender"
+      | "lockClaim"
       | "manageUsersInPrivatePool"
       | "overplus"
       | "owner"
       | "pools"
       | "poolsData"
-      | "proxiableUUID"
-      | "removeUpgradeability"
+      | "poolsLimits"
+      | "referrerTiers"
+      | "referrersData"
       | "renounceOwnership"
       | "stake"
       | "totalDepositedInPublicPools"
       | "transferOwnership"
-      | "upgradeTo"
-      | "upgradeToAndCall"
       | "usersData"
+      | "version"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "Distribution_init",
-    values: [string, string, IDistribution.PoolStruct[]]
+    functionFragment: "DistributionToBaseV5_init",
+    values: [string, string, string, IDistributionV5.PoolStruct[]]
   ): string;
   encodeFunctionData(
     functionFragment: "bridgeOverplus",
-    values: [BigNumberish, BigNumberish, BigNumberish]
+    values: [BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(
     functionFragment: "claim",
     values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
+    functionFragment: "claimReferrerTier",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createPool",
-    values: [IDistribution.PoolStruct]
+    values: [IDistributionV5.PoolStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "depositToken",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "editPool",
-    values: [BigNumberish, IDistribution.PoolStruct]
+    functionFragment: "editPoolLimits",
+    values: [BigNumberish, IDistributionV5.PoolLimitsStruct]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "editReferrerTiers",
+    values: [BigNumberish, IDistributionV5.ReferrerTierStruct[]]
+  ): string;
+  encodeFunctionData(functionFragment: "feeConfig", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getClaimLockPeriodMultiplier",
+    values: [BigNumberish, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCurrentReferrerReward",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getCurrentUserMultiplier",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "getCurrentUserReward",
@@ -154,13 +209,17 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     values: [BigNumberish, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "isNotUpgradeable",
-    values?: undefined
+    functionFragment: "getReferrerMultiplier",
+    values: [BigNumberish, string]
   ): string;
   encodeFunctionData(functionFragment: "l1Sender", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "lockClaim",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "manageUsersInPrivatePool",
-    values: [BigNumberish, string[], BigNumberish[]]
+    values: [BigNumberish, string[], BigNumberish[], BigNumberish[], string[]]
   ): string;
   encodeFunctionData(functionFragment: "overplus", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
@@ -170,12 +229,16 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "proxiableUUID",
-    values?: undefined
+    functionFragment: "poolsLimits",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "removeUpgradeability",
-    values?: undefined
+    functionFragment: "referrerTiers",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "referrersData",
+    values: [string, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -183,7 +246,7 @@ export interface ERC1967ProxyInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
-    values: [BigNumberish, BigNumberish]
+    values: [BigNumberish, BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "totalDepositedInPublicPools",
@@ -193,22 +256,18 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
-  encodeFunctionData(functionFragment: "upgradeTo", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "upgradeToAndCall",
-    values: [string, BytesLike]
-  ): string;
   encodeFunctionData(
     functionFragment: "usersData",
     values: [string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "version", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "withdraw",
     values: [BigNumberish, BigNumberish]
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "Distribution_init",
+    functionFragment: "DistributionToBaseV5_init",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -216,12 +275,36 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "claimReferrerTier",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "createPool", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "depositToken",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "editPool", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "editPoolLimits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "editReferrerTiers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "feeConfig", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimLockPeriodMultiplier",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCurrentReferrerReward",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getCurrentUserMultiplier",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getCurrentUserReward",
     data: BytesLike
@@ -231,10 +314,11 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "isNotUpgradeable",
+    functionFragment: "getReferrerMultiplier",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "l1Sender", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "lockClaim", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "manageUsersInPrivatePool",
     data: BytesLike
@@ -244,11 +328,15 @@ export interface ERC1967ProxyInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "pools", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "poolsData", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "proxiableUUID",
+    functionFragment: "poolsLimits",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeUpgradeability",
+    functionFragment: "referrerTiers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "referrersData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -264,61 +352,42 @@ export interface ERC1967ProxyInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "upgradeTo", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "upgradeToAndCall",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "usersData", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
-    "AdminChanged(address,address)": EventFragment;
-    "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
-    "OverplusBridged(uint256,bytes)": EventFragment;
+    "OverplusBridgedToArb(uint256,bytes)": EventFragment;
+    "OverplusBridgedToBase(uint256,bytes)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "PoolCreated(uint256,(uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool))": EventFragment;
     "PoolEdited(uint256,(uint128,uint128,uint128,uint128,uint128,uint256,uint256,uint256,bool))": EventFragment;
-    "Upgraded(address)": EventFragment;
+    "PoolLimitsEdited(uint256,(uint128,uint128))": EventFragment;
+    "ReferrerClaimed(uint256,address,address,uint256)": EventFragment;
+    "ReferrerTiersEdited(uint256,(uint256,uint256)[])": EventFragment;
+    "UserClaimLocked(uint256,address,uint128,uint128)": EventFragment;
     "UserClaimed(uint256,address,address,uint256)": EventFragment;
+    "UserReferred(uint256,address,address,uint256)": EventFragment;
     "UserStaked(uint256,address,uint256)": EventFragment;
     "UserWithdrawn(uint256,address,uint256)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AdminChanged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OverplusBridged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OverplusBridgedToArb"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OverplusBridgedToBase"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PoolEdited"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "PoolLimitsEdited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReferrerClaimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ReferrerTiersEdited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UserClaimLocked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UserClaimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UserReferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UserStaked"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UserWithdrawn"): EventFragment;
 }
-
-export interface AdminChangedEventObject {
-  previousAdmin: string;
-  newAdmin: string;
-}
-export type AdminChangedEvent = TypedEvent<
-  [string, string],
-  AdminChangedEventObject
->;
-
-export type AdminChangedEventFilter = TypedEventFilter<AdminChangedEvent>;
-
-export interface BeaconUpgradedEventObject {
-  beacon: string;
-}
-export type BeaconUpgradedEvent = TypedEvent<
-  [string],
-  BeaconUpgradedEventObject
->;
-
-export type BeaconUpgradedEventFilter = TypedEventFilter<BeaconUpgradedEvent>;
 
 export interface InitializedEventObject {
   version: number;
@@ -327,16 +396,29 @@ export type InitializedEvent = TypedEvent<[number], InitializedEventObject>;
 
 export type InitializedEventFilter = TypedEventFilter<InitializedEvent>;
 
-export interface OverplusBridgedEventObject {
+export interface OverplusBridgedToArbEventObject {
   amount: BigNumber;
   uniqueId: string;
 }
-export type OverplusBridgedEvent = TypedEvent<
+export type OverplusBridgedToArbEvent = TypedEvent<
   [BigNumber, string],
-  OverplusBridgedEventObject
+  OverplusBridgedToArbEventObject
 >;
 
-export type OverplusBridgedEventFilter = TypedEventFilter<OverplusBridgedEvent>;
+export type OverplusBridgedToArbEventFilter =
+  TypedEventFilter<OverplusBridgedToArbEvent>;
+
+export interface OverplusBridgedToBaseEventObject {
+  amount: BigNumber;
+  bridgeData_: string;
+}
+export type OverplusBridgedToBaseEvent = TypedEvent<
+  [BigNumber, string],
+  OverplusBridgedToBaseEventObject
+>;
+
+export type OverplusBridgedToBaseEventFilter =
+  TypedEventFilter<OverplusBridgedToBaseEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -352,10 +434,10 @@ export type OwnershipTransferredEventFilter =
 
 export interface PoolCreatedEventObject {
   poolId: BigNumber;
-  pool: IDistribution.PoolStructOutput;
+  pool: IDistributionV5.PoolStructOutput;
 }
 export type PoolCreatedEvent = TypedEvent<
-  [BigNumber, IDistribution.PoolStructOutput],
+  [BigNumber, IDistributionV5.PoolStructOutput],
   PoolCreatedEventObject
 >;
 
@@ -363,21 +445,64 @@ export type PoolCreatedEventFilter = TypedEventFilter<PoolCreatedEvent>;
 
 export interface PoolEditedEventObject {
   poolId: BigNumber;
-  pool: IDistribution.PoolStructOutput;
+  pool: IDistributionV5.PoolStructOutput;
 }
 export type PoolEditedEvent = TypedEvent<
-  [BigNumber, IDistribution.PoolStructOutput],
+  [BigNumber, IDistributionV5.PoolStructOutput],
   PoolEditedEventObject
 >;
 
 export type PoolEditedEventFilter = TypedEventFilter<PoolEditedEvent>;
 
-export interface UpgradedEventObject {
-  implementation: string;
+export interface PoolLimitsEditedEventObject {
+  poolId: BigNumber;
+  poolLimit: IDistributionV5.PoolLimitsStructOutput;
 }
-export type UpgradedEvent = TypedEvent<[string], UpgradedEventObject>;
+export type PoolLimitsEditedEvent = TypedEvent<
+  [BigNumber, IDistributionV5.PoolLimitsStructOutput],
+  PoolLimitsEditedEventObject
+>;
 
-export type UpgradedEventFilter = TypedEventFilter<UpgradedEvent>;
+export type PoolLimitsEditedEventFilter =
+  TypedEventFilter<PoolLimitsEditedEvent>;
+
+export interface ReferrerClaimedEventObject {
+  poolId: BigNumber;
+  user: string;
+  receiver: string;
+  amount: BigNumber;
+}
+export type ReferrerClaimedEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  ReferrerClaimedEventObject
+>;
+
+export type ReferrerClaimedEventFilter = TypedEventFilter<ReferrerClaimedEvent>;
+
+export interface ReferrerTiersEditedEventObject {
+  poolId: BigNumber;
+  tiers: IDistributionV5.ReferrerTierStructOutput[];
+}
+export type ReferrerTiersEditedEvent = TypedEvent<
+  [BigNumber, IDistributionV5.ReferrerTierStructOutput[]],
+  ReferrerTiersEditedEventObject
+>;
+
+export type ReferrerTiersEditedEventFilter =
+  TypedEventFilter<ReferrerTiersEditedEvent>;
+
+export interface UserClaimLockedEventObject {
+  poolId: BigNumber;
+  user: string;
+  claimLockStart: BigNumber;
+  claimLockEnd: BigNumber;
+}
+export type UserClaimLockedEvent = TypedEvent<
+  [BigNumber, string, BigNumber, BigNumber],
+  UserClaimLockedEventObject
+>;
+
+export type UserClaimLockedEventFilter = TypedEventFilter<UserClaimLockedEvent>;
 
 export interface UserClaimedEventObject {
   poolId: BigNumber;
@@ -391,6 +516,19 @@ export type UserClaimedEvent = TypedEvent<
 >;
 
 export type UserClaimedEventFilter = TypedEventFilter<UserClaimedEvent>;
+
+export interface UserReferredEventObject {
+  poolId: BigNumber;
+  user: string;
+  referrer: string;
+  amount: BigNumber;
+}
+export type UserReferredEvent = TypedEvent<
+  [BigNumber, string, string, BigNumber],
+  UserReferredEventObject
+>;
+
+export type UserReferredEventFilter = TypedEventFilter<UserReferredEvent>;
 
 export interface UserStakedEventObject {
   poolId: BigNumber;
@@ -443,18 +581,18 @@ export interface ERC1967Proxy extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    Distribution_init(
+    DistributionToBaseV5_init(
       depositToken_: string,
       l1Sender_: string,
-      poolsInfo_: IDistribution.PoolStruct[],
+      feeConfig_: string,
+      poolsInfo_: IDistributionV5.PoolStruct[],
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
     bridgeOverplus(
       gasLimit_: BigNumberish,
-      maxFeePerGas_: BigNumberish,
-      maxSubmissionCost_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      data_: BytesLike,
+      overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
     claim(
@@ -463,18 +601,51 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: PayableOverrides & { from?: string }
     ): Promise<ContractTransaction>;
 
+    claimReferrerTier(
+      poolId_: BigNumberish,
+      receiver_: string,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
     createPool(
-      pool_: IDistribution.PoolStruct,
+      pool_: IDistributionV5.PoolStruct,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
     depositToken(overrides?: CallOverrides): Promise<[string]>;
 
-    editPool(
+    editPoolLimits(
       poolId_: BigNumberish,
-      pool_: IDistribution.PoolStruct,
+      poolLimits_: IDistributionV5.PoolLimitsStruct,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
+
+    editReferrerTiers(
+      poolId_: BigNumberish,
+      referrerTiers_: IDistributionV5.ReferrerTierStruct[],
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
+
+    feeConfig(overrides?: CallOverrides): Promise<[string]>;
+
+    getClaimLockPeriodMultiplier(
+      poolId_: BigNumberish,
+      claimLockStart_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getCurrentReferrerReward(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getCurrentUserMultiplier(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getCurrentUserReward(
       poolId_: BigNumberish,
@@ -489,14 +660,26 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    isNotUpgradeable(overrides?: CallOverrides): Promise<[boolean]>;
+    getReferrerMultiplier(
+      poolId_: BigNumberish,
+      referrer_: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     l1Sender(overrides?: CallOverrides): Promise<[string]>;
+
+    lockClaim(
+      poolId_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<ContractTransaction>;
 
     manageUsersInPrivatePool(
       poolId_: BigNumberish,
       users_: string[],
       amounts_: BigNumberish[],
+      claimLockEnds_: BigNumberish[],
+      referrers_: string[],
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -538,15 +721,41 @@ export interface ERC1967Proxy extends BaseContract {
       [BigNumber, BigNumber, BigNumber] & {
         lastUpdate: BigNumber;
         rate: BigNumber;
-        totalDeposited: BigNumber;
+        totalVirtualDeposited: BigNumber;
       }
     >;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
+    poolsLimits(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & {
+        claimLockPeriodAfterStake: BigNumber;
+        claimLockPeriodAfterClaim: BigNumber;
+      }
+    >;
 
-    removeUpgradeability(
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
+    referrerTiers(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { amount: BigNumber; multiplier: BigNumber }
+    >;
+
+    referrersData(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        amountStaked: BigNumber;
+        virtualAmountStaked: BigNumber;
+        rate: BigNumber;
+        pendingRewards: BigNumber;
+        lastClaim: BigNumber;
+      }
+    >;
 
     renounceOwnership(
       overrides?: Overrides & { from?: string }
@@ -555,6 +764,8 @@ export interface ERC1967Proxy extends BaseContract {
     stake(
       poolId_: BigNumberish,
       amount_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      referrer_: string,
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
@@ -567,29 +778,35 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<ContractTransaction>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string }
-    ): Promise<ContractTransaction>;
-
     usersData(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string
+      ] & {
         lastStake: BigNumber;
         deposited: BigNumber;
         rate: BigNumber;
         pendingRewards: BigNumber;
+        claimLockStart: BigNumber;
+        claimLockEnd: BigNumber;
+        virtualDeposited: BigNumber;
+        lastClaim: BigNumber;
+        referrer: string;
       }
     >;
+
+    version(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     withdraw(
       poolId_: BigNumberish,
@@ -598,18 +815,18 @@ export interface ERC1967Proxy extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
-  Distribution_init(
+  DistributionToBaseV5_init(
     depositToken_: string,
     l1Sender_: string,
-    poolsInfo_: IDistribution.PoolStruct[],
+    feeConfig_: string,
+    poolsInfo_: IDistributionV5.PoolStruct[],
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
   bridgeOverplus(
     gasLimit_: BigNumberish,
-    maxFeePerGas_: BigNumberish,
-    maxSubmissionCost_: BigNumberish,
-    overrides?: PayableOverrides & { from?: string }
+    data_: BytesLike,
+    overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
   claim(
@@ -618,18 +835,51 @@ export interface ERC1967Proxy extends BaseContract {
     overrides?: PayableOverrides & { from?: string }
   ): Promise<ContractTransaction>;
 
+  claimReferrerTier(
+    poolId_: BigNumberish,
+    receiver_: string,
+    overrides?: PayableOverrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
   createPool(
-    pool_: IDistribution.PoolStruct,
+    pool_: IDistributionV5.PoolStruct,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
   depositToken(overrides?: CallOverrides): Promise<string>;
 
-  editPool(
+  editPoolLimits(
     poolId_: BigNumberish,
-    pool_: IDistribution.PoolStruct,
+    poolLimits_: IDistributionV5.PoolLimitsStruct,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
+
+  editReferrerTiers(
+    poolId_: BigNumberish,
+    referrerTiers_: IDistributionV5.ReferrerTierStruct[],
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
+
+  feeConfig(overrides?: CallOverrides): Promise<string>;
+
+  getClaimLockPeriodMultiplier(
+    poolId_: BigNumberish,
+    claimLockStart_: BigNumberish,
+    claimLockEnd_: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getCurrentReferrerReward(
+    poolId_: BigNumberish,
+    user_: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getCurrentUserMultiplier(
+    poolId_: BigNumberish,
+    user_: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getCurrentUserReward(
     poolId_: BigNumberish,
@@ -644,14 +894,26 @@ export interface ERC1967Proxy extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  isNotUpgradeable(overrides?: CallOverrides): Promise<boolean>;
+  getReferrerMultiplier(
+    poolId_: BigNumberish,
+    referrer_: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   l1Sender(overrides?: CallOverrides): Promise<string>;
+
+  lockClaim(
+    poolId_: BigNumberish,
+    claimLockEnd_: BigNumberish,
+    overrides?: Overrides & { from?: string }
+  ): Promise<ContractTransaction>;
 
   manageUsersInPrivatePool(
     poolId_: BigNumberish,
     users_: string[],
     amounts_: BigNumberish[],
+    claimLockEnds_: BigNumberish[],
+    referrers_: string[],
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -693,15 +955,41 @@ export interface ERC1967Proxy extends BaseContract {
     [BigNumber, BigNumber, BigNumber] & {
       lastUpdate: BigNumber;
       rate: BigNumber;
-      totalDeposited: BigNumber;
+      totalVirtualDeposited: BigNumber;
     }
   >;
 
-  proxiableUUID(overrides?: CallOverrides): Promise<string>;
+  poolsLimits(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber] & {
+      claimLockPeriodAfterStake: BigNumber;
+      claimLockPeriodAfterClaim: BigNumber;
+    }
+  >;
 
-  removeUpgradeability(
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
+  referrerTiers(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber] & { amount: BigNumber; multiplier: BigNumber }
+  >;
+
+  referrersData(
+    arg0: string,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+      amountStaked: BigNumber;
+      virtualAmountStaked: BigNumber;
+      rate: BigNumber;
+      pendingRewards: BigNumber;
+      lastClaim: BigNumber;
+    }
+  >;
 
   renounceOwnership(
     overrides?: Overrides & { from?: string }
@@ -710,6 +998,8 @@ export interface ERC1967Proxy extends BaseContract {
   stake(
     poolId_: BigNumberish,
     amount_: BigNumberish,
+    claimLockEnd_: BigNumberish,
+    referrer_: string,
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
@@ -720,29 +1010,35 @@ export interface ERC1967Proxy extends BaseContract {
     overrides?: Overrides & { from?: string }
   ): Promise<ContractTransaction>;
 
-  upgradeTo(
-    newImplementation: string,
-    overrides?: Overrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
-  upgradeToAndCall(
-    newImplementation: string,
-    data: BytesLike,
-    overrides?: PayableOverrides & { from?: string }
-  ): Promise<ContractTransaction>;
-
   usersData(
     arg0: string,
     arg1: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, BigNumber, BigNumber, BigNumber] & {
+    [
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      BigNumber,
+      string
+    ] & {
       lastStake: BigNumber;
       deposited: BigNumber;
       rate: BigNumber;
       pendingRewards: BigNumber;
+      claimLockStart: BigNumber;
+      claimLockEnd: BigNumber;
+      virtualDeposited: BigNumber;
+      lastClaim: BigNumber;
+      referrer: string;
     }
   >;
+
+  version(overrides?: CallOverrides): Promise<BigNumber>;
 
   withdraw(
     poolId_: BigNumberish,
@@ -751,19 +1047,19 @@ export interface ERC1967Proxy extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    Distribution_init(
+    DistributionToBaseV5_init(
       depositToken_: string,
       l1Sender_: string,
-      poolsInfo_: IDistribution.PoolStruct[],
+      feeConfig_: string,
+      poolsInfo_: IDistributionV5.PoolStruct[],
       overrides?: CallOverrides
     ): Promise<void>;
 
     bridgeOverplus(
       gasLimit_: BigNumberish,
-      maxFeePerGas_: BigNumberish,
-      maxSubmissionCost_: BigNumberish,
+      data_: BytesLike,
       overrides?: CallOverrides
-    ): Promise<string>;
+    ): Promise<void>;
 
     claim(
       poolId_: BigNumberish,
@@ -771,18 +1067,51 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    claimReferrerTier(
+      poolId_: BigNumberish,
+      receiver_: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     createPool(
-      pool_: IDistribution.PoolStruct,
+      pool_: IDistributionV5.PoolStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
     depositToken(overrides?: CallOverrides): Promise<string>;
 
-    editPool(
+    editPoolLimits(
       poolId_: BigNumberish,
-      pool_: IDistribution.PoolStruct,
+      poolLimits_: IDistributionV5.PoolLimitsStruct,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    editReferrerTiers(
+      poolId_: BigNumberish,
+      referrerTiers_: IDistributionV5.ReferrerTierStruct[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    feeConfig(overrides?: CallOverrides): Promise<string>;
+
+    getClaimLockPeriodMultiplier(
+      poolId_: BigNumberish,
+      claimLockStart_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentReferrerReward(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentUserMultiplier(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getCurrentUserReward(
       poolId_: BigNumberish,
@@ -797,14 +1126,26 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    isNotUpgradeable(overrides?: CallOverrides): Promise<boolean>;
+    getReferrerMultiplier(
+      poolId_: BigNumberish,
+      referrer_: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     l1Sender(overrides?: CallOverrides): Promise<string>;
+
+    lockClaim(
+      poolId_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     manageUsersInPrivatePool(
       poolId_: BigNumberish,
       users_: string[],
       amounts_: BigNumberish[],
+      claimLockEnds_: BigNumberish[],
+      referrers_: string[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -846,19 +1187,49 @@ export interface ERC1967Proxy extends BaseContract {
       [BigNumber, BigNumber, BigNumber] & {
         lastUpdate: BigNumber;
         rate: BigNumber;
-        totalDeposited: BigNumber;
+        totalVirtualDeposited: BigNumber;
       }
     >;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<string>;
+    poolsLimits(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & {
+        claimLockPeriodAfterStake: BigNumber;
+        claimLockPeriodAfterClaim: BigNumber;
+      }
+    >;
 
-    removeUpgradeability(overrides?: CallOverrides): Promise<void>;
+    referrerTiers(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber] & { amount: BigNumber; multiplier: BigNumber }
+    >;
+
+    referrersData(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+        amountStaked: BigNumber;
+        virtualAmountStaked: BigNumber;
+        rate: BigNumber;
+        pendingRewards: BigNumber;
+        lastClaim: BigNumber;
+      }
+    >;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     stake(
       poolId_: BigNumberish,
       amount_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      referrer_: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -869,29 +1240,35 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     usersData(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, BigNumber, BigNumber, BigNumber] & {
+      [
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        BigNumber,
+        string
+      ] & {
         lastStake: BigNumber;
         deposited: BigNumber;
         rate: BigNumber;
         pendingRewards: BigNumber;
+        claimLockStart: BigNumber;
+        claimLockEnd: BigNumber;
+        virtualDeposited: BigNumber;
+        lastClaim: BigNumber;
+        referrer: string;
       }
     >;
+
+    version(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdraw(
       poolId_: BigNumberish,
@@ -901,28 +1278,26 @@ export interface ERC1967Proxy extends BaseContract {
   };
 
   filters: {
-    "AdminChanged(address,address)"(
-      previousAdmin?: null,
-      newAdmin?: null
-    ): AdminChangedEventFilter;
-    AdminChanged(
-      previousAdmin?: null,
-      newAdmin?: null
-    ): AdminChangedEventFilter;
-
-    "BeaconUpgraded(address)"(
-      beacon?: string | null
-    ): BeaconUpgradedEventFilter;
-    BeaconUpgraded(beacon?: string | null): BeaconUpgradedEventFilter;
-
     "Initialized(uint8)"(version?: null): InitializedEventFilter;
     Initialized(version?: null): InitializedEventFilter;
 
-    "OverplusBridged(uint256,bytes)"(
+    "OverplusBridgedToArb(uint256,bytes)"(
       amount?: null,
       uniqueId?: null
-    ): OverplusBridgedEventFilter;
-    OverplusBridged(amount?: null, uniqueId?: null): OverplusBridgedEventFilter;
+    ): OverplusBridgedToArbEventFilter;
+    OverplusBridgedToArb(
+      amount?: null,
+      uniqueId?: null
+    ): OverplusBridgedToArbEventFilter;
+
+    "OverplusBridgedToBase(uint256,bytes)"(
+      amount?: null,
+      bridgeData_?: null
+    ): OverplusBridgedToBaseEventFilter;
+    OverplusBridgedToBase(
+      amount?: null,
+      bridgeData_?: null
+    ): OverplusBridgedToBaseEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
@@ -951,8 +1326,49 @@ export interface ERC1967Proxy extends BaseContract {
       pool?: null
     ): PoolEditedEventFilter;
 
-    "Upgraded(address)"(implementation?: string | null): UpgradedEventFilter;
-    Upgraded(implementation?: string | null): UpgradedEventFilter;
+    "PoolLimitsEdited(uint256,(uint128,uint128))"(
+      poolId?: BigNumberish | null,
+      poolLimit?: null
+    ): PoolLimitsEditedEventFilter;
+    PoolLimitsEdited(
+      poolId?: BigNumberish | null,
+      poolLimit?: null
+    ): PoolLimitsEditedEventFilter;
+
+    "ReferrerClaimed(uint256,address,address,uint256)"(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      receiver?: null,
+      amount?: null
+    ): ReferrerClaimedEventFilter;
+    ReferrerClaimed(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      receiver?: null,
+      amount?: null
+    ): ReferrerClaimedEventFilter;
+
+    "ReferrerTiersEdited(uint256,(uint256,uint256)[])"(
+      poolId?: BigNumberish | null,
+      tiers?: null
+    ): ReferrerTiersEditedEventFilter;
+    ReferrerTiersEdited(
+      poolId?: BigNumberish | null,
+      tiers?: null
+    ): ReferrerTiersEditedEventFilter;
+
+    "UserClaimLocked(uint256,address,uint128,uint128)"(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      claimLockStart?: null,
+      claimLockEnd?: null
+    ): UserClaimLockedEventFilter;
+    UserClaimLocked(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      claimLockStart?: null,
+      claimLockEnd?: null
+    ): UserClaimLockedEventFilter;
 
     "UserClaimed(uint256,address,address,uint256)"(
       poolId?: BigNumberish | null,
@@ -966,6 +1382,19 @@ export interface ERC1967Proxy extends BaseContract {
       receiver?: null,
       amount?: null
     ): UserClaimedEventFilter;
+
+    "UserReferred(uint256,address,address,uint256)"(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      referrer?: string | null,
+      amount?: null
+    ): UserReferredEventFilter;
+    UserReferred(
+      poolId?: BigNumberish | null,
+      user?: string | null,
+      referrer?: string | null,
+      amount?: null
+    ): UserReferredEventFilter;
 
     "UserStaked(uint256,address,uint256)"(
       poolId?: BigNumberish | null,
@@ -991,18 +1420,18 @@ export interface ERC1967Proxy extends BaseContract {
   };
 
   estimateGas: {
-    Distribution_init(
+    DistributionToBaseV5_init(
       depositToken_: string,
       l1Sender_: string,
-      poolsInfo_: IDistribution.PoolStruct[],
+      feeConfig_: string,
+      poolsInfo_: IDistributionV5.PoolStruct[],
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     bridgeOverplus(
       gasLimit_: BigNumberish,
-      maxFeePerGas_: BigNumberish,
-      maxSubmissionCost_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      data_: BytesLike,
+      overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     claim(
@@ -1011,17 +1440,50 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: PayableOverrides & { from?: string }
     ): Promise<BigNumber>;
 
+    claimReferrerTier(
+      poolId_: BigNumberish,
+      receiver_: string,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<BigNumber>;
+
     createPool(
-      pool_: IDistribution.PoolStruct,
+      pool_: IDistributionV5.PoolStruct,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
     depositToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-    editPool(
+    editPoolLimits(
       poolId_: BigNumberish,
-      pool_: IDistribution.PoolStruct,
+      poolLimits_: IDistributionV5.PoolLimitsStruct,
       overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    editReferrerTiers(
+      poolId_: BigNumberish,
+      referrerTiers_: IDistributionV5.ReferrerTierStruct[],
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
+
+    feeConfig(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getClaimLockPeriodMultiplier(
+      poolId_: BigNumberish,
+      claimLockStart_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentReferrerReward(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getCurrentUserMultiplier(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getCurrentUserReward(
@@ -1037,14 +1499,26 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    isNotUpgradeable(overrides?: CallOverrides): Promise<BigNumber>;
+    getReferrerMultiplier(
+      poolId_: BigNumberish,
+      referrer_: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     l1Sender(overrides?: CallOverrides): Promise<BigNumber>;
+
+    lockClaim(
+      poolId_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<BigNumber>;
 
     manageUsersInPrivatePool(
       poolId_: BigNumberish,
       users_: string[],
       amounts_: BigNumberish[],
+      claimLockEnds_: BigNumberish[],
+      referrers_: string[],
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1059,10 +1533,21 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
+    poolsLimits(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    removeUpgradeability(
-      overrides?: Overrides & { from?: string }
+    referrerTiers(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    referrersData(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     renounceOwnership(
@@ -1072,6 +1557,8 @@ export interface ERC1967Proxy extends BaseContract {
     stake(
       poolId_: BigNumberish,
       amount_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      referrer_: string,
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
@@ -1082,22 +1569,13 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<BigNumber>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<BigNumber>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string }
-    ): Promise<BigNumber>;
-
     usersData(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    version(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdraw(
       poolId_: BigNumberish,
@@ -1107,18 +1585,18 @@ export interface ERC1967Proxy extends BaseContract {
   };
 
   populateTransaction: {
-    Distribution_init(
+    DistributionToBaseV5_init(
       depositToken_: string,
       l1Sender_: string,
-      poolsInfo_: IDistribution.PoolStruct[],
+      feeConfig_: string,
+      poolsInfo_: IDistributionV5.PoolStruct[],
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     bridgeOverplus(
       gasLimit_: BigNumberish,
-      maxFeePerGas_: BigNumberish,
-      maxSubmissionCost_: BigNumberish,
-      overrides?: PayableOverrides & { from?: string }
+      data_: BytesLike,
+      overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     claim(
@@ -1127,17 +1605,50 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: PayableOverrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
+    claimReferrerTier(
+      poolId_: BigNumberish,
+      receiver_: string,
+      overrides?: PayableOverrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
     createPool(
-      pool_: IDistribution.PoolStruct,
+      pool_: IDistributionV5.PoolStruct,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
     depositToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    editPool(
+    editPoolLimits(
       poolId_: BigNumberish,
-      pool_: IDistribution.PoolStruct,
+      poolLimits_: IDistributionV5.PoolLimitsStruct,
       overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    editReferrerTiers(
+      poolId_: BigNumberish,
+      referrerTiers_: IDistributionV5.ReferrerTierStruct[],
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
+
+    feeConfig(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getClaimLockPeriodMultiplier(
+      poolId_: BigNumberish,
+      claimLockStart_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getCurrentReferrerReward(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getCurrentUserMultiplier(
+      poolId_: BigNumberish,
+      user_: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getCurrentUserReward(
@@ -1153,14 +1664,26 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    isNotUpgradeable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getReferrerMultiplier(
+      poolId_: BigNumberish,
+      referrer_: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     l1Sender(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    lockClaim(
+      poolId_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      overrides?: Overrides & { from?: string }
+    ): Promise<PopulatedTransaction>;
 
     manageUsersInPrivatePool(
       poolId_: BigNumberish,
       users_: string[],
       amounts_: BigNumberish[],
+      claimLockEnds_: BigNumberish[],
+      referrers_: string[],
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -1178,10 +1701,21 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    poolsLimits(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    removeUpgradeability(
-      overrides?: Overrides & { from?: string }
+    referrerTiers(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    referrersData(
+      arg0: string,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
@@ -1191,6 +1725,8 @@ export interface ERC1967Proxy extends BaseContract {
     stake(
       poolId_: BigNumberish,
       amount_: BigNumberish,
+      claimLockEnd_: BigNumberish,
+      referrer_: string,
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
@@ -1203,22 +1739,13 @@ export interface ERC1967Proxy extends BaseContract {
       overrides?: Overrides & { from?: string }
     ): Promise<PopulatedTransaction>;
 
-    upgradeTo(
-      newImplementation: string,
-      overrides?: Overrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
-    upgradeToAndCall(
-      newImplementation: string,
-      data: BytesLike,
-      overrides?: PayableOverrides & { from?: string }
-    ): Promise<PopulatedTransaction>;
-
     usersData(
       arg0: string,
       arg1: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    version(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     withdraw(
       poolId_: BigNumberish,

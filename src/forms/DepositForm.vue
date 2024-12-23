@@ -221,10 +221,16 @@ const submit = async (action: ACTIONS): Promise<void> => {
       tx = await approveByCurrency(balanceOfForm.value.value.currency)
     } else {
       const amountInDecimals = parseUnits(form.amount, 'ether')
+      // FIXME: claimLockEnd_ is (uint128)
+      const claimLockEnd_ = 0
+      // referrer 
+      const referrer = '0x0000000000000000000000000000000000000000'
       tx =
         await web3ProvidersStore.erc1967ProxyContract.signerBased.value.stake(
           props.poolId,
           amountInDecimals,
+          claimLockEnd_,
+          referrer,
         )
       emit('stake-tx-sent')
     }

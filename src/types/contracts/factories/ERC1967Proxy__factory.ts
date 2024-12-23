@@ -17,38 +17,6 @@ const _abi = [
     inputs: [
       {
         indexed: false,
-        internalType: "address",
-        name: "previousAdmin",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "newAdmin",
-        type: "address",
-      },
-    ],
-    name: "AdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "beacon",
-        type: "address",
-      },
-    ],
-    name: "BeaconUpgraded",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: "uint8",
         name: "version",
         type: "uint8",
@@ -73,7 +41,26 @@ const _abi = [
         type: "bytes",
       },
     ],
-    name: "OverplusBridged",
+    name: "OverplusBridgedToArb",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bytes",
+        name: "bridgeData_",
+        type: "bytes",
+      },
+    ],
+    name: "OverplusBridgedToBase",
     type: "event",
   },
   {
@@ -153,7 +140,7 @@ const _abi = [
           },
         ],
         indexed: false,
-        internalType: "struct IDistribution.Pool",
+        internalType: "struct IDistributionV5.Pool",
         name: "pool",
         type: "tuple",
       },
@@ -219,7 +206,7 @@ const _abi = [
           },
         ],
         indexed: false,
-        internalType: "struct IDistribution.Pool",
+        internalType: "struct IDistributionV5.Pool",
         name: "pool",
         type: "tuple",
       },
@@ -232,12 +219,123 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "implementation",
-        type: "address",
+        internalType: "uint256",
+        name: "poolId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint128",
+            name: "claimLockPeriodAfterStake",
+            type: "uint128",
+          },
+          {
+            internalType: "uint128",
+            name: "claimLockPeriodAfterClaim",
+            type: "uint128",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IDistributionV5.PoolLimits",
+        name: "poolLimit",
+        type: "tuple",
       },
     ],
-    name: "Upgraded",
+    name: "PoolLimitsEdited",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "poolId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "receiver",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "ReferrerClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "poolId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multiplier",
+            type: "uint256",
+          },
+        ],
+        indexed: false,
+        internalType: "struct IDistributionV5.ReferrerTier[]",
+        name: "tiers",
+        type: "tuple[]",
+      },
+    ],
+    name: "ReferrerTiersEdited",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "poolId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint128",
+        name: "claimLockStart",
+        type: "uint128",
+      },
+      {
+        indexed: false,
+        internalType: "uint128",
+        name: "claimLockEnd",
+        type: "uint128",
+      },
+    ],
+    name: "UserClaimLocked",
     type: "event",
   },
   {
@@ -269,6 +367,37 @@ const _abi = [
       },
     ],
     name: "UserClaimed",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "poolId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "user",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "referrer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "UserReferred",
     type: "event",
   },
   {
@@ -334,6 +463,11 @@ const _abi = [
         type: "address",
       },
       {
+        internalType: "address",
+        name: "feeConfig_",
+        type: "address",
+      },
+      {
         components: [
           {
             internalType: "uint128",
@@ -381,12 +515,12 @@ const _abi = [
             type: "bool",
           },
         ],
-        internalType: "struct IDistribution.Pool[]",
+        internalType: "struct IDistributionV5.Pool[]",
         name: "poolsInfo_",
         type: "tuple[]",
       },
     ],
-    name: "Distribution_init",
+    name: "DistributionToBaseV5_init",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -394,30 +528,19 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
+        internalType: "uint24",
         name: "gasLimit_",
-        type: "uint256",
+        type: "uint24",
       },
-      {
-        internalType: "uint256",
-        name: "maxFeePerGas_",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "maxSubmissionCost_",
-        type: "uint256",
-      },
-    ],
-    name: "bridgeOverplus",
-    outputs: [
       {
         internalType: "bytes",
-        name: "",
+        name: "data_",
         type: "bytes",
       },
     ],
-    stateMutability: "payable",
+    name: "bridgeOverplus",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -441,6 +564,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "receiver_",
+        type: "address",
+      },
+    ],
+    name: "claimReferrerTier",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         components: [
           {
             internalType: "uint128",
@@ -488,7 +629,7 @@ const _abi = [
             type: "bool",
           },
         ],
-        internalType: "struct IDistribution.Pool",
+        internalType: "struct IDistributionV5.Pool",
         name: "pool_",
         type: "tuple",
       },
@@ -522,58 +663,143 @@ const _abi = [
         components: [
           {
             internalType: "uint128",
-            name: "payoutStart",
+            name: "claimLockPeriodAfterStake",
             type: "uint128",
           },
           {
             internalType: "uint128",
-            name: "decreaseInterval",
+            name: "claimLockPeriodAfterClaim",
             type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "withdrawLockPeriod",
-            type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "claimLockPeriod",
-            type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "withdrawLockPeriodAfterStake",
-            type: "uint128",
-          },
-          {
-            internalType: "uint256",
-            name: "initialReward",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "rewardDecrease",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "minimalStake",
-            type: "uint256",
-          },
-          {
-            internalType: "bool",
-            name: "isPublic",
-            type: "bool",
           },
         ],
-        internalType: "struct IDistribution.Pool",
-        name: "pool_",
+        internalType: "struct IDistributionV5.PoolLimits",
+        name: "poolLimits_",
         type: "tuple",
       },
     ],
-    name: "editPool",
+    name: "editPoolLimits",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multiplier",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct IDistributionV5.ReferrerTier[]",
+        name: "referrerTiers_",
+        type: "tuple[]",
+      },
+    ],
+    name: "editReferrerTiers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "feeConfig",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        internalType: "uint128",
+        name: "claimLockStart_",
+        type: "uint128",
+      },
+      {
+        internalType: "uint128",
+        name: "claimLockEnd_",
+        type: "uint128",
+      },
+    ],
+    name: "getClaimLockPeriodMultiplier",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "user_",
+        type: "address",
+      },
+    ],
+    name: "getCurrentReferrerReward",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "user_",
+        type: "address",
+      },
+    ],
+    name: "getCurrentUserMultiplier",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -630,13 +856,24 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "isNotUpgradeable",
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "referrer_",
+        type: "address",
+      },
+    ],
+    name: "getReferrerMultiplier",
     outputs: [
       {
-        internalType: "bool",
+        internalType: "uint256",
         name: "",
-        type: "bool",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -663,6 +900,24 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "uint128",
+        name: "claimLockEnd_",
+        type: "uint128",
+      },
+    ],
+    name: "lockClaim",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "poolId_",
+        type: "uint256",
+      },
+      {
         internalType: "address[]",
         name: "users_",
         type: "address[]",
@@ -671,6 +926,16 @@ const _abi = [
         internalType: "uint256[]",
         name: "amounts_",
         type: "uint256[]",
+      },
+      {
+        internalType: "uint128[]",
+        name: "claimLockEnds_",
+        type: "uint128[]",
+      },
+      {
+        internalType: "address[]",
+        name: "referrers_",
+        type: "address[]",
       },
     ],
     name: "manageUsersInPrivatePool",
@@ -785,7 +1050,7 @@ const _abi = [
       },
       {
         internalType: "uint256",
-        name: "totalDeposited",
+        name: "totalVirtualDeposited",
         type: "uint256",
       },
     ],
@@ -793,23 +1058,100 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "proxiableUUID",
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "poolsLimits",
     outputs: [
       {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
+        internalType: "uint128",
+        name: "claimLockPeriodAfterStake",
+        type: "uint128",
+      },
+      {
+        internalType: "uint128",
+        name: "claimLockPeriodAfterClaim",
+        type: "uint128",
       },
     ],
     stateMutability: "view",
     type: "function",
   },
   {
-    inputs: [],
-    name: "removeUpgradeability",
-    outputs: [],
-    stateMutability: "nonpayable",
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "referrerTiers",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "multiplier",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "referrersData",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "amountStaked",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "virtualAmountStaked",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "rate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "pendingRewards",
+        type: "uint256",
+      },
+      {
+        internalType: "uint128",
+        name: "lastClaim",
+        type: "uint128",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -830,6 +1172,16 @@ const _abi = [
         internalType: "uint256",
         name: "amount_",
         type: "uint256",
+      },
+      {
+        internalType: "uint128",
+        name: "claimLockEnd_",
+        type: "uint128",
+      },
+      {
+        internalType: "address",
+        name: "referrer_",
+        type: "address",
       },
     ],
     name: "stake",
@@ -867,37 +1219,6 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
-    ],
-    name: "upgradeTo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
-      {
-        internalType: "bytes",
-        name: "data",
-        type: "bytes",
-      },
-    ],
-    name: "upgradeToAndCall",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "",
         type: "address",
       },
@@ -929,8 +1250,46 @@ const _abi = [
         name: "pendingRewards",
         type: "uint256",
       },
+      {
+        internalType: "uint128",
+        name: "claimLockStart",
+        type: "uint128",
+      },
+      {
+        internalType: "uint128",
+        name: "claimLockEnd",
+        type: "uint128",
+      },
+      {
+        internalType: "uint256",
+        name: "virtualDeposited",
+        type: "uint256",
+      },
+      {
+        internalType: "uint128",
+        name: "lastClaim",
+        type: "uint128",
+      },
+      {
+        internalType: "address",
+        name: "referrer",
+        type: "address",
+      },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "version",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
   {

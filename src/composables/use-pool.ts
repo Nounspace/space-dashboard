@@ -51,13 +51,13 @@ export const usePool = (poolId: number) => {
 
     return userPoolData.value.lastStake.isZero()
       ? currentTimestamp.value <=
-          poolData.value.payoutStart
-            .add(poolData.value.withdrawLockPeriod)
-            .toNumber()
+      poolData.value.payoutStart
+        .add(poolData.value.withdrawLockPeriod)
+        .toNumber()
       : currentTimestamp.value <=
-          userPoolData.value.lastStake
-            .add(poolData.value.withdrawLockPeriodAfterStake)
-            .toNumber()
+      userPoolData.value.lastStake
+        .add(poolData.value.withdrawLockPeriodAfterStake)
+        .toNumber()
   })
 
   const currentTimestampMs = useTimestamp()
@@ -109,7 +109,7 @@ export const usePool = (poolId: number) => {
 
     const intervalsCount = Math.floor(
       (currentTimestamp.value - payoutStartTimestamp) /
-        poolData.value.decreaseInterval.toNumber(),
+      poolData.value.decreaseInterval.toNumber(),
     )
 
     return poolData.value.initialReward.sub(
@@ -135,7 +135,7 @@ export const usePool = (poolId: number) => {
       rate: poolDataResponses[0].rate,
       payoutStart: poolDataResponses[1].payoutStart,
       rewardDecrease: poolDataResponses[1].rewardDecrease,
-      totalDeposited: poolDataResponses[0].totalDeposited,
+      totalDeposited: poolDataResponses[0].totalVirtualDeposited,
       stEThPriceInUsd: poolDataResponses[2] || 0,
       spacePriceInUsd: poolDataResponses[3] || 0,
       withdrawLockPeriod: poolDataResponses[1].withdrawLockPeriod,
