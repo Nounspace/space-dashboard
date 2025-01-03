@@ -6,7 +6,7 @@
       <!-- Button Section -->
       <div class="button-container">
         <SpaceButton
-          title="Check or Claim $SPACE Drop 2"
+          title="Check or Claim $SPACE Drop 3"
           buttonClass="space-drop-button"
           @click="isClaimSpaceModalShown = true"
         />
