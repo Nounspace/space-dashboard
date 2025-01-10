@@ -64,9 +64,10 @@ $z-index: 1000;
   gap: toRem(8);
 }
 
+/* 40% smaller from 24 => ~14 */
 .app-navbar__base-icon {
-  width: toRem(24);
-  height: toRem(24);
+  width: toRem(14);
+  height: toRem(14);
   cursor: pointer;
 }
 
