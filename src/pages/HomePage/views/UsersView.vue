@@ -5,16 +5,9 @@
       <TextBar />
       <!-- Button Section -->
       <div class="button-container">
-        <SpaceButton
-          title="Check or Claim $SPACE Drop 3"
-          buttonClass="space-drop-button"
-          @click="isClaimSpaceModalShown = true"
-        />
-        <SpaceButton
-          title="Mint nOGs"
-          buttonClass="mint-nogs-button"
-          @click="isMintNogsModalShown = true"
-        />
+        <SpaceButton title="Check or Claim $SPACE Drop 3" buttonClass="space-drop-button"
+          @click="isClaimSpaceModalShown = true" />
+        <SpaceButton title="Mint nOGs" buttonClass="mint-nogs-button" @click="isMintNogsModalShown = true" />
       </div>
       <!-- Container for MintNogsContainer and TipContainer -->
       <div class="container-flex side-by-side">
@@ -23,27 +16,17 @@
       </div>
       <!-- Inline Tab Buttons to select leaderboard season -->
       <div class="tabs-container">
-        <button :class="{ active: activeTab === 0 }" @click="activeTab = 0">Season 3</button>
-        <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Season 2</button>
-        <button :class="{ active: activeTab === 2 }" @click="activeTab = 2">Season 1</button>
+        <button :class="{ active: activeTab === 0 }" @click="activeTab = 0">Season 4</button>
+        <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Season 3</button>
+        <button :class="{ active: activeTab === 2 }" @click="activeTab = 2">Season 2</button>
+        <button :class="{ active: activeTab === 3 }" @click="activeTab = 3">Season 1</button>
       </div>
       <!-- Center-aligned Leaderboard component based on activeTab -->
       <div class="leaderboard-wrapper">
-        <Leaderboard
-          v-if="activeTab === 0"
-          title="Leaderboard - Season 3"
-          :entries="season3Results"
-        />
-        <Leaderboard
-          v-if="activeTab === 1"
-          title="Leaderboard - Season 2"
-          :entries="season2Results"
-        />
-        <Leaderboard
-          v-if="activeTab === 2"
-          title="Leaderboard - Season 1"
-          :entries="season1Results"
-        />
+        <Leaderboard v-if="activeTab === 0" title="Leaderboard - Season 4" :entries="season4Results" />
+        <Leaderboard v-if="activeTab === 1" title="Leaderboard - Season 3" :entries="season3Results" />
+        <Leaderboard v-if="activeTab === 2" title="Leaderboard - Season 2" :entries="season2Results" />
+        <Leaderboard v-if="activeTab === 3" title="Leaderboard - Season 1" :entries="season1Results" />
       </div>
     </div>
     <ClaimSpaceModal v-model:is-shown="isClaimSpaceModalShown" />
@@ -53,12 +36,13 @@
 
 <script setup lang="ts">
 // Core Vue Imports
-import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeUnmount, Ref } from 'vue';
 
 // Store and JSON Imports
 import { useWeb3ProvidersStore } from '@/store';
 import season1ResultsData from '@/pages/HomePage/components/season1_results.json';
 import season2ResultsData from '@/pages/HomePage/components/season2_results.json';
+import season3ResultsData from '@/pages/HomePage/components/season3_results.json';
 // Component Imports
 import TextBar from '../components/TextBar.vue';
 import SpaceButton from '../components/SpaceButton.vue';
@@ -81,6 +65,8 @@ const leaderboard = ref<User[]>([]);
 const adjustedSeason2Results = ref<User[]>([]);
 const season1Results = ref<User[]>(season1ResultsData.data || []);
 const season2Results = ref<User[]>(season2ResultsData.data || []);
+const season3Results = ref<User[]>(season3ResultsData.data || []);
+const season4Results = ref<User[]>([]);
 
 const web3ProvidersStore = useWeb3ProvidersStore();
 const totalSpace = ref(0);
@@ -94,9 +80,9 @@ const formattedTotalSpace = computed(() => {
   return formatted;
 });
 
-function showMintNogsModal() {
-  isMintNogsModalShown.value = true;
-}
+// function showMintNogsModal() {
+//   isMintNogsModalShown.value = true;
+// }
 
 watch(() => web3ProvidersStore.isConnected, (isConnected) => {
   if (isConnected) {
@@ -112,39 +98,27 @@ watch(ethAddress, (newAddress) => {
   }
 });
 
-// Fetch Season 1 results from JSON
-async function fetchSeason1Results(): Promise<Map<string, number>> {
+// Master function to fetch season results from JSON
+async function fetchSeasonResults(seasonResults: Ref<User[]>): Promise<Map<string, number>> {
   return new Promise((resolve) => {
-    if (!Array.isArray(season1Results.value)) {
-      console.error("Season 1 Results is not an array:", season1Results.value);
+    if (!Array.isArray(seasonResults.value)) {
+      console.error("Season Results is not an array:", seasonResults.value);
       resolve(new Map<string, number>());
       return;
     }
-    const season1Map = new Map(
-      season1Results.value.map((user) => [user.username, user.amount_received])
+    const seasonMap = new Map<string, number>(
+      seasonResults.value.map((user: User) => [user.username, user.amount_received])
     );
-    resolve(season1Map);
+    resolve(seasonMap);
   });
 }
 
-
-
-const season3Results = ref<{ username: string; display_name: string; amount_received: number; pfp_url: string; }[]>([]);
-
-
-// lets just fetch season2data and prepare it instead of using a calculating function, lets use the json file 
-async function fetchSeason2Results(): Promise<Map<string, number>> {
-  return new Promise((resolve) => {
-    if (!Array.isArray(season2Results.value)) {
-      console.error("Season 2 Results is not an array:", season2Results.value);
-      resolve(new Map<string, number>());
-      return;
-    }
-    const season2Map = new Map(
-      season2Results.value.map((user) => [user.username, user.amount_received])
-    );
-    resolve(season2Map);
-  });
+// Fetch results for all seasons
+async function fetchAllSeasonResults(): Promise<{ season1Map: Map<string, number>, season2Map: Map<string, number>, season3Map: Map<string, number> }> {
+  const season1Map = await fetchSeasonResults(season1Results);
+  const season2Map = await fetchSeasonResults(season2Results);
+  const season3Map = await fetchSeasonResults(season3Results);
+  return { season1Map, season2Map, season3Map };
 }
 
 async function fetchTotalSpace(ethAddress: string | null) {
@@ -169,7 +143,6 @@ async function fetchTotalSpace(ethAddress: string | null) {
     totalSpace.value = 0;
   }
 }
-
 
 // Fetch the leaderboard data (current totals)
 async function fetchLeaderboard() {
@@ -198,38 +171,39 @@ async function fetchLeaderboard() {
   }
 }
 
-// Calculate Season 3 results: lets get the total value of the leaderboard and then calculate the season 3 results by subtracting the season 2 results from the total value
-async function calculateSeason3results() {
-  const season1Map = await fetchSeason1Results();
-  const season2Map = await fetchSeason2Results();
-  const leaderboardMap = new Map(
-    leaderboard.value.map((user) => [user.username, user.amount_received])
+
+// Calculate Season 4 results
+async function calculateSeason4results() {
+  const { season1Map, season2Map, season3Map } = await fetchAllSeasonResults();
+  const leaderboardMap = new Map<string, number>(
+    leaderboard.value.map((user: User) => [user.username, user.amount_received])
   );
-  const season3Map = new Map<string, number>();
+  const season4Map = new Map<string, number>();
   leaderboardMap.forEach((total, username) => {
     const season1Total = season1Map.get(username) || 0;
     const season2Total = season2Map.get(username) || 0;
-    const season3Total = total - season1Total - season2Total;
-    season3Map.set(username, season3Total);
+    const season3Total = season3Map.get(username) || 0;
+    const season4Total = total - season1Total - season2Total - season3Total;
+    season4Map.set(username, season4Total);
   });
-  season3Results.value = leaderboard.value.map((user) => ({
+  season4Results.value = leaderboard.value.map((user) => ({
+    fid: user.fid,
     username: user.username,
     display_name: user.display_name,
-    amount_received: season3Map.get(user.username) || 0,
+    amount_received: season4Map.get(user.username) || 0,
     pfp_url: user.pfp_url,
+    ethAddress: user.ethAddress
   }));
 
   // filter users with 0 amount received
-  season3Results.value = season3Results.value.filter((user) => user.amount_received > 0);
+  season4Results.value = season4Results.value.filter((user) => user.amount_received > 0);
 }
-
-
 
 // Fetch leaderboard and compute results for all seasons
 async function fetchData() {
   await fetchLeaderboard(); // Fetch current totals
-  await fetchSeason2Results(); // Calculate Season 2 results
-  await calculateSeason3results(); // Derive Season 3 results
+  await fetchAllSeasonResults(); // Fetch results for all seasons
+  await calculateSeason4results(); // Derive Season 4 results
 }
 
 // On mount, fetch and calculate leaderboard data
@@ -238,9 +212,7 @@ onMounted(() => {
   if (web3ProvidersStore.isConnected && ethAddress.value) {
     fetchTotalSpace(ethAddress.value);
   }
-
 });
-
 
 onBeforeUnmount(() => {
   totalSpace.value = 0;

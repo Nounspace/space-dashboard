@@ -7,8 +7,10 @@
           <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to the nounspace DAO Treasury</p>
         </div>
         <div class="text-bar__description-wrp">
-          <p class="text-bar-description">$SPACE holders are empowered to allocate the DAO Treasury via governance. The DAO Treasury has admin power on
-            both the $SPACE Distribution contract as well as the User and Developer pools. oSnap, powered by UMA, enables $SPACE holders to execute transactions included in SnapShot proposals
+          <p class="text-bar-description">$SPACE holders are empowered to allocate the DAO Treasury via governance. The
+            DAO Treasury has admin power on
+            both the $SPACE Distribution contract as well as the User and Developer pools. oSnap, powered by UMA,
+            enables $SPACE holders to execute transactions included in SnapShot proposals
             autonomously. Initially the Based Space Foundation will manage the treasury via a 3/6 multisig, but the
             community has the power to update or remove the multisig at any point via governance.</p>
         </div>
@@ -29,7 +31,9 @@
             <span class="info-value">{{ formattedCurrentUserReward }} SPACE</span>
           </li>
           <li style="justify-content:flex-end;" class="info-item">
-            <a style="font-size:1rem;" class="textlink" href="https://basescan.org/address/0xa2654e8df46466b7bffD0CB97FB7dDEAb8D3f015" target="_blank">View on basescan</a>
+            <a style="font-size:1rem;" class="textlink"
+              href="https://basescan.org/address/0xa2654e8df46466b7bffD0CB97FB7dDEAb8D3f015" target="_blank">View on
+              basescan</a>
           </li>
         </ul>
       </div>
@@ -40,7 +44,8 @@
             <img src="../../../assets/discord.png" alt="Discord Logo" class="link-logo" />
             <span class="link-subtitle">Discord</span>
           </a>
-          <a href="https://app.charmverse.io/nounspace/nounspace-dao-8606384041973207" target="_blank" class="link-item">
+          <a href="https://app.charmverse.io/nounspace/nounspace-dao-8606384041973207" target="_blank"
+            class="link-item">
             <img src="../../../assets/charmverse.png" alt="Charmverse Logo" class="link-logo" />
             <span class="link-subtitle">Discuss</span>
           </a>
@@ -58,9 +63,9 @@
           </a>
         </div>
         <p class="container-description">
-          There may be opportunities to earn $SPACE for contributing to the nounspace ecosystem as a 
-          <a href="https://discord.com/invite/5garmexhxM" target="_blank">Community Member</a>, 
-          <a href="https://www.google.com">User</a>, or 
+          There may be opportunities to earn $SPACE for contributing to the nounspace ecosystem as a
+          <a href="https://discord.com/invite/5garmexhxM" target="_blank">Community Member</a>,
+          <a href="https://www.google.com">User</a>, or
           <a href="https://www.google.com">Developer</a>.
         </p>
       </div>
@@ -167,7 +172,8 @@ const formattedCurrentUserReward = computed(() => {
 
 <style lang="scss" scoped>
 .container-title {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   font-weight: 700;
   line-height: 1.2;
   text-align: left;
@@ -175,7 +181,8 @@ const formattedCurrentUserReward = computed(() => {
 }
 
 .container-description {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
+  /* 16px */
   line-height: 1.4;
 }
 
@@ -232,9 +239,11 @@ const formattedCurrentUserReward = computed(() => {
 .link-list {
   display: flex;
   flex-wrap: nowrap;
-  gap: 1rem; /* 16px */
+  gap: 1rem;
+  /* 16px */
   margin-top: 1rem;
-  margin-bottom: 1rem; /* 16px */
+  margin-bottom: 1rem;
+  /* 16px */
   justify-content: space-between;
   overflow-x: auto;
 }
@@ -243,7 +252,8 @@ const formattedCurrentUserReward = computed(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem; /* 8px */
+  gap: 0.5rem;
+  /* 8px */
   text-decoration: none;
   color: inherit;
   flex: 0 0 auto;
@@ -255,20 +265,24 @@ const formattedCurrentUserReward = computed(() => {
 }
 
 .link-subtitle {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
+  /* 16px */
   font-weight: 700;
   text-align: center;
 }
 
 .text-bar {
-  border-radius: 0.375rem; /* 6px */
+  border-radius: 0.375rem;
+  /* 6px */
   border: 1px solid #eeeeee;
-  padding: 1.25rem; /* 20px */
+  padding: 1.25rem;
+  /* 20px */
   height: max-content;
 }
 
 .text-bar-title {
-  font-size: 1.5rem; /* 24px */
+  font-size: 1.5rem;
+  /* 24px */
   font-weight: 700;
   line-height: 1.2;
   text-align: left;
@@ -277,7 +291,8 @@ const formattedCurrentUserReward = computed(() => {
 .text-bar__subtitle-wrp {
   display: flex;
   align-items: center;
-  gap: 1rem; /* 16px */
+  gap: 1rem;
+  /* 16px */
 }
 
 .text-bar__subtitle {
@@ -285,16 +300,19 @@ const formattedCurrentUserReward = computed(() => {
   font-weight: 700;
   line-height: 1.2;
   text-align: left;
-  margin-top: 0.75rem; /* 8px */
+  margin-top: 0.75rem;
+  /* 8px */
 }
 
 .text-bar-description {
-  font-size: 1rem; /* 16px */
+  font-size: 1rem;
+  /* 16px */
   line-height: 1.4;
 }
 
 .text-bar__description-wrp {
-  margin-top: 1.5rem; /* 24px */
+  margin-top: 1.5rem;
+  /* 24px */
 }
 
 .info-list {

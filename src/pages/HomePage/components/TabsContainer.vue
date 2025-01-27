@@ -5,6 +5,12 @@
         :class="{ active: activeTab === 0 }"
         @click="selectTab(0)"
       >
+        Season 4
+      </button>
+      <button
+        :class="{ active: activeTab === 0 }"
+        @click="selectTab(0)"
+      >
         Season 3
       </button>
       <button
