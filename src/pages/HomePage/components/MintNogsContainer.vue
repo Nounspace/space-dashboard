@@ -3,9 +3,8 @@
   <div class="mint-nogs-container">
     <p class="container-title mint-nogs-container-text">Mint nOGs, get rewarded.</p>
     <ul class="mint-nogs-list">
-      <li class="mint-nogs-container-text">Earn $SPACE</li>
-      <li class="mint-nogs-container-text">Activate $SPACE tip allowance</li>
-      <li class="mint-nogs-container-text">Access to new features early</li>
+      <li class="mint-nogs-container-text">Earn $SPACE for using nounspace</li>
+      <li class="mint-nogs-container-text">Access new features early</li>
       <li class="mint-nogs-container-text">Enjoy premium access for life</li>
     </ul>
   </div>

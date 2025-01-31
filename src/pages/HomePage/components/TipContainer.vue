@@ -2,8 +2,8 @@
 <template>
   <div class="tip-container">
     <p class="tip-container-title">Daily tip allowance:</p>
-    <p class="tip-container-value">{{ totalSpace }}</p>
-    <p class="container-subtitle">Hold 1 nOGs NFT & 11,111 $SPACE to receive a tip allowance</p>
+    <p class="tip-container-value">0</p>
+    <p class="container-subtitle">The tip system was sunset on January 31, 2025. Previously received tips can be claimed, but all tip allowances have been set to 0.</p>
   </div>
 </template>
 
