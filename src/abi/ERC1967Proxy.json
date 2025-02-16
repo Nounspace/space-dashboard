@@ -9,6 +9,38 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "previousAdmin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "AdminChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beacon",
+        "type": "address"
+      }
+    ],
+    "name": "BeaconUpgraded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint8",
         "name": "version",
         "type": "uint8"
@@ -33,26 +65,7 @@
         "type": "bytes"
       }
     ],
-    "name": "OverplusBridgedToArb",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bytes",
-        "name": "bridgeData_",
-        "type": "bytes"
-      }
-    ],
-    "name": "OverplusBridgedToBase",
+    "name": "OverplusBridged",
     "type": "event"
   },
   {
@@ -74,6 +87,8 @@
     "name": "OwnershipTransferred",
     "type": "event"
   },
+
+
   {
     "anonymous": false,
     "inputs": [
@@ -304,6 +319,19 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "Upgraded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "poolId",
         "type": "uint256"
@@ -512,7 +540,7 @@
         "type": "tuple[]"
       }
     ],
-    "name": "DistributionToBaseV5_init",
+    "name": "DistributionToBaseV5_init",  // Distribution_init ??
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -520,20 +548,31 @@
   {
     "inputs": [
       {
-        "internalType": "uint24",
-        "name": "gasLimit_",
-        "type": "uint24"
+        "internalType":"uint256",
+        "name":"gasLimit_",
+        "type":"uint256"
       },
       {
-        "internalType": "bytes",
-        "name": "data_",
-        "type": "bytes"
+        "internalType":"uint256",
+        "name":"maxFeePerGas_",
+        "type":"uint256"
+      },
+      {
+        "internalType":"uint256",
+        "name":"maxSubmissionCost_",
+        "type":"uint256"
       }
     ],
-    "name": "bridgeOverplus",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name":"bridgeOverplus",
+    "outputs": [
+      {
+        "internalType":"bytes",
+        "name":"",
+        "type":"bytes"
+      }
+    ],
+    "stateMutability":"payable",
+    "type":"function"
   },
   {
     "inputs": [
@@ -642,6 +681,73 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "poolId_",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint128",
+            "name": "payoutStart",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "decreaseInterval",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "withdrawLockPeriod",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "claimLockPeriod",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "withdrawLockPeriodAfterStake",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint256",
+            "name": "initialReward",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "rewardDecrease",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimalStake",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isPublic",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct IDistributionV5.Pool",
+        "name": "pool_",
+        "type": "tuple"
+      }
+    ],
+    "name": "editPool",
+    "outputs": [
+
+    ],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

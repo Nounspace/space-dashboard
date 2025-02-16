@@ -10,6 +10,7 @@
           >
             <div class="info-dashboard__indicator-title-wrp">
               <app-icon
+                v-if="indicator.iconName"
                 class="info-dashboard__indicator-icon"
                 :name="indicator.iconName"
               />

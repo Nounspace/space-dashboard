@@ -1,6 +1,7 @@
 export enum ICON_NAMES {
   arbitrum = 'arbitrum',
   base = 'base',
+  calendar = 'calendar',
   checkCircle = 'check-circle',
   chevronDown = 'chevron-down',
   copy = 'copy',

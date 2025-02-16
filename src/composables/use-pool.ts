@@ -3,14 +3,18 @@ import { storeToRefs, useWeb3ProvidersStore } from '@/store'
 import { type BigNumber, type Erc1967ProxyType } from '@/types'
 import { useTimestamp } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { ethers } from 'ethers'
+
+const MULTIPLIER_SCALE = 25 //digits
 
 export const usePool = (poolId: number) => {
-  let _currentUserRewardUpdateIntervalId: Parameters<typeof clearInterval>[0]
+  let _currentUserRewardUpdateIntervalId: NodeJS.Timeout
 
   const currentUserReward = ref<BigNumber | null>(null)
   const dailyReward = ref<BigNumber | null>(null)
   const poolData = ref<Erc1967ProxyType.PoolData | null>(null)
   const userPoolData = ref<Erc1967ProxyType.UserData | null>(null)
+  const rewardsMultiplier = ref(1)
 
   const isInitializing = ref(false)
   const isUserDataUpdating = ref(false)
@@ -26,6 +30,12 @@ export const usePool = (poolId: number) => {
       currentUserReward.value.isZero()
     )
       return true
+
+    if (userPoolData.value?.claimLockEnd) {
+      return (
+        currentTimestamp.value <= userPoolData.value.claimLockEnd.toNumber()
+      )
+    }
 
     return (
       currentTimestamp.value <=
@@ -155,10 +165,13 @@ export const usePool = (poolId: number) => {
       )
 
     return {
-      lastStake: response.lastStake,
+      claimLockEnd: response.claimLockEnd,
+      claimLockStart: response.claimLockStart,
       deposited: response.deposited,
-      rate: response.rate,
+      lastStake: response.lastStake,
       pendingRewards: response.pendingRewards,
+      rate: response.rate,
+      virtualDeposited: response.virtualDeposited,
     }
   }
 
@@ -178,6 +191,29 @@ export const usePool = (poolId: number) => {
     }
   }
 
+  const updateUserReward = async (): Promise<void> => {
+    isUserDataUpdating.value = true
+
+    try {
+      const response =
+        // eslint-disable-next-line max-len
+        await erc1967ProxyContract.value.providerBased.value.getCurrentUserMultiplier(
+          poolId,
+          web3ProvidersStore.provider.selectedAddress,
+        )
+
+      const scaleFactor = ethers.BigNumber.from(10).pow(MULTIPLIER_SCALE)
+      const scaledNumber = response.div(scaleFactor)
+
+      rewardsMultiplier.value = Number(
+        parseFloat(scaledNumber.toString()).toFixed(2),
+      )
+    } catch (e) {
+      ErrorHandler.processWithoutFeedback(e)
+    }
+    isUserDataUpdating.value = false
+  }
+
   const init = async () => {
     isInitializing.value = true
 
@@ -189,6 +225,7 @@ export const usePool = (poolId: number) => {
         const [pooDataResponse] = await Promise.all([
           fetchPoolData(),
           updateUserData(),
+          updateUserReward(),
         ])
 
         poolData.value = pooDataResponse
@@ -220,6 +257,7 @@ export const usePool = (poolId: number) => {
         const [pooDataResponse] = await Promise.all([
           fetchPoolData(),
           updateUserData(),
+          updateUserReward(),
         ])
 
         poolData.value = pooDataResponse
@@ -243,7 +281,7 @@ export const usePool = (poolId: number) => {
 
       if (newAddress && isConnected) {
         try {
-          await updateUserData()
+          await Promise.all([updateUserReward(), updateUserData()])
         } catch (error) {
           ErrorHandler.process(error)
         }
@@ -283,6 +321,7 @@ export const usePool = (poolId: number) => {
     dailyReward,
     poolData,
     userPoolData,
+    rewardsMultiplier,
 
     isClaimDisabled,
     isDepositDisabled,

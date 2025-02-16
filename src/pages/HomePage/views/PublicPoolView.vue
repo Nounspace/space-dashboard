@@ -155,6 +155,7 @@ const {
   isClaimDisabled,
   isDepositDisabled,
   isWithdrawDisabled,
+  rewardsMultiplier,
 
   isInitializing,
   isUserDataUpdating,
@@ -179,6 +180,26 @@ const apy = computed(() => {
 })
 
 const web3ProvidersStore = useWeb3ProvidersStore()
+
+const claimLockTime = computed(() => {
+  if (userPoolData.value?.claimLockEnd) {
+    return new Time(userPoolData.value?.claimLockEnd.toNumber()).format(
+      DEFAULT_TIME_FORMAT,
+    )
+  }
+  if (poolData.value) {
+    return new Time(
+      userPoolData.value && !userPoolData.value.lastStake.isZero()
+        ? userPoolData.value.lastStake
+            .add(poolData.value.withdrawLockPeriodAfterStake)
+            .toNumber()
+        : poolData.value.payoutStart
+            .add(poolData.value.withdrawLockPeriod)
+            .toNumber(),
+    )
+  }
+  return ''
+})
 
 const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   {
@@ -210,15 +231,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   },
   {
     title: t('home-page.public-pool-view.withdraw-at-title'),
-    value: poolData.value
-      ? new Time(
-          userPoolData.value && !userPoolData.value.lastStake.isZero()
-            ? userPoolData.value.lastStake
-                .add(poolData.value.withdrawLockPeriodAfterStake)
-                .toNumber()
-            : Math.floor(Date.now() / 1000) + poolData.value.withdrawLockPeriodAfterStake.toNumber(),
-        ).format(DEFAULT_TIME_FORMAT)
-      : '',
+    value: claimLockTime.value.toString(),
     note: t('home-page.public-pool-view.withdraw-at-note'),
   },
 ])
@@ -237,6 +250,10 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
     value: currentUserReward.value
       ? `${formatNumberInt(formatEther(currentUserReward.value))} SPACE`
       : '',
+  },
+  {
+    title: t('home-page.public-pool-view.multiplier-title'),
+    value: `${rewardsMultiplier.value}X`,
   },
 ])
 </script>

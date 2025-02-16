@@ -162,6 +162,7 @@ onMounted(() => {
 }
 
 .network-switch__link {
+  $shadow-hover: 0 toRem(4) toRem(24) rgba(#ffffff, 0.25);
   padding: toRem(12) toRem(16);
   color: var(--text-secondary-light);
   transition: var(--transition-duration-fast) var(--transition-timing-default);
