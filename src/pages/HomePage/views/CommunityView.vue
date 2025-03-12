@@ -65,8 +65,8 @@
         <p class="container-description">
           There may be opportunities to earn $SPACE for contributing to the nounspace ecosystem as a
           <a href="https://discord.com/invite/5garmexhxM" target="_blank">Community Member</a>,
-          <a href="https://www.google.com">User</a>, or
-          <a href="https://www.google.com">Developer</a>.
+          <a href="https://space.nounspace.com/#/mainnet/users">User</a>, or
+          <a href="https://space.nounspace.com/#/mainnet/developers">Developer</a>.
         </p>
       </div>
     </div>
