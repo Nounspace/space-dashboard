@@ -5,7 +5,7 @@
       <TextBar />
       <!-- Button Section -->
       <div class="button-container">
-        <SpaceButton title="Check or Claim $SPACE Drop 4" buttonClass="space-drop-button"
+        <SpaceButton title="Check or Claim $SPACE Drop 5" buttonClass="space-drop-button"
           @click="isClaimSpaceModalShown = true" />
         <SpaceButton title="Mint nOGs" buttonClass="mint-nogs-button" @click="isMintNogsModalShown = true" />
       </div>
