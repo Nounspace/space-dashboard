@@ -6,8 +6,8 @@
       <p class="text-bar__subtitle">20% of $SPACE emissions are allocated to nounspace users</p>
     </div>
     <div class="text-bar__description-wrp">
-      <p class="container-description">📢 $SPACE Drop 4 claims open on February 1! Check your eligibility and claim by February 28.</p>
-      <p class="container-description">Hold nOGs and use nounspace to be eligible for $SPACE drop 5 in March</p>
+      <p class="container-description">📢 $SPACE Drop 5 claims opened March 12! Check your eligibility and claim by April 11.</p>
+      <p class="container-description">Hold nOGs and use nounspace to be eligible for $SPACE drop 6 in April</p>
       <p class="container-description">
         More ways to earn $SPACE are coming soon! Have an idea for distributing $SPACE to nounspace users?
         <a href="https://app.charmverse.io/nounspace/governance-process-03537464653772093" target="_blank">Make a proposal</a>
