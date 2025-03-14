@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'app-mainnet-users' }">
       <div class="app-banner__btn">
         <p class="app-banner__text">
-          Claim $SPACE Drop 5 from March 12 - April 11 on the 
+          Claim $SPACE Drop 5 from March 14 - April 11 on the 
           <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
             Users Tab 🚀
           </router-link>
