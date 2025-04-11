@@ -55,6 +55,9 @@
         class="deposit-form__datetime-field"
         @update:model-value="onLockPeriodUpdate"
       />
+      <div v-if="form.lockPeriod && !isMinimumLockPeriodMet" class="deposit-form__info-message">
+        {{ $t('deposit-form.no-multiplier-message') }}
+      </div>
     </div>
     <div class="deposit-form__buttons-wrp">
       <app-button
@@ -89,6 +92,9 @@ import { config } from '@config'
 import { v4 as uuidv4 } from 'uuid'
 import { computed, onMounted, reactive, ref } from 'vue'
 
+// Minimum lock period - 6 months in seconds (approx 180 days)
+const MIN_LOCK_PERIOD_SECONDS = 180 * 24 * 60 * 60; // 6 months
+
 enum ACTIONS {
   approve = 'approve',
   stake = 'stake',
@@ -116,6 +122,7 @@ const props = defineProps<{
 const uid = uuidv4()
 const isInitializing = ref(true)
 const isSubmitting = ref(false)
+const isMinimumLockPeriodMet = ref(false)
 
 const allowances = reactive<Record<CURRENCIES, BigNumber | null>>({
   [CURRENCIES.stEth]: null,
@@ -229,7 +236,12 @@ const onLockPeriodUpdate = (value: string) => {
   // Store the raw value
   form.lockPeriod = value;
   
+  // Default to not meeting minimum lock period
+  isMinimumLockPeriodMet.value = false;
+  
   try {
+    let lockTimestamp: number | null = null;
+    
     // Check if it's a numeric string (Unix timestamp in seconds)
     if (/^\d+$/.test(value)) {
       const timestamp = parseInt(value, 10);
@@ -240,6 +252,7 @@ const onLockPeriodUpdate = (value: string) => {
       if (!isNaN(timestamp) && timestamp > 0) {
         // Valid timestamp
         console.log('Valid timestamp detected:', timestamp);
+        lockTimestamp = timestamp;
       } else {
         console.warn('Invalid numeric timestamp:', value);
       }
@@ -251,11 +264,23 @@ const onLockPeriodUpdate = (value: string) => {
       if (!isNaN(timestamp)) {
         console.log('Valid date string:', date.toISOString());
         console.log('Timestamp (sec):', Math.floor(timestamp));
+        lockTimestamp = Math.floor(timestamp);
       } else {
         console.warn('Invalid date string:', value);
         form.lockPeriod = '';
       }
     }
+    
+    // Check if lock period meets minimum requirement (6 months)
+    if (lockTimestamp) {
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      const minimumRequiredTimestamp = currentTimestamp + MIN_LOCK_PERIOD_SECONDS;
+      
+      isMinimumLockPeriodMet.value = lockTimestamp >= minimumRequiredTimestamp;
+      console.log('Minimum lock period met:', isMinimumLockPeriodMet.value);
+      console.log('Required timestamp:', minimumRequiredTimestamp, 'Selected timestamp:', lockTimestamp);
+    }
+    
   } catch (e) {
     console.error('Error processing datetime value:', e);
     // Keep the raw value
@@ -513,5 +538,16 @@ onMounted(() => {
       padding: 8px 12px;
     }
   }
+}
+
+.deposit-form__info-message {
+  margin-top: toRem(8);
+  color: #ff9800;
+  font-size: toRem(14);
+  line-height: 1.4;
+  padding: toRem(8) toRem(12);
+  background-color: rgba(255, 152, 0, 0.1);
+  border-radius: toRem(4);
+  border-left: toRem(3) solid #ff9800;
 }
 </style>
