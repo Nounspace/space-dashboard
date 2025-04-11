@@ -52,7 +52,8 @@
         :error-message="getFieldErrorMessage('lockPeriod')"
         :is-loading="isInitializing"
         :disabled="isSubmitting"
-        @blur="touchField('payoutStartAt')"
+        class="deposit-form__datetime-field"
+        @update:model-value="onLockPeriodUpdate"
       />
     </div>
     <div class="deposit-form__buttons-wrp">
@@ -222,24 +223,99 @@ const approveByCurrency = async (currency: CURRENCIES) => {
   )
 }
 
+const onLockPeriodUpdate = (value: string) => {
+  console.log('Datetime-field raw value:', value, typeof value);
+  
+  // Store the raw value
+  form.lockPeriod = value;
+  
+  try {
+    // Check if it's a numeric string (Unix timestamp in seconds)
+    if (/^\d+$/.test(value)) {
+      const timestamp = parseInt(value, 10);
+      const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
+      console.log('Parsed from timestamp:', date.toISOString());
+      console.log('Timestamp value (sec):', timestamp);
+      
+      if (!isNaN(timestamp) && timestamp > 0) {
+        // Valid timestamp
+        console.log('Valid timestamp detected:', timestamp);
+      } else {
+        console.warn('Invalid numeric timestamp:', value);
+      }
+    } else {
+      // Try to parse as a date string
+      const date = new Date(value);
+      const timestamp = date.getTime() / 1000;
+      
+      if (!isNaN(timestamp)) {
+        console.log('Valid date string:', date.toISOString());
+        console.log('Timestamp (sec):', Math.floor(timestamp));
+      } else {
+        console.warn('Invalid date string:', value);
+        form.lockPeriod = '';
+      }
+    }
+  } catch (e) {
+    console.error('Error processing datetime value:', e);
+    // Keep the raw value
+  }
+  
+  // Force validation check
+  touchField('lockPeriod');
+};
+
 const submit = async (action: ACTIONS): Promise<void> => {
-  if (!isFormValid()) return
-  isSubmitting.value = true
+  if (!isFormValid()) return;
+  isSubmitting.value = true;
 
   try {
     await web3ProvidersStore.provider.selectChain(
       config.networks[web3ProvidersStore.networkId].chainId,
-    )
+    );
 
-    let tx
+    let tx;
     if (action === ACTIONS.approve && balanceOfForm.value) {
-      tx = await approveByCurrency(balanceOfForm.value.value.currency)
+      tx = await approveByCurrency(balanceOfForm.value.value.currency);
     } else {
-      const amountInDecimals = parseUnits(form.amount, 'ether')
-      // FIXME: claimLockEnd_ is (uint128)
-      const claimLockEnd_ = 0
-      // referrer 
+      const amountInDecimals = parseUnits(form.amount, 'ether');
+      
+      // Debug the lock period
+      console.log('Lock period raw value:', form.lockPeriod);
+      
+      // Default to 0
+      let claimLockEnd_ = BigNumber.from(0);
+      
+      // Process the lockPeriod value if it exists
+      if (form.lockPeriod && form.lockPeriod.trim() !== '') {
+        try {
+          // Check if it's a numeric timestamp string (seconds)
+          if (/^\d+$/.test(form.lockPeriod)) {
+            // Direct Unix timestamp in seconds - use it directly
+            claimLockEnd_ = BigNumber.from(form.lockPeriod);
+            console.log('Using timestamp directly:', claimLockEnd_.toString());
+          } else {
+            // Parse as date string
+            const timestamp = new Date(form.lockPeriod).getTime() / 1000;
+            if (!isNaN(timestamp)) {
+              claimLockEnd_ = BigNumber.from(Math.floor(timestamp).toString());
+              console.log('Parsed from date string:', claimLockEnd_.toString());
+            }
+          }
+        } catch (e) {
+          console.error('Error processing timestamp:', e);
+        }
+      }
+
       const referrer = '0x0000000000000000000000000000000000000000'
+
+      console.log('Sending stake tx with params:', {
+        poolId: props.poolId,
+        amountInDecimals: amountInDecimals.toString(),
+        claimLockEnd: claimLockEnd_.toString(),
+        referrer,
+      })
+
       tx =
         await web3ProvidersStore.erc1967ProxyContract.signerBased.value.stake(
           props.poolId,
@@ -279,7 +355,6 @@ const submit = async (action: ACTIONS): Promise<void> => {
   }
 }
 
-// FIXME: simplify flow
 const onSubmit = async () => {
   if (action.value === ACTIONS.approve) await submit(ACTIONS.approve)
   if (action.value == ACTIONS.stake) await submit(ACTIONS.stake)
@@ -364,6 +439,79 @@ onMounted(() => {
   @include respond-to(medium) {
     min-width: min-content;
     width: 100%;
+  }
+}
+
+// Fix datetime field styling
+.deposit-form__datetime-field {
+  :deep() {
+    input {
+      background-color: #ffffff;
+      color: #000000;
+    }
+    
+    .flatpickr-calendar {
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      
+      .flatpickr-months, 
+      .flatpickr-weekdays, 
+      .flatpickr-days,
+      .flatpickr-time {
+        background: #ffffff;
+      }
+      
+      .flatpickr-day {
+        color: #333333;
+        
+        &.selected {
+          background: #1976d2;
+          color: #ffffff;
+        }
+        
+        &:hover {
+          background: #f3f3f3;
+        }
+      }
+      
+      .flatpickr-time {
+        border-top: 1px solid #e6e6e6;
+        
+        input, .numInputWrapper, .flatpickr-am-pm {
+          background: #ffffff;
+          color: #333333;
+        }
+      }
+      
+      .flatpickr-monthSelect-month, .flatpickr-weekday {
+        color: #333333;
+      }
+    }
+    
+    .dp__main {
+      // Add specific overrides for the datetime picker if needed
+      .dp__theme_light {
+        --dp-background-color: #ffffff;
+        --dp-text-color: #000000;
+        --dp-hover-color: #f3f3f3;
+        --dp-hover-text-color: #000000;
+        --dp-hover-icon-color: #959595;
+        --dp-primary-color: #1976d2;
+        --dp-primary-text-color: #ffffff;
+        --dp-secondary-color: #c0c4cc;
+        --dp-border-color: #ddd;
+        --dp-menu-border-color: #ddd;
+      }
+    }
+    
+    .dp__input {
+      // Ensure input is visible
+      background-color: #ffffff;
+      color: #000000;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 8px 12px;
+    }
   }
 }
 </style>

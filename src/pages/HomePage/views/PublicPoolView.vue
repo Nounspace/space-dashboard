@@ -134,6 +134,7 @@ import type { InfoBarType, InfoDashboardType } from '@/types'
 import { formatNumberInt, convertStEthToUsd, convertSpaceToUsd, calculateDepositsAPY, formatEther, Time } from '@/utils'
 import { computed, ref } from 'vue'
 import { ZeroPoolDescription } from '../components'
+import { Indicator } from '@/types/info-dashboard.types'
 
 const props = defineProps<{ poolId: number }>()
 
@@ -236,7 +237,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   },
 ])
 
-const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
+const dashboardIndicators = computed<Indicator[]>(() => [
   {
     iconName: ICON_NAMES.ethereum,
     title: t('home-page.public-pool-view.user-deposit-title'),
@@ -252,6 +253,7 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
       : '',
   },
   {
+    iconName: ICON_NAMES.multiplier, // Replacing with a more appropriate existing icon
     title: t('home-page.public-pool-view.multiplier-title'),
     value: `${rewardsMultiplier.value}X`,
   },

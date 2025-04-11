@@ -16,4 +16,5 @@ export enum ICON_NAMES {
   space = 'space',
   xCircle = 'x-circle',
   x = 'x',
+  multiplier = 'multiplier',
 }
