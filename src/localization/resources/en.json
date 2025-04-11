@@ -36,7 +36,7 @@
   },
   "deposit-modal": {
     "title": "Deposit",
-    "subtitle": "Your funds will be redirected to the platform. Enter the desired amount, in case of the first transaction, you will need to approve the transfer of funds."
+    "subtitle": "Your deposit will be locked for 7 days, then can be withdrawn any time afterwards. To increase your $SPACE rewards multiplier, lock your $SPACE rewards for at least 6 months."
   },
   "share-modal": {
     "title": "Thank you for staking!",
