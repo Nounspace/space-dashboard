@@ -46,17 +46,39 @@
           />
         </template>
       </input-field>
-      <datetime-field
-        v-model="form.lockPeriod"
-        :placeholder="$t(`deposit-form.lock-period-placeholder`)"
-        :error-message="getFieldErrorMessage('lockPeriod')"
-        :is-loading="isInitializing"
-        :disabled="isSubmitting"
-        class="deposit-form__datetime-field"
-        @update:model-value="onLockPeriodUpdate"
-      />
+      <div class="deposit-form__slider-wrp">
+        <label class="deposit-form__label">
+          {{ $t('deposit-form.lock-period-slider-label') }}
+        </label>
+        <input
+          type="range"
+          v-model="lockPeriodMonths"
+          min="0"
+          max="60"
+          step="1"
+          class="deposit-form__slider"
+          :disabled="isSubmitting"
+          @input="handleSliderInput"
+          aria-label="Lock period in months"
+          :aria-valuenow="lockPeriodMonths"
+        />
+        <div class="deposit-form__slider-info">
+          <div class="deposit-form__slider-value">
+            {{ lockPeriodMonths }} {{ $t('deposit-form.months') }}
+          </div>
+          <div class="deposit-form__lock-until" v-if="form.lockPeriod">
+            {{ $t('deposit-form.lock-until') }} {{ formatLockDate(form.lockPeriod) }}
+          </div>
+        </div>
+      </div>
       <div v-if="form.lockPeriod && !isMinimumLockPeriodMet" class="deposit-form__info-message">
         {{ $t('deposit-form.no-multiplier-message') }}
+      </div>
+      <div v-if="currentMultiplier && isMinimumLockPeriodMet" class="deposit-form__multiplier-panel">
+        <div class="deposit-form__multiplier-panel-header">
+          <span class="deposit-form__multiplier-label">{{ $t('deposit-form.your-multiplier') }}</span>
+          <span class="deposit-form__multiplier-value">x{{ formatMultiplier(currentMultiplier) }}</span>
+        </div>
       </div>
     </div>
     <div class="deposit-form__buttons-wrp">
@@ -69,7 +91,8 @@
       />
       <app-button
         class="deposit-form__btn"
-        :text="submissionBtnText"
+        :color="currentMultiplier ? 'primary-gradient' : 'default'"
+        :text="getSubmitButtonText()"
         :disabled="isSubmitting || !isFieldsValid"
         :is-loading="isInitializing"
         @click="onSubmit"
@@ -82,7 +105,7 @@
 import { AppButton } from '@/common'
 import { useFormValidation, useI18n } from '@/composables'
 import { MAX_UINT_256 } from '@/const'
-import { DatetimeField, InputField, SelectField } from '@/fields'
+import { InputField, SelectField } from '@/fields'
 import { getEthExplorerTxUrl, bus, BUS_EVENTS, ErrorHandler } from '@/helpers'
 import { useWeb3ProvidersStore } from '@/store'
 import { type FieldOption } from '@/types'
@@ -91,6 +114,7 @@ import { ether, maxEther, minEther, minValue, required } from '@/validators'
 import { config } from '@config'
 import { v4 as uuidv4 } from 'uuid'
 import { computed, onMounted, reactive, ref } from 'vue'
+import { formatUnits } from 'ethers/lib/utils'
 
 // Minimum lock period - 6 months in seconds (approx 180 days)
 const MIN_LOCK_PERIOD_SECONDS = 180 * 24 * 60 * 60; // 6 months
@@ -230,64 +254,104 @@ const approveByCurrency = async (currency: CURRENCIES) => {
   )
 }
 
-const onLockPeriodUpdate = (value: string) => {
-  console.log('Datetime-field raw value:', value, typeof value);
-  
-  // Store the raw value
-  form.lockPeriod = value;
-  
-  // Default to not meeting minimum lock period
-  isMinimumLockPeriodMet.value = false;
-  
+const lockPeriodMonths = ref(6); // Set initial value to 6 months
+const currentMultiplier = ref<BigNumber | null>(null);
+
+const formatMultiplier = (multiplier: BigNumber | null): string => {
+  if (!multiplier || multiplier.isZero()) return '-';
+
+  const humanReadable = parseFloat(formatUnits(multiplier, 25));
+
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(humanReadable);
+};
+
+const formatLockDate = (timestamp: string): string => {
   try {
-    let lockTimestamp: number | null = null;
-    
-    // Check if it's a numeric string (Unix timestamp in seconds)
-    if (/^\d+$/.test(value)) {
-      const timestamp = parseInt(value, 10);
-      const date = new Date(timestamp * 1000); // Convert seconds to milliseconds
-      console.log('Parsed from timestamp:', date.toISOString());
-      console.log('Timestamp value (sec):', timestamp);
-      
-      if (!isNaN(timestamp) && timestamp > 0) {
-        // Valid timestamp
-        console.log('Valid timestamp detected:', timestamp);
-        lockTimestamp = timestamp;
-      } else {
-        console.warn('Invalid numeric timestamp:', value);
-      }
-    } else {
-      // Try to parse as a date string
-      const date = new Date(value);
-      const timestamp = date.getTime() / 1000;
-      
-      if (!isNaN(timestamp)) {
-        console.log('Valid date string:', date.toISOString());
-        console.log('Timestamp (sec):', Math.floor(timestamp));
-        lockTimestamp = Math.floor(timestamp);
-      } else {
-        console.warn('Invalid date string:', value);
-        form.lockPeriod = '';
-      }
-    }
-    
-    // Check if lock period meets minimum requirement (6 months)
-    if (lockTimestamp) {
-      const currentTimestamp = Math.floor(Date.now() / 1000);
-      const minimumRequiredTimestamp = currentTimestamp + MIN_LOCK_PERIOD_SECONDS;
-      
-      isMinimumLockPeriodMet.value = lockTimestamp >= minimumRequiredTimestamp;
-      console.log('Minimum lock period met:', isMinimumLockPeriodMet.value);
-      console.log('Required timestamp:', minimumRequiredTimestamp, 'Selected timestamp:', lockTimestamp);
-    }
-    
+    const date = new Date(parseInt(timestamp) * 1000);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
   } catch (e) {
-    console.error('Error processing datetime value:', e);
-    // Keep the raw value
+    return '';
   }
-  
-  // Force validation check
-  touchField('lockPeriod');
+};
+
+const getSubmitButtonText = (): string => {
+  if (currentMultiplier && isMinimumLockPeriodMet) {
+    return t('deposit-form.lock-to-increase-multiplier');
+  }
+  return action.value === ACTIONS.approve
+    ? t('deposit-form.submit-btn.approve')
+    : t('deposit-form.submit-btn.deposit');
+};
+
+const getClaimLockPeriodMultiplier = async (): Promise<BigNumber | null> => {
+  try {
+    if (!form.lockPeriod) {
+      console.warn('Lock period is missing.');
+      return null;
+    }
+
+    const claimLockStart = BigNumber.from(Math.floor(Date.now() / 1000));
+    const claimLockEnd = BigNumber.from(form.lockPeriod);
+
+    if (claimLockEnd.lte(claimLockStart)) {
+      console.error('Invalid lock period: End time must be greater than start time.');
+      return null;
+    }
+
+    const contract = web3ProvidersStore.erc1967ProxyContract.providerBased.value;
+    if (!contract) {
+      console.error('Contract instance is not initialized.');
+      return null;
+    }
+
+    const multiplier = await contract.getClaimLockPeriodMultiplier(
+      0,
+      claimLockStart,
+      claimLockEnd
+    );
+
+    console.log('Multiplier fetched successfully:', multiplier.toString());
+    return multiplier;
+  } catch (error) {
+    console.error('Error fetching multiplier:', error);
+    return null;
+  }
+};
+
+const handleSliderInput = async () => {
+  try {
+    updateLockPeriod();
+    await updateMultiplier();
+  } catch (error) {
+    console.error('Error updating slider values:', error);
+  }
+};
+
+const updateLockPeriod = () => {
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  const selectedLockPeriodSeconds = lockPeriodMonths.value * 30 * 24 * 60 * 60;
+
+  if (selectedLockPeriodSeconds > Number.MAX_SAFE_INTEGER) {
+    throw new Error('Selected lock period exceeds maximum safe value.');
+  }
+
+  form.lockPeriod = (currentTimestamp + selectedLockPeriodSeconds).toString();
+  isMinimumLockPeriodMet.value =
+    selectedLockPeriodSeconds >= MIN_LOCK_PERIOD_SECONDS;
+};
+
+const updateMultiplier = async () => {
+  currentMultiplier.value = await getClaimLockPeriodMultiplier();
+  if (!currentMultiplier.value) {
+    console.warn('Multiplier could not be fetched.');
+  }
 };
 
 const submit = async (action: ACTIONS): Promise<void> => {
@@ -304,81 +368,53 @@ const submit = async (action: ACTIONS): Promise<void> => {
       tx = await approveByCurrency(balanceOfForm.value.value.currency);
     } else {
       const amountInDecimals = parseUnits(form.amount, 'ether');
-      
-      // Debug the lock period
-      console.log('Lock period raw value:', form.lockPeriod);
-      
-      // Default to 0
-      let claimLockEnd_ = BigNumber.from(0);
-      
-      // Process the lockPeriod value if it exists
-      if (form.lockPeriod && form.lockPeriod.trim() !== '') {
-        try {
-          // Check if it's a numeric timestamp string (seconds)
-          if (/^\d+$/.test(form.lockPeriod)) {
-            // Direct Unix timestamp in seconds - use it directly
-            claimLockEnd_ = BigNumber.from(form.lockPeriod);
-            console.log('Using timestamp directly:', claimLockEnd_.toString());
-          } else {
-            // Parse as date string
-            const timestamp = new Date(form.lockPeriod).getTime() / 1000;
-            if (!isNaN(timestamp)) {
-              claimLockEnd_ = BigNumber.from(Math.floor(timestamp).toString());
-              console.log('Parsed from date string:', claimLockEnd_.toString());
-            }
-          }
-        } catch (e) {
-          console.error('Error processing timestamp:', e);
-        }
-      }
-
-      const referrer = '0x0000000000000000000000000000000000000000'
-
-      console.log('Sending stake tx with params:', {
-        poolId: props.poolId,
-        amountInDecimals: amountInDecimals.toString(),
-        claimLockEnd: claimLockEnd_.toString(),
-        referrer,
-      })
+      const claimLockEnd_ = processLockPeriod(form.lockPeriod);
 
       tx =
         await web3ProvidersStore.erc1967ProxyContract.signerBased.value.stake(
-          props.poolId,
+          0,
           amountInDecimals,
           claimLockEnd_,
-          referrer,
-        )
-      emit('stake-tx-sent')
+          '0x0000000000000000000000000000000000000000',
+        );
+      emit('stake-tx-sent');
     }
 
     const explorerTxUrl = getEthExplorerTxUrl(
       config.networks[web3ProvidersStore.networkId].explorerUrl,
       tx.hash,
-    )
+    );
 
     bus.emit(
       BUS_EVENTS.info,
       t('deposit-form.tx-sent-message', { explorerTxUrl }),
-    )
+    );
 
-    await tx.wait()
+    await tx.wait();
 
     bus.emit(
       BUS_EVENTS.success,
       t('deposit-form.success-message', { explorerTxUrl }),
-    )
+    );
 
-    bus.emit(BUS_EVENTS.changedPoolData)
+    bus.emit(BUS_EVENTS.changedPoolData);
 
     if (balanceOfForm.value)
       allowances[balanceOfForm.value.value.currency] =
-        await fetchAllowanceByCurrency(balanceOfForm.value.value.currency)
+        await fetchAllowanceByCurrency(balanceOfForm.value.value.currency);
   } catch (error) {
-    ErrorHandler.process(error)
+    ErrorHandler.process(error);
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
-}
+};
+
+const processLockPeriod = (lockPeriod: string): BigNumber => {
+  if (!lockPeriod || !/^\d+$/.test(lockPeriod)) {
+    throw new Error('Invalid lock period format.');
+  }
+  return BigNumber.from(lockPeriod).mask(128);
+};
 
 const onSubmit = async () => {
   if (action.value === ACTIONS.approve) await submit(ACTIONS.approve)
@@ -400,9 +436,19 @@ const init = async (): Promise<void> => {
   isInitializing.value = false
 }
 
-onMounted(() => {
-  init()
-})
+onMounted(async () => {
+  await init();
+
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  const initialLockPeriodSeconds = lockPeriodMonths.value * 30 * 24 * 60 * 60;
+
+  form.lockPeriod = (currentTimestamp + initialLockPeriodSeconds).toString();
+  isMinimumLockPeriodMet.value =
+    initialLockPeriodSeconds >= MIN_LOCK_PERIOD_SECONDS;
+
+  currentMultiplier.value = await getClaimLockPeriodMultiplier();
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -467,77 +513,68 @@ onMounted(() => {
   }
 }
 
-// Fix datetime field styling
-.deposit-form__datetime-field {
-  :deep() {
-    input {
-      background-color: #ffffff;
-      color: #000000;
-    }
-    
-    .flatpickr-calendar {
-      background: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      
-      .flatpickr-months, 
-      .flatpickr-weekdays, 
-      .flatpickr-days,
-      .flatpickr-time {
-        background: #ffffff;
-      }
-      
-      .flatpickr-day {
-        color: #333333;
-        
-        &.selected {
-          background: #1976d2;
-          color: #ffffff;
-        }
-        
-        &:hover {
-          background: #f3f3f3;
-        }
-      }
-      
-      .flatpickr-time {
-        border-top: 1px solid #e6e6e6;
-        
-        input, .numInputWrapper, .flatpickr-am-pm {
-          background: #ffffff;
-          color: #333333;
-        }
-      }
-      
-      .flatpickr-monthSelect-month, .flatpickr-weekday {
-        color: #333333;
-      }
-    }
-    
-    .dp__main {
-      // Add specific overrides for the datetime picker if needed
-      .dp__theme_light {
-        --dp-background-color: #ffffff;
-        --dp-text-color: #000000;
-        --dp-hover-color: #f3f3f3;
-        --dp-hover-text-color: #000000;
-        --dp-hover-icon-color: #959595;
-        --dp-primary-color: #1976d2;
-        --dp-primary-text-color: #ffffff;
-        --dp-secondary-color: #c0c4cc;
-        --dp-border-color: #ddd;
-        --dp-menu-border-color: #ddd;
-      }
-    }
-    
-    .dp__input {
-      // Ensure input is visible
-      background-color: #ffffff;
-      color: #000000;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      padding: 8px 12px;
-    }
+.deposit-form__slider-wrp {
+  display: flex;
+  flex-direction: column;
+  gap: toRem(8);
+}
+
+.deposit-form__slider {
+  width: 100%;
+  appearance: none;
+  height: toRem(8);
+  background: #ddd;
+  border-radius: toRem(4);
+  outline: none;
+  transition: background 0.3s;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: toRem(16);
+    height: toRem(16);
+    background: #1976d2;
+    border-radius: 50%;
+    cursor: pointer;
   }
+
+  &::-moz-range-thumb {
+    width: toRem(16);
+    height: toRem(16);
+    background: #1976d2;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.deposit-form__slider-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deposit-form__slider-value {
+  font-size: toRem(14);
+  color: #333;
+}
+
+.deposit-form__multiplier {
+  display: flex;
+  gap: toRem(4);
+  align-items: center;
+  padding: toRem(4) toRem(8);
+  background: #e3f2fd;
+  border-radius: toRem(4);
+}
+
+.deposit-form__multiplier-label {
+  font-size: toRem(14);
+  color: #333;
+}
+
+.deposit-form__multiplier-value {
+  font-size: toRem(14);
+  font-weight: 600;
+  color: #1976d2;
 }
 
 .deposit-form__info-message {
@@ -549,5 +586,56 @@ onMounted(() => {
   background-color: rgba(255, 152, 0, 0.1);
   border-radius: toRem(4);
   border-left: toRem(3) solid #ff9800;
+}
+
+.deposit-form__multiplier-panel {
+  margin-top: toRem(16);
+  padding: toRem(16);
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: toRem(8);
+}
+
+.deposit-form__multiplier-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.deposit-form__multiplier-label {
+  font-size: toRem(16);
+  font-weight: 500;
+  color: #333;
+}
+
+.deposit-form__multiplier-value {
+  font-size: toRem(36);
+  font-weight: 700;
+  color: #333;
+}
+
+.deposit-form .deposit-form__btn[color="primary-gradient"] {
+  background: linear-gradient(90deg, #1976d2, #2196f3);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.deposit-form .deposit-form__btn[color="default"] {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.app-button--primary-gradient {
+  background: linear-gradient(90deg, #1976d2, #2196f3);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.app-button--primary-gradient:disabled {
+  background: #ccc;
+  color: #666;
 }
 </style>

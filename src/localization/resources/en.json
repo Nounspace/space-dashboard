@@ -19,9 +19,12 @@
     "connect": "Connect"
   },
   "deposit-form": {
-    "balance-label": "Available to deposit",
+    "balance-label": "Available",
     "amount-placeholder": "Enter {currency} amount",
     "lock-period-placeholder": "Lock your claim until",
+    "lock-period-slider-label": "Select lock period (in months)",
+    "months": "months",
+    "multiplier": "Multiplier",
     "cancel-btn": "Cancel",
     "referrer-placeholder": "Referrer Address",
     "referrer-note": "Enter your referrer address or leave the field blank",
@@ -32,11 +35,14 @@
     },
     "tx-sent-message": "The transaction was sent, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a>",
     "success-message": "The transaction was confirmed, you can view it in the explorer <a class=\"link\" href={explorerTxUrl} target=\"blank\" rel=\"noopener noreferrer\">here</a",
-    "no-multiplier-message": "No multiplier will be applied as the lock period is less than 6 months."
+    "no-multiplier-message": "No multiplier will be applied as the lock period is less than 6 months.",
+    "your-multiplier": "Your multiplier",
+    "lock-to-increase-multiplier": "Stake",
+    "lock-until": "Lock until"
   },
   "deposit-modal": {
-    "title": "Deposit",
-    "subtitle": "Your funds will be redirected to the platform. Enter the desired amount, in case of the first transaction, you will need to approve the transfer of funds."
+    "title": "Deposit ⌐◨-◨",
+    "subtitle": "Enter the desired amount, in case of the first transaction, you will need to approve the transfer of funds."
   },
   "share-modal": {
     "title": "Thank you for staking!",
@@ -157,7 +163,8 @@
     "provider-method-not-supported": "Method is not implemented",
     "provider-limit-exceeded": "Request exceeds defined limit",
     "provider-json-rpc-version-not-supported": "Version of JSON-RPC protocol is not supported",
-    "provider-wrapper-method-not-found": "Provider does not exist or method not supported"
+    "provider-wrapper-method-not-found": "Provider does not exist or method not supported",
+    "invalid-lock-period": "The selected lock period is invalid. Please choose a valid duration."
   },
   "notification": {
     "default-title-success": "Success",

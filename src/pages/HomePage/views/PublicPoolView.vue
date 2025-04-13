@@ -220,7 +220,7 @@ const barIndicators = computed<InfoBarType.Indicator[]>(() => [
   {
     title: 'APY',
     value: apy.value || '%',
-    note: 'SPACE APY on deposited stETH',
+    note: 'SPACE APY on deposited stETH (not including lock multiplier)',
   },
   {
     title: t('home-page.public-pool-view.started-at-title'),

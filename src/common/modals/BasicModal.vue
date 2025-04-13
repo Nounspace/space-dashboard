@@ -85,16 +85,39 @@ const emit = defineEmits<{
   text-align: center;
 }
 
-.basic-modal__subtitle-slot-wrp,
-.basic-modal__subtitle {
+.basic-modal__subtitle-slot-wrp {
   margin-top: toRem(32);
   text-align: center;
+  padding: toRem(16);
+  background-color: #eaf4fc;
+  border: toRem(1) solid #007acc;
+  border-radius: toRem(4);
+  color: #007acc;
+  font-weight: bold;
 
   @include respond-to(medium) {
     margin-top: toRem(20);
+    padding: toRem(12);
   }
 
   @include body-1-regular;
+}
+.basic-modal__subtitle {
+  margin-top: toRem(32);
+    text-align: center;
+    padding: toRem(16);
+    background-color: #eaf4fc;
+    border: toRem(1) solid #007acc;
+    border-radius: toRem(4);
+    color: #007acc;
+    font-weight: bold;
+  
+    @include respond-to(medium) {
+      margin-top: toRem(20);
+      padding: toRem(12);
+    }
+  
+    @include body-1-regular;
 }
 
 .basic-modal__close-btn {
