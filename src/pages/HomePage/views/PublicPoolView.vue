@@ -105,13 +105,6 @@
         </transition>
       </template>
     </info-bar>
-    <iframe
-      src="https://drive.google.com/file/d/1iL23mwo8saM7eBdCfwQuoBw6kPBEVVj8/preview"
-      width="640" 
-      height="360"
-      allow="autoplay; fullscreen"
-      class="video-iframe"
-    ></iframe>
   </div>
 </template>
 
@@ -273,27 +266,6 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
   }
 }
 
-.video-iframe {
-  display: flex;
-  order: 3;
-  width: 100%;
-  height: auto;
-  min-height: 360px;
-  border-radius: 8px;
-
-  @media (min-width: 1280px) {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    max-width: none;
-    width: 100%;
-  }
-
-  @include respond-to(medium) {
-    aspect-ratio: 16/9;
-    min-height: auto;
-  }
-}
 .public-pool-view__bar-slot-wrp {
   margin-top: toRem(16);
   border-top: toRem(2) solid #494949;
