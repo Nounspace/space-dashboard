@@ -1,7 +1,6 @@
 <template>
   <main class="home-page">
     <div class="home-page__content-wrp">
-      <app-tabs :tabs="tabs" />
       <app-banner v-if="viewClass === 'capital-page__view'" />
       <router-view v-slot="{ Component }" :class="viewClass">
         <keep-alive>
@@ -13,83 +12,12 @@
 </template>
 
 <script lang="ts" setup>
-import { AppTabs } from '@/common'
 import { AppBanner } from '@/common'
-import { useI18n } from '@/composables'
-import { NETWORK_IDS, ROUTE_NAMES } from '@/enums'
-import { useWeb3ProvidersStore } from '@/store'
-import { type Tab } from '@/types'
-import { config } from '@config'
+import { ROUTE_NAMES } from '@/enums'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-const { t } = useI18n()
-const web3ProvidersStore = useWeb3ProvidersStore()
 const route = useRoute()
-
-const tabs = computed<Tab[]>(() => {
-  switch (web3ProvidersStore.networkId) {
-    case NETWORK_IDS.mainnet:
-      return [
-        {
-          title: t('home-page.capital-tab'),
-          id: 'capital',
-          route: { name: ROUTE_NAMES.appMainnetCapital },
-        },
-        {
-          title: t('home-page.users-tab'),
-          id: 'users',
-          route: { name: ROUTE_NAMES.appMainnetUsers },
-        },
-        {
-          title: t('home-page.developers-tab'),
-          id: 'developers',
-          route: { name: ROUTE_NAMES.appMainnetDevelopers },
-        },
-        {
-          title: t('home-page.community-tab'),
-          id: 'community',
-          route: { name: ROUTE_NAMES.appMainnetCommunity },
-        },
-        {
-          title: t('home-page.team-tab'),
-          id: 'team',
-          route: { name: ROUTE_NAMES.appMainnetTeam },
-        },
-      ]
-
-    case NETWORK_IDS.testnet:
-      return [
-        {
-          title: t('home-page.capital-tab'),
-          id: 'capital',
-          route: { name: ROUTE_NAMES.appTestnetCapital },
-        },
-        {
-          title: t('home-page.users-tab'),
-          id: 'users',
-          route: { name: ROUTE_NAMES.appMainnetCapital },
-        },
-        {
-          title: t('home-page.developers-tab'),
-          id: 'developers',
-          route: { name: ROUTE_NAMES.appMainnetCapital },
-        },
-        {
-          title: t('home-page.community-tab'),
-          id: 'community',
-          route: { name: ROUTE_NAMES.appTestnetCommunity },
-        },
-        {
-          title: t('home-page.team-tab'),
-          id: 'team',
-          route: { name: ROUTE_NAMES.appMainnetCapital },
-        },
-      ]
-  }
-
-  return []
-})
 
 const viewClass = computed(() => {
   switch (route.name) {
