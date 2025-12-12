@@ -70,14 +70,6 @@
             <div class="public-pool-view__bar-buttons-wrp">
               <app-button
                 class="public-pool-view__bar-button"
-                color="primary"
-                :text="$t('home-page.public-pool-view.deposit-btn')"
-                :is-loading="isInitializing"
-                :disabled="isDepositDisabled"
-                @click="isDepositModalShown = true"
-              />
-              <app-button
-                class="public-pool-view__bar-button"
                 scheme="link"
                 color="none"
                 target="_blank"
@@ -88,19 +80,6 @@
                 :href="$config.HOW_GET_STETH_URL"
               />
             </div>
-            <deposit-modal
-              v-if="!isDepositDisabled && poolData?.minimalStake"
-              v-model:is-shown="isDepositModalShown"
-              :pool-id="poolId"
-              :min-stake="poolData.minimalStake"
-              @share="isShareModalShown = true; isDepositModalShown = false"
-            />
-            <share-modal
-              v-if="userPoolData && poolData"
-              v-model:is-shown="isShareModalShown"
-              :pool-data="poolData"
-              :available-amount="userPoolData.deposited"
-            />
           </div>
         </transition>
       </template>
@@ -113,8 +92,6 @@
 import {
   AppButton,
   ClaimModal,
-  DepositModal,
-  ShareModal,
   InfoBar,
   InfoDashboard,
   WithdrawModal,
@@ -131,8 +108,6 @@ import { ZeroPoolDescription } from '../components'
 const props = defineProps<{ poolId: number }>()
 
 const isClaimModalShown = ref(false)
-const isDepositModalShown = ref(false)
-const isShareModalShown = ref(false)
 const isWithdrawModalShown = ref(false)
 
 const poolId = computed(() => props.poolId)
@@ -146,7 +121,6 @@ const {
   userPoolData,
 
   isClaimDisabled,
-  isDepositDisabled,
   isWithdrawDisabled,
 
   isInitializing,
@@ -173,48 +147,52 @@ const apy = computed(() => {
 
 const web3ProvidersStore = useWeb3ProvidersStore()
 
-const barIndicators = computed<InfoBarType.Indicator[]>(() => [
-  {
-    title: t('home-page.public-pool-view.total-deposits-title'),
-    value: poolData.value
-      ? `${formatNumberInt(formatEther(poolData.value.totalDeposited))} stETH`
-      : '0 stETH',
-  },
-  {
-    title: t('home-page.public-pool-view.total-usd-title'),
-    value: totalDepositedInUsd.value || '-',
-  },
-  {
-    title: t('home-page.public-pool-view.daily-reward-title'),
-    value: dailyReward.value ? `${formatNumberInt(formatEther(dailyReward.value))} SPACE` : '-',
-  },
-  {
-    title: 'APY',
-    value: apy.value || '%',
-    note: 'SPACE APY on deposited stETH',
-  },
-  {
-    title: t('home-page.public-pool-view.started-at-title'),
-    value: poolData.value
-      ? new Time(poolData.value.payoutStart.toNumber()).format(
-          DEFAULT_TIME_FORMAT,
-        )
-      : '',
-  },
-  {
-    title: t('home-page.public-pool-view.withdraw-at-title'),
-    value: poolData.value
-      ? new Time(
-          userPoolData.value && !userPoolData.value.lastStake.isZero()
-            ? userPoolData.value.lastStake
-                .add(poolData.value.withdrawLockPeriodAfterStake)
-                .toNumber()
-            : Math.floor(Date.now() / 1000) + poolData.value.withdrawLockPeriodAfterStake.toNumber(),
-        ).format(DEFAULT_TIME_FORMAT)
-      : '',
-    note: t('home-page.public-pool-view.withdraw-at-note'),
-  },
-])
+const barIndicators = computed<InfoBarType.Indicator[]>(() => {
+  if (poolId.value === 0) return []
+
+  return [
+    {
+      title: t('home-page.public-pool-view.total-deposits-title'),
+      value: poolData.value
+        ? `${formatNumberInt(formatEther(poolData.value.totalDeposited))} stETH`
+        : '0 stETH',
+    },
+    {
+      title: t('home-page.public-pool-view.total-usd-title'),
+      value: totalDepositedInUsd.value || '-',
+    },
+    {
+      title: t('home-page.public-pool-view.daily-reward-title'),
+      value: dailyReward.value ? `${formatNumberInt(formatEther(dailyReward.value))} SPACE` : '-',
+    },
+    {
+      title: 'APY',
+      value: apy.value || '%',
+      note: 'SPACE APY on deposited stETH',
+    },
+    {
+      title: t('home-page.public-pool-view.started-at-title'),
+      value: poolData.value
+        ? new Time(poolData.value.payoutStart.toNumber()).format(
+            DEFAULT_TIME_FORMAT,
+          )
+        : '',
+    },
+    {
+      title: t('home-page.public-pool-view.withdraw-at-title'),
+      value: poolData.value
+        ? new Time(
+            userPoolData.value && !userPoolData.value.lastStake.isZero()
+              ? userPoolData.value.lastStake
+                  .add(poolData.value.withdrawLockPeriodAfterStake)
+                  .toNumber()
+              : Math.floor(Date.now() / 1000) + poolData.value.withdrawLockPeriodAfterStake.toNumber(),
+          ).format(DEFAULT_TIME_FORMAT)
+        : '',
+      note: t('home-page.public-pool-view.withdraw-at-note'),
+    },
+  ]
+})
 
 const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
   {
@@ -325,4 +303,5 @@ const dashboardIndicators = computed<InfoDashboardType.Indicator[]>(() => [
 
   @include body-italic;
 }
+
 </style>

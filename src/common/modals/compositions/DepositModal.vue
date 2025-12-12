@@ -3,24 +3,32 @@
     class="deposit-modal"
     :is-shown="isShown"
     :is-close-by-click-outside="isCloseByClickOutside"
-    :title="$t('deposit-modal.title')"
-    :subtitle="$t('deposit-modal.subtitle')"
+    title="The $SPACE Fair Launch has concluded"
     @update:is-shown="emit('update:is-shown', $event)"
   >
     <template #default="{ modal } ">
-      <deposit-form
-        class="deposit-modal__form"
-        :pool-id="poolId"
-        :min-stake="minStake"
-        @cancel="modal.close"
-        @stake-tx-sent="modal.close; emit('share', true);"
-      />
+      <div class="deposit-modal__content">
+        <p class="deposit-modal__lead">stETH deposits are paused.</p>
+        <p>Withdrawals will remain open forever.</p>
+        <p>
+          If you have unclaimed $SPACE rewards, you will be eligible to claim them via the upcoming airdrop of the new
+          $SPACE ClankerV4 token.
+        </p>
+        <p class="deposit-modal__proposal">
+          Read this
+          <a
+            href="https://app.charmverse.io/nounspace/forum"
+            target="_blank"
+            rel="noopener noreferrer"
+          >proposal</a>
+          for more information.
+        </p>
+      </div>
     </template>
   </basic-modal>
 </template>
 
 <script lang="ts" setup>
-import { DepositForm } from '@/forms'
 import { type BigNumber } from '@/types'
 import BasicModal from '../BasicModal.vue'
 
@@ -43,11 +51,24 @@ withDefaults(
 </script>
 
 <style lang="scss" scoped>
-.deposit-modal__form {
+.deposit-modal__content {
   margin-top: toRem(24);
+  display: flex;
+  flex-direction: column;
+  gap: toRem(12);
+  line-height: 1.5;
+  text-align: center;
 
   @include respond-to(medium) {
     margin-top: toRem(28);
   }
+}
+
+.deposit-modal__lead {
+  font-weight: 600;
+}
+
+.deposit-modal__proposal a {
+  text-decoration: underline;
 }
 </style>

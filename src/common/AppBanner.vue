@@ -1,17 +1,34 @@
 <template>
   <div class="app-banner">
-    <router-link :to="{ name: 'app-mainnet-users' }">
-      <div class="app-banner__btn">
-        <p class="app-banner__text">
-          Claim $SPACE Drop 5 from March 14 - April 11 on the 
-          <router-link :to="{ name: 'app-mainnet-users' }" class="app-banner-inline-link">
-            Users Tab 🚀
-          </router-link>
-        </p>
-      </div>
-    </router-link>
+    <div
+      class="app-banner__btn"
+      role="link"
+      tabindex="0"
+      @click="openForumHome"
+      @keydown.enter.prevent="openForumHome"
+      @keydown.space.prevent="openForumHome"
+    >
+      <p class="app-banner__text">
+        A proposal to migrate $SPACE to ClankerV4 is live!
+        <a
+          href="https://app.charmverse.io/nounspace/forum/proposal/33"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="app-banner-inline-link"
+          @click.stop
+        >
+          Read it and vote now
+        </a>
+      </p>
+    </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+const openForumHome = () => {
+  window.open('https://app.charmverse.io/nounspace/forum/', '_blank', 'noopener,noreferrer')
+}
+</script>
 
 <style lang="scss" scoped>
 .app-banner {
@@ -30,7 +47,7 @@
 }
 
 .app-banner__btn {
-  background: url('/branding/march-banner.png') no-repeat center center;
+  background: url('/branding/migration-banner.png') no-repeat center center;
   background-size: cover;
   font-size: 1.5rem;
   font-weight: 700;

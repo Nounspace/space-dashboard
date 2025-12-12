@@ -1,45 +1,50 @@
 <template>
   <div class="zero-pool-description">
-    <ul>
-      <li
-        v-for="(item, idx) in listItems"
-        :key="idx"
-        class="zero-pool-description__list-item"
-      >
-        {{ item }}
-      </li>
-    </ul>
+    <div class="zero-pool-description__content">
+      <p class="zero-pool-description__title">The $SPACE Fair Launch has concluded</p>
+      <p class="zero-pool-description__lead">stETH deposits are paused.</p>
+      <p>Withdrawals will remain open forever.</p>
+      <p>
+        If you have unclaimed $SPACE rewards, you will be eligible to claim them via the upcoming airdrop of the new
+        $SPACE ClankerV4 token.
+      </p>
+      <p>
+        Read this
+        <a
+          class="zero-pool-description__link"
+          href="https://app.charmverse.io/nounspace/forum"
+          target="_blank"
+          rel="noopener noreferrer"
+        >proposal</a>
+        for more information.
+      </p>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from '@/composables'
-import { computed } from 'vue'
-
-const { t } = useI18n()
-
-const listItems = computed<string[]>(() => [
-  t('zero-pool-description.list.1'),
-  t('zero-pool-description.list.2'),
-  t('zero-pool-description.list.3'),
-  t('zero-pool-description.list.4'),
-])
 </script>
 
 <style lang="scss" scoped>
-.zero-pool-description__list-item {
-  // display: flex;
+.zero-pool-description__content {
+  margin-top: toRem(8);
+  display: flex;
+  flex-direction: column;
+  gap: toRem(12);
   text-align: center;
-  font-weight: bold;
-  // gap: toRem(8);
+  line-height: 1.5;
+}
 
-  // &:before {
-  //   content: '';
-  //   height: toRem(6);
-  //   width: toRem(6);
-  //   background: var(--text-secondary-dark);
-  //   border-radius: 50%;
-  // }
+.zero-pool-description__title {
+  font-weight: 700;
+}
+
+.zero-pool-description__lead {
+  font-weight: 600;
+}
+
+.zero-pool-description__link {
+  text-decoration: underline;
 }
 
 .zero-pool-description__details {
