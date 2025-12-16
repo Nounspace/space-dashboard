@@ -11,7 +11,7 @@
       <p class="app-banner__text">
         A proposal to migrate $SPACE to ClankerV4 is live!
         <a
-          href="https://app.charmverse.io/nounspace/forum/proposal/33"
+          href="https://snapshot.org#/s:dao.nounspace.eth/proposal/0xae7ad74ed52d60251eac06d42017906a0146977b33776da5013335f8ad476679"
           target="_blank"
           rel="noopener noreferrer"
           class="app-banner-inline-link"
@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 const openForumHome = () => {
-  window.open('https://app.charmverse.io/nounspace/forum/', '_blank', 'noopener,noreferrer')
+  window.open('https://snapshot.org#/s:dao.nounspace.eth/proposal/0xae7ad74ed52d60251eac06d42017906a0146977b33776da5013335f8ad476679', '_blank', 'noopener,noreferrer')
 }
 </script>
 
