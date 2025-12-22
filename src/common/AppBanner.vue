@@ -9,15 +9,15 @@
       @keydown.space.prevent="openForumHome"
     >
       <p class="app-banner__text">
-        A proposal to migrate $SPACE to ClankerV4 is live!
+        $SPACE token and liquidity has migrated to Clanker.
         <a
-          href="https://snapshot.org#/s:dao.nounspace.eth/proposal/0xae7ad74ed52d60251eac06d42017906a0146977b33776da5013335f8ad476679"
+          href="https://www.clanker.world/clanker/0xbf63463eE6F105EDC5AdeAa28A0fE8c297aD0b07"
           target="_blank"
           rel="noopener noreferrer"
           class="app-banner-inline-link"
           @click.stop
         >
-          Read it and vote now
+          Claim $SPACE v2
         </a>
       </p>
     </div>
@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 const openForumHome = () => {
-  window.open('https://snapshot.org#/s:dao.nounspace.eth/proposal/0xae7ad74ed52d60251eac06d42017906a0146977b33776da5013335f8ad476679', '_blank', 'noopener,noreferrer')
+  window.open('https://www.clanker.world/clanker/0xbf63463eE6F105EDC5AdeAa28A0fE8c297aD0b07', '_blank', 'noopener,noreferrer')
 }
 </script>
 
